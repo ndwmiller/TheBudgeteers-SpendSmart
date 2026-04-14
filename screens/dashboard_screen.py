@@ -3,7 +3,10 @@ from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.properties import StringProperty
-import os
+from .widgets import AddBill
 
-
-Builder.load_file(os.path.abspath(os.path.dirname(os.path.abspath(__file__))) + '\\dashboard_screen.kv')
+class DashboardScreen(Screen):
+    # database access so that you can use app.db.cursor.execute(...)
+    # def on_enter(self):
+        # app = App.get_running_app()
+    pass

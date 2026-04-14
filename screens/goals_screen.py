@@ -3,7 +3,9 @@ from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.properties import StringProperty
-import os
 
-
-Builder.load_file(os.path.abspath(os.path.dirname(os.path.abspath(__file__))) + '\\goals_screen.kv')
+class GoalsScreen(Screen):
+    # database access so that you can use app.db.cursor.execute(...)
+    # def on_enter(self):
+        # app = App.get_running_app()
+    pass

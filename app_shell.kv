@@ -1,3 +1,27 @@
 #:kivy 1.0
 #:import os os
 #:import utils kivy.utils
+#:import screens/dashboard_screen.kv
+#:import screens/settings_screen.kv
+#:import screens/transactions_screen.kv
+#:import screens/goals_screen.kv
+#:import screens/budget_screen.kv
+
+<AppShell>:
+    # orientation: 
+
+    # screen manager
+    ScreenManager:
+        id: sm
+        DashboardScreen:
+            name: 'dashboard'
+        BudgetScreen:
+            name: 'budget'
+        TransactionsScreen:
+            name: 'transactions'
+        SettingsScreen:
+            name: 'settings'
+        GoalsScreen:
+            name: 'goals'
+    
+    # nav bar goes here (persistent)
