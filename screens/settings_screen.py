@@ -3,6 +3,10 @@ from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.properties import StringProperty
-import os
+from .widgets import ChangePassword
 
-Builder.load_file(os.path.abspath(os.path.dirname(os.path.abspath(__file__))) + '\\settings_screen.kv')
+class SettingsScreen(Screen):
+    # database access so that you can use app.db.cursor.execute(...)
+    # def on_enter(self):
+        # app = App.get_running_app()
+    pass
