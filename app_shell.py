@@ -3,12 +3,10 @@ from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.image import Image
-from screens.transactions_screen import HomeScreen
-from screens.dashboard_screen import AddPotScreen
-from screens.budget_screen import PlantDetailScreen
-from screens.settings_screen import SettingsScreen
-
+from screens import DashboardScreen, BudgetScreen, GoalsScreen, TransactionsScreen, SettingsScreen
 from kivy.properties import BooleanProperty, StringProperty
 
+class AppShell(BoxLayout):
+    pass
 
 Builder.load_file("app_shell.kv")
