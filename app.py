@@ -5,6 +5,12 @@ from kivy.core.window import Window
 from kivy.properties import StringProperty
 import os
 
+# background color constants for themes
+DARK_BACK = (0.2, 0.2, 0.2, 1)
+LIGHT_BACK = (0.8, 0.8, 0.8, 1)
+
+Window.size = (1440, 1024)
+Window.clearcolor = DARK_BACK
 
 class SpendSmartApp(App):
     # keeps path to project root

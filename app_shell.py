@@ -6,7 +6,18 @@ from kivy.uix.image import Image
 from screens import DashboardScreen, BudgetScreen, GoalsScreen, TransactionsScreen, SettingsScreen
 from kivy.properties import BooleanProperty, StringProperty
 
+# image button for settings gear
+class ImageButton(ButtonBehavior, Image):
+    def on_press(self):
+        self.opacity = 0.5
+        return super().on_press()
+
+    def on_release(self):
+        self.opacity = 1.0
+        return super().on_release()
+
 class AppShell(BoxLayout):
-    pass
+    def change_screen(self, screen_name):
+        self.ids.sm.current = screen_name
 
 Builder.load_file("app_shell.kv")
