@@ -1,16 +1,125 @@
 #:kivy 1.0
 #:import os os
 #:import utils kivy.utils
-#:import screens/dashboard_screen.kv
-#:import screens/settings_screen.kv
-#:import screens/transactions_screen.kv
-#:import screens/goals_screen.kv
-#:import screens/budget_screen.kv
+#:include screens/dashboard_screen.kv
+#:include screens/settings_screen.kv
+#:include screens/transactions_screen.kv
+#:include screens/goals_screen.kv
+#:include screens/budget_screen.kv
 
 <AppShell>:
-    # orientation: 
+    orientation: 'vertical'
+    size_hint: 1, 1 
+    
+    # nav bar goes here (persistent)
+    BoxLayout:
+        size_hint_y: None
+        height: '162'
+        orientation: 'horizontal'
+        padding: ['10dp', '5dp']
+        canvas.before:
+            Color:
+                rgba: utils.get_color_from_hex('#DAFFC8')
+            Rectangle:
+                pos: self.pos
+                size: self.size
 
-    # screen manager
+        # Logo placeholder square
+        AnchorLayout:
+            size_hint_x: None
+            size_x: '80dp'
+            anchor_x: 'left'
+            anchor_y: 'center'
+        
+            Widget:
+                size_hint: (None, None)
+                size: ('80dp', '80dp')
+                canvas:
+                    Color:
+                        rgba: 0.8, 0.8, 0.8, 1 
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                Label:
+                    text: "LOGO"
+                    center: self.parent.center
+                    color: 0.5, 0.5, 0.5, 1
+
+        # spacer
+        Widget:
+            size_hint_x: None
+            width: '10'
+        
+        # Spend Smart Text
+        BoxLayout:
+            size_hint_x: 0.1
+            orientation: 'vertical'
+            valign: 'middle'
+        
+            Label:
+                text: "SPEND"
+                bold: True
+                font_size: '30sp'
+                color: utils.get_color_from_hex('#14CC00')
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.size
+            Label:
+                text: "SMART"
+                bold: True
+                font_size: '30sp'
+                color: utils.get_color_from_hex('#14CC00')
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.size
+
+        # spacer
+        Widget:
+            size_hint_x: None
+            width: '30dp'
+        
+        # nav buttons
+        BoxLayout:
+            size_hint_x: 0.7
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: '80dp' 
+            pos_hint: {'y': 0} 
+
+            NavButton:
+                text: "Dashboard"
+                on_release: sm.current = 'dashboard'
+            NavButton:
+                text: "Transactions"
+                on_release: sm.current = 'transactions'
+            NavButton:
+                text: "Budget"
+                on_release: sm.current = 'budget'
+            NavButton:
+                text: "Goals"
+                on_release: sm.current = 'goals'
+
+        # spacer
+        Widget:
+            size_hint_x: None
+            width: '30dp'
+
+        # settings gear
+        ImageButton:
+            size_hint: (None, 1)
+            width: '50sp'
+            source: app.base_path + '/resources/Images/settings_icon.png'
+
+            allow_stretch: True
+            keep_ratio: True
+
+            on_press: sm.current = 'settings'
+        
+        Widget:
+            size_hint_x: None
+            width: '10dp'
+
+    # screen manager / main content area
     ScreenManager:
         id: sm
         DashboardScreen:
@@ -23,5 +132,28 @@
             name: 'settings'
         GoalsScreen:
             name: 'goals'
+
+
+# custom nav button widget
+<NavButton@Button>:
+    background_normal: ''
+    background_down: ''
+    background_color: utils.get_color_from_hex('#bab9b9') if self.state == 'down' else utils.get_color_from_hex('#D7D7D7')
+    color: utils.get_color_from_hex('#656565')
+    font_size: '22sp'
+    bold: True
+    size_hint_y: None
+    height: '80dp'
+    text_size: self.size
+    halign: 'center'
+    valign: 'middle'
+    # font_name: ''    -> add font here
     
-    # nav bar goes here (persistent)
+    canvas.after:
+        Color: 
+            rgba: utils.get_color_from_hex('#6BB562')
+        Line:
+            width: 1.2
+            rectangle: (self.x, self.y, self.width, self.height)
+    
+    
