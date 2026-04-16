@@ -3,6 +3,7 @@
 <DashboardScreen>:
     BoxLayout:
         orientation: 'vertical'
+        padding: [118, 40, 118, 40]
 
         # balance overview
         BoxLayout:
@@ -12,25 +13,113 @@
             BoxLayout:
                 orientation: 'vertical'
 
-                # Label
+                Label:
+                    canvas.before:
+                        Color:
+                            rgba: utils.get_color_from_hex('#D7D7D7')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
 
-                # Label
+                    # Green Outline
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+                Label:
+                    canvas.before:
+                        Color:
+                            rgba: utils.get_color_from_hex('#D7D7D7')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    # Green Outline
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
 
             # income
             BoxLayout:
                 orientation: 'vertical'
 
-                # Label
+                Label:
+                    canvas.before:
+                        Color:
+                            rgba: utils.get_color_from_hex('#D7D7D7')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
 
-                # Label
+                    # Green Outline
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+                Label:
+                    canvas.before:
+                        Color:
+                            rgba: utils.get_color_from_hex('#D7D7D7')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    # Green Outline
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
 
             # expenses
             BoxLayout:
                 orientation: 'vertical'
 
-                # Label
+                Label:
+                    canvas.before:
+                        Color:
+                            rgba: utils.get_color_from_hex('#D7D7D7')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
 
-                # Label
+                    # Green Outline
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+                Label:
+                    canvas.before:
+                        Color:
+                            rgba: utils.get_color_from_hex('#D7D7D7')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    # Green Outline
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+        Widget:
+            size_hint_y: None
+            height: '58dp'
 
         # the other half of it
         BoxLayout:
@@ -40,11 +129,39 @@
             BoxLayout:
                 orientation: 'vertical'
 
-                # Label
+                Label:
+                    canvas.before:
+                        Color:
+                            rgba: utils.get_color_from_hex('#D7D7D7')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    # Green Outline
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
 
                 # Upcoming bills container
                 BoxLayout:
                     orientation: 'vertical'
+                    canvas.before:
+                        Color:
+                            rgba: utils.get_color_from_hex('#D7D7D7')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    # Green Outline
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
 
             # Budget | Categories | Analytics
             BoxLayout:
@@ -58,19 +175,76 @@
                     BoxLayout:
                         orientation: 'vertical'
 
-                        # Label
+                        Label:
+                            canvas.before:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
 
-                        # Label
+                            # Green Outline
+                            canvas.after:
+                                Color: 
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
+
+                        Label:
+                            canvas.before:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+
+                            # Green Outline
+                            canvas.after:
+                                Color: 
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
 
                     # Categories Layout
                     BoxLayout:
                         orientation: 'vertical'
 
-                        # Label
+                        Label:
+                            canvas.before:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+
+                            # Green Outline
+                            canvas.after:
+                                Color: 
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
 
                         # Categories container
                         BoxLayout:
                             orientation: 'vertical'
+
+                            canvas.before:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+
+                            # Green Outline
+                            canvas.after:
+                                Color: 
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
 
                 # Analytics layout
                 BoxLayout:
@@ -83,10 +257,38 @@
                         # Avg expenses
                         BoxLayout:
                             orientation: 'vertical'
+                            canvas.before:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+
+                            # Green Outline
+                            canvas.after:
+                                Color: 
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
 
                         # highest cat
                         BoxLayout:
                             orientation: 'horizontal'
+                            canvas.before:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+
+                            # Green Outline
+                            canvas.after:
+                                Color: 
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
 
                     # Last week layout
                     BoxLayout:
@@ -95,7 +297,35 @@
                         # Avg expenses
                         BoxLayout:
                             orientation: 'vertical'
+                            canvas.before:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+
+                            # Green Outline
+                            canvas.after:
+                                Color: 
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
 
                         # highest cat
                         BoxLayout:
                             orientation: 'horizontal'
+                            canvas.before:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+
+                            # Green Outline
+                            canvas.after:
+                                Color: 
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
