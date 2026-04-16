@@ -1,23 +1,324 @@
-from kivy.uix.screenmanager import Screen
-from kivy.properties import ListProperty, StringProperty
+#:import utils kivy.utils
+#:import dp kivy.metrics.dp
 
+<BudgetValueLabel@Label>:
+    color: utils.get_color_from_hex('#519D4A')
+    font_size: '30sp'
+    bold: True
+    halign: 'center'
+    valign: 'middle'
+    text_size: self.size
 
-class BudgetScreen(Screen):
-    current_budget = StringProperty("$ XXXX.XX")
-    monthly_budget = StringProperty("$ XXXX.XX")
-    categories = ListProperty([
-        {"name": "Example", "percent": "XX.XX%", "remaining": "$ XXXXX.XX"},
-        {"name": "Example", "percent": "XX.XX%", "remaining": "$ XXXXX.XX"},
-        {"name": "Example", "percent": "XX.XX%", "remaining": "$ XXXXX.XX"},
-        {"name": "Example", "percent": "XX.XX%", "remaining": "$ XXXXX.XX"},
-        {"name": "Example", "percent": "XX.XX%", "remaining": "$ XXXXX.XX"},
-    ])
+<BudgetChipLabel@Label>:
+    color: utils.get_color_from_hex('#519D4A')
+    font_size: '20sp'
+    bold: True
+    halign: 'center'
+    valign: 'middle'
+    text_size: self.size
+    canvas.before:
+        Color:
+            rgba: utils.get_color_from_hex('#E3E3E3')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        Color:
+            rgba: utils.get_color_from_hex('#6BB562')
+        Line:
+            width: 1.2
+            rectangle: (self.x, self.y, self.width, self.height)
 
-    def get_category_value(self, index, key, default=""):
-        if index < len(self.categories):
-            return self.categories[index].get(key, default)
-        return default
+<BudgetScreen>:
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: utils.get_color_from_hex('#4D4D4D')
+            Rectangle:
+                pos: self.pos
+                size: self.size
 
-    def open_edit_budget(self):
-        # Hook for future edit-budget flow.
-        return None
+        # === Current & Monthly Budget Cards ===
+        FloatLayout:
+            size_hint: None, None
+            width: min(root.width * 0.78, dp(860))
+            height: dp(125)
+            pos_hint: {'center_x': 0.5, 'top': 0.76}
+
+            canvas.before:
+                Color:
+                    rgba: utils.get_color_from_hex('#D7D7D7')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                Color:
+                    rgba: utils.get_color_from_hex('#6BB562')
+                Line:
+                    width: 1.4
+                    rectangle: (self.x, self.y, self.width, self.height)
+                Line:
+                    width: 1.2
+                    points: (self.center_x, self.y, self.center_x, self.top)
+
+            # Current Budget
+            Label:
+                text: 'Current Budget'
+                size_hint: None, None
+                size: dp(140), dp(28)
+                pos_hint: {'center_x': 0.25, 'top': 1.14}
+                color: utils.get_color_from_hex('#656565')
+                font_size: '14sp'
+                bold: True
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.size
+                canvas.before:
+                    Color:
+                        rgba: utils.get_color_from_hex('#D7D7D7')
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                    Color:
+                        rgba: utils.get_color_from_hex('#6BB562')
+                    Line:
+                        width: 1.2
+                        rectangle: (self.x, self.y, self.width, self.height)
+
+            BudgetValueLabel:
+                text: root.current_budget
+                size_hint: 0.5, 1
+                pos_hint: {'x': 0, 'y': 0}
+
+            # Monthly Budget
+            Label:
+                text: 'Monthly Budget'
+                size_hint: None, None
+                size: dp(140), dp(28)
+                pos_hint: {'center_x': 0.75, 'top': 1.14}
+                color: utils.get_color_from_hex('#656565')
+                font_size: '14sp'
+                bold: True
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.size
+                canvas.before:
+                    Color:
+                        rgba: utils.get_color_from_hex('#D7D7D7')
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                    Color:
+                        rgba: utils.get_color_from_hex('#6BB562')
+                    Line:
+                        width: 1.2
+                        rectangle: (self.x, self.y, self.width, self.height)
+
+            BudgetValueLabel:
+                text: root.monthly_budget
+                size_hint: 0.5, 1
+                pos_hint: {'x': 0.5, 'y': 0}
+
+        # === Categories Section ===
+        FloatLayout:
+            size_hint: None, None
+            width: min(root.width * 0.78, dp(860))
+            height: dp(250)
+            pos_hint: {'center_x': 0.5, 'top': 0.54}
+
+            canvas.before:
+                Color:
+                    rgba: utils.get_color_from_hex('#D7D7D7')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                Color:
+                    rgba: utils.get_color_from_hex('#6BB562')
+                Line:
+                    width: 1.4
+                    rectangle: (self.x, self.y, self.width, self.height)
+
+            # Categories Title
+            Label:
+                text: 'Categories'
+                size_hint: None, None
+                size: dp(130), dp(28)
+                pos_hint: {'center_x': 0.5, 'y': 1}
+                color: utils.get_color_from_hex('#656565')
+                font_size: '14sp'
+                bold: True
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.size
+                canvas.before:
+                    Color:
+                        rgba: utils.get_color_from_hex('#D7D7D7')
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                    Color:
+                        rgba: utils.get_color_from_hex('#6BB562')
+                    Line:
+                        width: 1.2
+                        rectangle: (self.x, self.y, self.width, self.height)
+
+            # Column Headers
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: None, None
+                size: dp(560), dp(26)
+                pos_hint: {'center_x': 0.53, 'top': 0.90}
+                spacing: dp(10)
+
+                Label:
+                    text: 'Categories'
+                    color: utils.get_color_from_hex('#519D4A')
+                    font_size: '17sp'
+                    bold: True
+                    halign: 'left'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint_x: 0.46
+
+                Label:
+                    text: 'Percent'
+                    color: utils.get_color_from_hex('#519D4A')
+                    font_size: '16sp'
+                    bold: True
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint_x: 0.23
+
+                Label:
+                    text: 'Remaining'
+                    color: utils.get_color_from_hex('#519D4A')
+                    font_size: '16sp'
+                    bold: True
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint_x: 0.31
+
+            # Categories Rows
+            GridLayout:
+                cols: 1
+                spacing: dp(8)
+                size_hint: None, None
+                size: dp(560), dp(145)
+                pos_hint: {'center_x': 0.53, 'top': 0.77}
+
+                # Row 1
+                BoxLayout:
+                    orientation: 'horizontal'
+                    spacing: dp(10)
+                    Label:
+                        text: '* ' + root.get_category_value(0, 'name', 'Example')
+                        color: utils.get_color_from_hex('#519D4A')
+                        font_size: '16sp'
+                        bold: True
+                        halign: 'left'
+                        valign: 'middle'
+                        text_size: self.size
+                        size_hint_x: 0.46
+                    BudgetChipLabel:
+                        text: root.get_category_value(0, 'percent', 'XX.XX%')
+                        size_hint_x: 0.23
+                    BudgetChipLabel:
+                        text: root.get_category_value(0, 'remaining', '$ XXXXX.XX')
+                        size_hint_x: 0.31
+
+                # Row 2-5 (repeat similar structure)
+                BoxLayout:
+                    orientation: 'horizontal'
+                    spacing: dp(10)
+                    Label:
+                        text: '* ' + root.get_category_value(1, 'name', 'Example')
+                        color: utils.get_color_from_hex('#519D4A')
+                        font_size: '16sp'
+                        bold: True
+                        halign: 'left'
+                        valign: 'middle'
+                        text_size: self.size
+                        size_hint_x: 0.46
+                    BudgetChipLabel:
+                        text: root.get_category_value(1, 'percent', 'XX.XX%')
+                        size_hint_x: 0.23
+                    BudgetChipLabel:
+                        text: root.get_category_value(1, 'remaining', '$ XXXXX.XX')
+                        size_hint_x: 0.31
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    spacing: dp(10)
+                    Label:
+                        text: '* ' + root.get_category_value(2, 'name', 'Example')
+                        color: utils.get_color_from_hex('#519D4A')
+                        font_size: '16sp'
+                        bold: True
+                        halign: 'left'
+                        valign: 'middle'
+                        text_size: self.size
+                        size_hint_x: 0.46
+                    BudgetChipLabel:
+                        text: root.get_category_value(2, 'percent', 'XX.XX%')
+                        size_hint_x: 0.23
+                    BudgetChipLabel:
+                        text: root.get_category_value(2, 'remaining', '$ XXXXX.XX')
+                        size_hint_x: 0.31
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    spacing: dp(10)
+                    Label:
+                        text: '* ' + root.get_category_value(3, 'name', 'Example')
+                        color: utils.get_color_from_hex('#519D4A')
+                        font_size: '16sp'
+                        bold: True
+                        halign: 'left'
+                        valign: 'middle'
+                        text_size: self.size
+                        size_hint_x: 0.46
+                    BudgetChipLabel:
+                        text: root.get_category_value(3, 'percent', 'XX.XX%')
+                        size_hint_x: 0.23
+                    BudgetChipLabel:
+                        text: root.get_category_value(3, 'remaining', '$ XXXXX.XX')
+                        size_hint_x: 0.31
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    spacing: dp(10)
+                    Label:
+                        text: '* ' + root.get_category_value(4, 'name', 'Example')
+                        color: utils.get_color_from_hex('#519D4A')
+                        font_size: '16sp'
+                        bold: True
+                        halign: 'left'
+                        valign: 'middle'
+                        text_size: self.size
+                        size_hint_x: 0.46
+                    BudgetChipLabel:
+                        text: root.get_category_value(4, 'percent', 'XX.XX%')
+                        size_hint_x: 0.23
+                    BudgetChipLabel:
+                        text: root.get_category_value(4, 'remaining', '$ XXXXX.XX')
+                        size_hint_x: 0.31
+
+            # Edit Budget Button
+            Button:
+                text: 'Edit Budget'
+                size_hint: None, None
+                size: dp(95), dp(24)
+                pos_hint: {'center_x': 0.5, 'y': 0.04}
+                background_normal: ''
+                background_down: ''
+                background_color: utils.get_color_from_hex('#DAFFC8')
+                color: utils.get_color_from_hex('#519D4A')
+                font_size: '14sp'
+                bold: True
+                on_release: root.open_edit_budget()
+                canvas.after:
+                    Color:
+                        rgba: utils.get_color_from_hex('#6BB562')
+                    Line:
+                        width: 1.2
+                        rectangle: (self.x, self.y, self.width, self.height)
