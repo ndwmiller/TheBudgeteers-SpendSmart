@@ -9,8 +9,37 @@ import os
 DARK_BACK = (0.2, 0.2, 0.2, 1)
 LIGHT_BACK = (0.8, 0.8, 0.8, 1)
 
-Window.size = (1440, 1024)
+WINDOW_SIZE = (1920, 1160)
+Window.size = WINDOW_SIZE
 Window.clearcolor = DARK_BACK
+
+from kivy.uix.scatterlayout import ScatterLayout
+
+class GlobalScaler(ScatterLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # Disable user interaction (no manual pinching/moving)
+        self.do_translation = False
+        self.do_rotation = False
+        self.do_scale = False
+        
+        Window.bind(on_resize=self.recompute_scale)
+        self.design_size = WINDOW_SIZE # Your "Perfect" resolution
+
+    def recompute_scale(self, *args):
+        win_w, win_h = Window.size
+        des_w, des_h = self.design_size
+
+        # 1. MATCH THE SIZE: This fixes the "unclickable" issue
+        self.size = self.design_size 
+
+        # 2. Calculate the scale
+        scale = min(win_w / des_w, win_h / des_h)
+        self.scale = scale
+
+        # 3. CENTER THE HITBOX: 
+        # We move the entire Scaler so its (0,0) matches the visual bottom-left
+        self.pos = (win_w - des_w * scale) / 2, (win_h - des_h * scale) / 2
 
 class SpendSmartApp(App):
     # keeps path to project root
@@ -22,8 +51,14 @@ class SpendSmartApp(App):
         # self.db = databaseClassName(db_file)
 
         # initialize the UI shell
+        root = GlobalScaler()
         self.shell = AppShell()
-        return self.shell
+        self.shell.size_hint = (None, None)
+        self.shell.size = WINDOW_SIZE
+        
+        root.add_widget(self.shell)
+        root.recompute_scale()
+        return root
     
     # close the conncetion to the DB here
     # def on_stop(self):
