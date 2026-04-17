@@ -13,32 +13,22 @@ WINDOW_SIZE = (1920, 1160)
 Window.size = WINDOW_SIZE
 Window.clearcolor = DARK_BACK
 
+# This makes the window scale correctly
 from kivy.uix.scatterlayout import ScatterLayout
-
 class GlobalScaler(ScatterLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # Disable user interaction (no manual pinching/moving)
         self.do_translation = False
         self.do_rotation = False
         self.do_scale = False
-        
         Window.bind(on_resize=self.recompute_scale)
-        self.design_size = WINDOW_SIZE # Your "Perfect" resolution
-
+        self.design_size = WINDOW_SIZE
     def recompute_scale(self, *args):
         win_w, win_h = Window.size
         des_w, des_h = self.design_size
-
-        # 1. MATCH THE SIZE: This fixes the "unclickable" issue
         self.size = self.design_size 
-
-        # 2. Calculate the scale
         scale = min(win_w / des_w, win_h / des_h)
         self.scale = scale
-
-        # 3. CENTER THE HITBOX: 
-        # We move the entire Scaler so its (0,0) matches the visual bottom-left
         self.pos = (win_w - des_w * scale) / 2, (win_h - des_h * scale) / 2
 
 class SpendSmartApp(App):
