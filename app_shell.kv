@@ -1,11 +1,21 @@
 #:kivy 1.0
 #:import os os
 #:import utils kivy.utils
+#:import Window kivy.core.window.Window
 #:include screens/dashboard_screen.kv
 #:include screens/settings_screen.kv
 #:include screens/transactions_screen.kv
 #:include screens/goals_screen.kv
 #:include screens/budget_screen.kv
+
+# This  makes the window scale correctly
+<GlobalScaler>:
+    canvas.before:
+        Color:
+            rgba: 0.1, 0.1, 0.1, 1
+        Rectangle:
+            pos: -self.pos[0]/self.scale, -self.pos[1]/self.scale 
+            size: Window.width/self.scale, Window.height/self.scale
 
 <AppShell>:
     orientation: 'vertical'
