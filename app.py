@@ -6,7 +6,7 @@ from kivy.properties import StringProperty
 import os
 
 # background color constants for themes
-DARK_BACK = (0.2, 0.2, 0.2, 1)
+DARK_BACK = (0.302, 0.302, 0.302, 1)
 LIGHT_BACK = (0.8, 0.8, 0.8, 1)
 
 WINDOW_SIZE = (1920, 1160)
