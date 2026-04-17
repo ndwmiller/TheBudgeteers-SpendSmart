@@ -1,12 +1,23 @@
 from kivy.uix.screenmanager import Screen
-from kivy.lang import Builder
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.behaviors import ButtonBehavior
-from kivy.properties import StringProperty
-from .widgets import AddCategory
+from kivy.properties import ListProperty, StringProperty
+
 
 class BudgetScreen(Screen):
-    # database access so that you can use app.db.cursor.execute(...)
-    # def on_enter(self):
-        # app = App.get_running_app()
-    pass
+    current_budget = StringProperty("$ XXXX.XX")
+    monthly_budget = StringProperty("$ XXXX.XX")
+    categories = ListProperty([
+        {"name": "Example", "percent": "XX.XX%", "remaining": "$ XXXXX.XX"},
+        {"name": "Example", "percent": "XX.XX%", "remaining": "$ XXXXX.XX"},
+        {"name": "Example", "percent": "XX.XX%", "remaining": "$ XXXXX.XX"},
+        {"name": "Example", "percent": "XX.XX%", "remaining": "$ XXXXX.XX"},
+        {"name": "Example", "percent": "XX.XX%", "remaining": "$ XXXXX.XX"},
+    ])
+
+    def get_category_value(self, index, key, default=""):
+        if index < len(self.categories):
+            return self.categories[index].get(key, default)
+        return default
+
+    def open_edit_budget(self):
+        # Hook for future edit-budget flow.
+        return None
