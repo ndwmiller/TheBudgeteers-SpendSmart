@@ -17,7 +17,6 @@ class ImageButton(ButtonBehavior, Image):
         return super().on_release()
 
 class AppShell(BoxLayout):
-    def change_screen(self, screen_name):
-        self.ids.sm.current = screen_name
+    pass
 
 Builder.load_file("app_shell.kv")
