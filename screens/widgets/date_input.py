@@ -33,7 +33,7 @@ class DateInput(TextInput):
         if not re.match(date_pattern, val):
             return "Date must be MM/DD/YYYY."
         month, day, year = map(int, val.split('/'))
-        if not (1 <= int(month) <= 12 and 1 <= int(day) <= 31):
+        if not (1 <= month <= 12 and 1 <= day <= 31):
             return "Please enter a valid date."
 
         return None # valid date

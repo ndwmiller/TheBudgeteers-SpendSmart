@@ -23,7 +23,7 @@ class AddBill(ModalView):
 
         # amount validation
         try:
-            float(amount.replace('$', ''))
+            float(amount)
         except ValueError:
             self.ids.error_label.text = "Invalid amount format."
             return

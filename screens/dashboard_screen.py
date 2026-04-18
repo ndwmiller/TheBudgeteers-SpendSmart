@@ -20,5 +20,3 @@ class DashboardScreen(Screen):
         new_bill.bill_amount = amount
 
         self.ids.bill_container.add_widget(new_bill)
-
-        pass
