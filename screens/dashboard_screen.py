@@ -8,21 +8,15 @@ class DashboardScreen(Screen):
         # app = App.get_running_app()
     
     def trigger_add_bill(self):
-        # just use placeholder data for now 
-        # here is where we'll call the add bill popup and get real inputs
-        placeholder_name = "Example"
-        placeholder_date = "XX/XX/XXXX"
-        placeholder_amount = "XXX.XX"
+        # open the popup and callback add_bill_to_ui method
+        popup = AddBill()
+        popup.callback = self.add_bill_to_ui
+        popup.open()
 
-        # 1. Create the widget from the KV template
+    def add_bill_to_ui(self, name, amount, date):
         new_bill = Factory.BillElement()
-        
-        # 2. Update its properties
-        new_bill.bill_name = placeholder_name
-        new_bill.bill_date = placeholder_date
-        new_bill.bill_amount = placeholder_amount
+        new_bill.bill_name = name
+        new_bill.bill_date = date
+        new_bill.bill_amount = amount
 
-        # 3. Add it to the scrollable container via ID
         self.ids.bill_container.add_widget(new_bill)
-
-    pass
