@@ -3,7 +3,7 @@ from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.image import Image
-from screens import DashboardScreen, BudgetScreen, GoalsScreen, TransactionsScreen, SettingsScreen
+from screens import DashboardScreen, BudgetScreen, BudgetEditScreen, GoalsScreen, TransactionsScreen, SettingsScreen
 from kivy.properties import BooleanProperty, StringProperty
 
 # image button for settings gear

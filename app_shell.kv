@@ -10,6 +10,7 @@
 #:include screens/goals_screen.kv
 #:include screens/budget_screen.kv
 #:include screens/widgets/add_bill.kv
+#:include screens/budget_edit_screen.kv
 
 # This  makes the window scale correctly
 <GlobalScaler>:
@@ -138,6 +139,8 @@
             name: 'dashboard'
         BudgetScreen:
             name: 'budget'
+        BudgetEditScreen:
+            name: 'budget_edit'
         TransactionsScreen:
             name: 'transactions'
         SettingsScreen:
