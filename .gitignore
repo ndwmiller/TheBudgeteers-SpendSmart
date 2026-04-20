@@ -1,1 +1,30 @@
+# --- IDE & Editor Stuff ---
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# --- Python Artifacts ---
 __pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+
+# --- Kivy & Build Artifacts ---
+# These appear if you ever package the app for Windows/Mobile
+bin/
+build/
+dist/
+*.spec
+
+# --- OS Specific ---
+.DS_Store
+Thumbs.db
+
+# --- Database & Local Data ---
+# We ignore .db files so you and your collaborator don't 
+# overwrite each other's local testing data.
+*.db
+*.sqlite
