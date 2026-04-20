@@ -1,13 +1,337 @@
-#:import utils kivy.utils
-# Write screen frontend here
+#:import dp kivy.metrics.dp
+
+<TransactionRow>:
+    size_hint_y: None
+    height: dp(60)
+    spacing: 0
+
+    canvas.before:
+        Color:
+            rgba: 0.96, 0.96, 0.96, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    Label:
+        text: str(root.row_data[1]) if len(root.row_data) > 1 else ""
+        color: 0.56, 0.74, 0.52, 1
+        halign: "center"
+        valign: "middle"
+        text_size: self.size
+        size_hint_x: 1.25
+
+        canvas.before:
+            Color:
+                rgba: 0.72, 0.82, 0.70, 1
+            Line:
+                rectangle: (self.x, self.y, self.width, self.height)
+                width: 1
+
+    Label:
+        text: str(root.row_data[2]) if len(root.row_data) > 2 else ""
+        color: 0.56, 0.74, 0.52, 1
+        halign: "center"
+        valign: "middle"
+        text_size: self.size
+        size_hint_x: 1.75
+
+        canvas.before:
+            Color:
+                rgba: 0.72, 0.82, 0.70, 1
+            Line:
+                rectangle: (self.x, self.y, self.width, self.height)
+                width: 1
+
+    Label:
+        text: str(root.row_data[3]) if len(root.row_data) > 3 else ""
+        color: 0.56, 0.74, 0.52, 1
+        halign: "center"
+        valign: "middle"
+        text_size: self.size
+        size_hint_x: 1.75
+
+        canvas.before:
+            Color:
+                rgba: 0.72, 0.82, 0.70, 1
+            Line:
+                rectangle: (self.x, self.y, self.width, self.height)
+                width: 1
+
+    Label:
+        text: "$ {:.2f}".format(float(root.row_data[4])) if len(root.row_data) > 4 else ""
+        color: 0.56, 0.74, 0.52, 1
+        halign: "center"
+        valign: "middle"
+        text_size: self.size
+        size_hint_x: 1.45
+
+        canvas.before:
+            Color:
+                rgba: 0.72, 0.82, 0.70, 1
+            Line:
+                rectangle: (self.x, self.y, self.width, self.height)
+                width: 1
+
+    BoxLayout:
+        size_hint_x: 0.9
+        padding: dp(12), dp(8)
+
+        canvas.before:
+            Color:
+                rgba: 0.96, 0.96, 0.96, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            Color:
+                rgba: 0.72, 0.82, 0.70, 1
+            Line:
+                rectangle: (self.x, self.y, self.width, self.height)
+                width: 1
+
+        Button:
+            text: "Edit"
+            background_normal: ""
+            background_color: 0.83, 0.96, 0.77, 1
+            color: 0.44, 0.62, 0.38, 1
+            on_release: root.parent_screen.open_edit_popup(root.row_data)
+
+    BoxLayout:
+        size_hint_x: 0.9
+        padding: dp(12), dp(8)
+
+        canvas.before:
+            Color:
+                rgba: 0.96, 0.96, 0.96, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            Color:
+                rgba: 0.72, 0.82, 0.70, 1
+            Line:
+                rectangle: (self.x, self.y, self.width, self.height)
+                width: 1
+
+        Button:
+            text: "Delete"
+            background_normal: ""
+            background_color: 0.97, 0.90, 0.90, 1
+            color: 0.72, 0.34, 0.34, 1
+            on_release: root.parent_screen.delete_row(root.row_data[0])
+
+
 <TransactionsScreen>:
     BoxLayout:
-        orientation: 'vertical'
-        padding: (10)
+        orientation: "vertical"
+        padding: dp(110), dp(32), dp(110), dp(36)
+        spacing: dp(18)
+
+        canvas.before:
+            Color:
+                rgba: 0.30, 0.30, 0.30, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
 
         Label:
             text: "Transactions"
-            color: (0, 0, 0, 1)
-            font_size: "40sp"
-            size_hint: (1, None)
-            height: 100
+            size_hint_y: None
+            height: dp(42)
+            color: 0.30, 0.65, 0.28, 1
+            bold: True
+            font_size: "24sp"
+
+        BoxLayout:
+            orientation: "vertical"
+            spacing: 0
+            size_hint_y: 1
+
+            canvas.before:
+                Color:
+                    rgba: 0.95, 0.95, 0.95, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                Color:
+                    rgba: 0.65, 0.82, 0.60, 1
+                Line:
+                    rectangle: (self.x, self.y, self.width, self.height)
+                    width: 1.2
+
+            BoxLayout:
+                size_hint_y: None
+                height: dp(74)
+                padding: dp(26), dp(14), dp(26), dp(14)
+                spacing: dp(18)
+
+                canvas.before:
+                    Color:
+                        rgba: 0.95, 0.95, 0.95, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                    Color:
+                        rgba: 0.65, 0.82, 0.60, 1
+                    Line:
+                        rectangle: (self.x, self.y, self.width, self.height)
+                        width: 1
+
+                Label:
+                    text: "Search"
+                    color: 0.56, 0.74, 0.52, 1
+                    size_hint_x: None
+                    width: dp(90)
+                    halign: "right"
+                    valign: "middle"
+                    text_size: self.size
+
+                TextInput:
+                    id: search_input
+                    hint_text: "..."
+                    multiline: False
+                    size_hint_x: None
+                    width: dp(320)
+                    on_text: root.load_transactions()
+
+                Spinner:
+                    id: filter_spinner
+                    text: "All"
+                    values: []
+                    size_hint_x: None
+                    width: dp(170)
+                    on_text: root.load_transactions()
+
+                Button:
+                    text: "Add Transaction"
+                    size_hint_x: None
+                    width: dp(210)
+                    background_normal: ""
+                    background_color: 0.83, 0.96, 0.77, 1
+                    color: 0.44, 0.62, 0.38, 1
+                    on_release: root.open_add_popup()
+
+                Widget:
+
+            BoxLayout:
+                size_hint_y: None
+                height: dp(52)
+                spacing: 0
+
+                canvas.before:
+                    Color:
+                        rgba: 0.94, 0.95, 0.94, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                    Color:
+                        rgba: 0.65, 0.82, 0.60, 1
+                    Line:
+                        rectangle: (self.x, self.y, self.width, self.height)
+                        width: 1
+
+                Label:
+                    text: "Date"
+                    bold: True
+                    color: 0.56, 0.74, 0.52, 1
+                    halign: "center"
+                    valign: "middle"
+                    text_size: self.size
+                    size_hint_x: 1.25
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.65, 0.82, 0.60, 1
+                        Line:
+                            rectangle: (self.x, self.y, self.width, self.height)
+                            width: 1
+
+                Label:
+                    text: "Name"
+                    bold: True
+                    color: 0.56, 0.74, 0.52, 1
+                    halign: "center"
+                    valign: "middle"
+                    text_size: self.size
+                    size_hint_x: 1.75
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.65, 0.82, 0.60, 1
+                        Line:
+                            rectangle: (self.x, self.y, self.width, self.height)
+                            width: 1
+
+                Label:
+                    text: "Category"
+                    bold: True
+                    color: 0.56, 0.74, 0.52, 1
+                    halign: "center"
+                    valign: "middle"
+                    text_size: self.size
+                    size_hint_x: 1.75
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.65, 0.82, 0.60, 1
+                        Line:
+                            rectangle: (self.x, self.y, self.width, self.height)
+                            width: 1
+
+                Label:
+                    text: "Amount"
+                    bold: True
+                    color: 0.56, 0.74, 0.52, 1
+                    halign: "center"
+                    valign: "middle"
+                    text_size: self.size
+                    size_hint_x: 1.45
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.65, 0.82, 0.60, 1
+                        Line:
+                            rectangle: (self.x, self.y, self.width, self.height)
+                            width: 1
+
+                Label:
+                    text: "Edit"
+                    bold: True
+                    color: 0.56, 0.74, 0.52, 1
+                    halign: "center"
+                    valign: "middle"
+                    text_size: self.size
+                    size_hint_x: 0.9
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.65, 0.82, 0.60, 1
+                        Line:
+                            rectangle: (self.x, self.y, self.width, self.height)
+                            width: 1
+
+                Label:
+                    text: "Delete"
+                    bold: True
+                    color: 0.56, 0.74, 0.52, 1
+                    halign: "center"
+                    valign: "middle"
+                    text_size: self.size
+                    size_hint_x: 0.9
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.65, 0.82, 0.60, 1
+                        Line:
+                            rectangle: (self.x, self.y, self.width, self.height)
+                            width: 1
+
+            ScrollView:
+                do_scroll_x: False
+                do_scroll_y: True
+                bar_width: dp(8)
+
+                BoxLayout:
+                    id: transactions_rows
+                    orientation: "vertical"
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: 0

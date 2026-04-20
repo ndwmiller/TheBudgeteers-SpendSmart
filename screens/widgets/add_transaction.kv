@@ -1,10 +1,90 @@
-#:import utils kivy.utils
-<AddTransaction>:
-    # size_hint: (, )
-    # size: ('', '')  
-    auto_dismiss: True         # clicking outside closes it
-    background_color: [0, 0, 0, 0.6]  # for the dim background
+#:import dp kivy.metrics.dp
 
-    # popup frontend layout
-    # BoxLayout:
-        # ...
+<AddTransaction>:
+    title: "Add Transaction"
+    size_hint: None, None
+    size: dp(520), dp(430)
+    auto_dismiss: True
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(18)
+        spacing: dp(12)
+        canvas.before:
+            Color:
+                rgba: 0.94, 0.95, 0.94, 1
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [12]
+            Color:
+                rgba: 0.65, 0.82, 0.60, 1
+            Line:
+                rounded_rectangle: (self.x, self.y, self.width, self.height, 12)
+                width: 1.4
+
+        Label:
+            text: "Add Transaction"
+            size_hint_y: None
+            height: dp(40)
+            color: 0.50, 0.72, 0.46, 1
+            bold: True
+            font_size: "20sp"
+
+        GridLayout:
+            cols: 2
+            spacing: dp(10)
+            size_hint_y: None
+            height: dp(220)
+
+            Label:
+                text: "Date"
+                color: 0.56, 0.74, 0.52, 1
+            TextInput:
+                id: date_input
+                multiline: False
+                hint_text: "MM/DD/YYYY"
+
+            Label:
+                text: "Name"
+                color: 0.56, 0.74, 0.52, 1
+            TextInput:
+                id: name_input
+                multiline: False
+
+            Label:
+                text: "Category"
+                color: 0.56, 0.74, 0.52, 1
+            Spinner:
+                id: category_spinner
+                text: "Category"
+                values: []
+
+            Label:
+                text: "Amount"
+                color: 0.56, 0.74, 0.52, 1
+            TextInput:
+                id: amount_input
+                multiline: False
+                input_filter: "float"
+
+        Widget:
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(48)
+            spacing: dp(10)
+
+            Button:
+                text: "Cancel"
+                background_normal: ""
+                background_color: 0.97, 0.97, 0.97, 1
+                color: 0.44, 0.62, 0.38, 1
+                on_press: root.dismiss()
+
+            Button:
+                text: "Add"
+                background_normal: ""
+                background_color: 0.83, 0.96, 0.77, 1
+                color: 0.44, 0.62, 0.38, 1
+                on_press: root.add_new_transaction()
