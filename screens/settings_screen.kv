@@ -15,10 +15,12 @@
             Image:
                 source: app.base_path + '/resources/Images/settings_icon.png'
                 size_hint: None, None
-                size: dp(26), dp(26)
+                size: dp(34), dp(34)
                 pos_hint: {'center_y': 0.5}
                 allow_stretch: True
                 keep_ratio: True
+
+                
 
             Label:
                 text: "Settings"
@@ -305,7 +307,7 @@
                             rgba: utils.get_color_from_hex('#6BB562')
                         Line:
                             width: dp(1)
-                            rounded_rectangle: (self.x, self.y, self.width, self.height, dp(15))
+                            rectangle: (self.x, self.y, self.width, self.height)
 
                 # Reset Defaults button
                 Button:
@@ -327,7 +329,7 @@
                             rgba: utils.get_color_from_hex('#6BB562')
                         Line:
                             width: dp(1)
-                            rounded_rectangle: (self.x, self.y, self.width, self.height, dp(15))
+                            rectangle: (self.x, self.y, self.width, self.height)
 
                 # Delete Account button  (red outline)
                 Button:
@@ -349,7 +351,7 @@
                             rgba: utils.get_color_from_hex('#d9534f')
                         Line:
                             width: dp(1)
-                            rounded_rectangle: (self.x, self.y, self.width, self.height, dp(15))
+                            rectangle: (self.x, self.y, self.width, self.height)
 
                 Widget:
 
