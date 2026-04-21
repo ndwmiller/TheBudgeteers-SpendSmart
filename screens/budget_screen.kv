@@ -12,13 +12,13 @@
 <BudgetChipLabel@Label>:
     color: utils.get_color_from_hex('#519D4A')
     font_size: '20sp'
-    bold: True
+    bold: False
     halign: 'center'
     valign: 'middle'
     text_size: self.size
     canvas.before:
         Color:
-            rgba: utils.get_color_from_hex('#E3E3E3')
+            rgba: 1, 1, 1, 1
         Rectangle:
             pos: self.pos
             size: self.size
@@ -42,7 +42,7 @@
             size_hint: None, None
             width: min(root.width * 0.78, dp(860))
             height: dp(125)
-            pos_hint: {'center_x': 0.5, 'top': 0.76}
+            pos_hint: {'center_x': 0.5, 'top': 0.79}
 
             canvas.before:
                 Color:
@@ -61,13 +61,14 @@
 
             # Current Budget
             Label:
-                text: 'Current Budget'
+                text: '[u]Current Budget[/u]'
+                markup: True
                 size_hint: None, None
                 size: dp(140), dp(28)
-                pos_hint: {'center_x': 0.25, 'top': 1.14}
+                pos_hint: {'center_x': 0.25, 'top': 1.10}
                 color: utils.get_color_from_hex('#656565')
                 font_size: '14sp'
-                bold: True
+                bold: False
                 halign: 'center'
                 valign: 'middle'
                 text_size: self.size
@@ -90,13 +91,14 @@
 
             # Monthly Budget
             Label:
-                text: 'Monthly Budget'
+                text: '[u]Monthly Budget[/u]'
+                markup: True
                 size_hint: None, None
                 size: dp(140), dp(28)
-                pos_hint: {'center_x': 0.75, 'top': 1.14}
+                pos_hint: {'center_x': 0.75, 'top': 1.10}
                 color: utils.get_color_from_hex('#656565')
                 font_size: '14sp'
-                bold: True
+                bold: False
                 halign: 'center'
                 valign: 'middle'
                 text_size: self.size
@@ -117,12 +119,17 @@
                 size_hint: 0.5, 1
                 pos_hint: {'x': 0.5, 'y': 0}
 
+        Widget:
+            size_hint: None, None
+            size: min(root.width * 0.78, dp(860)), dp(16)
+            pos_hint: {'center_x': 0.5, 'top': 0.62}
+
         # === Categories Section ===
         FloatLayout:
             size_hint: None, None
             width: min(root.width * 0.78, dp(860))
             height: dp(250)
-            pos_hint: {'center_x': 0.5, 'top': 0.54}
+            pos_hint: {'center_x': 0.5, 'top': 0.52}
 
             canvas.before:
                 Color:
@@ -138,13 +145,14 @@
 
             # Categories Title
             Label:
-                text: 'Categories'
+                text: '[u]Categories[/u]'
+                markup: True
                 size_hint: None, None
                 size: dp(130), dp(28)
                 pos_hint: {'center_x': 0.5, 'y': 1}
                 color: utils.get_color_from_hex('#656565')
                 font_size: '14sp'
-                bold: True
+                bold: False
                 halign: 'center'
                 valign: 'middle'
                 text_size: self.size
@@ -169,30 +177,33 @@
                 spacing: dp(10)
 
                 Label:
-                    text: 'Categories'
+                    text: '[u]Categories[/u]'
+                    markup: True
                     color: utils.get_color_from_hex('#519D4A')
                     font_size: '17sp'
-                    bold: True
+                    bold: False
                     halign: 'left'
                     valign: 'middle'
                     text_size: self.size
                     size_hint_x: 0.46
 
                 Label:
-                    text: 'Percent'
+                    text: '[u]Percent[/u]'
+                    markup: True
                     color: utils.get_color_from_hex('#519D4A')
                     font_size: '16sp'
-                    bold: True
+                    bold: False
                     halign: 'center'
                     valign: 'middle'
                     text_size: self.size
                     size_hint_x: 0.23
 
                 Label:
-                    text: 'Remaining'
+                    text: '[u]Remaining[/u]'
+                    markup: True
                     color: utils.get_color_from_hex('#519D4A')
                     font_size: '16sp'
-                    bold: True
+                    bold: False
                     halign: 'center'
                     valign: 'middle'
                     text_size: self.size
@@ -218,7 +229,7 @@
             background_color: utils.get_color_from_hex('#DAFFC8')
             color: utils.get_color_from_hex('#519D4A')
             font_size: '14sp'
-            bold: True
+            bold: False
             on_release: root.open_edit_budget()
             canvas.after:
                 Color:

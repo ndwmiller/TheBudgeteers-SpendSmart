@@ -45,10 +45,10 @@ class BudgetScreen(Screen):
             )
 
             name_label = Label(
-                text='* ' + cat.get('name', 'Example'),
+                text='• ' + cat.get('name', 'Example'),
                 color=(0.32, 0.62, 0.29, 1),
                 font_size='16sp',
-                bold=True,
+                bold=False,
                 halign='left',
                 valign='middle',
                 text_size=(0, 0),
