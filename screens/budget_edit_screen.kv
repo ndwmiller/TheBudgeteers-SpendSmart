@@ -13,6 +13,12 @@
     foreground_color: utils.get_color_from_hex('#519D4A')
     cursor_color: utils.get_color_from_hex('#519D4A')
     padding: dp(12), dp(16)
+    canvas.after:
+        Color:
+            rgba: utils.get_color_from_hex('#6BB562')
+        Line:
+            width: 1.2
+            rectangle: (self.x, self.y, self.width, self.height)
 
 <BudgetEditCellInput@TextInput>:
     size_hint: None, None
@@ -26,12 +32,18 @@
     foreground_color: utils.get_color_from_hex('#519D4A')
     cursor_color: utils.get_color_from_hex('#519D4A')
     padding: dp(6), dp(2)
+    canvas.after:
+        Color:
+            rgba: utils.get_color_from_hex('#6BB562')
+        Line:
+            width: 1.2
+            rectangle: (self.x, self.y, self.width, self.height)
 
 <BudgetEditNameInput@TextInput>:
     size_hint: None, None
-    size: dp(250), dp(22)
+    size: dp(160), dp(22)
     font_size: '16sp'
-    halign: 'left'
+    halign: 'center'
     multiline: False
     background_normal: ''
     background_active: ''
@@ -39,14 +51,27 @@
     foreground_color: utils.get_color_from_hex('#519D4A')
     cursor_color: utils.get_color_from_hex('#519D4A')
     padding: dp(6), dp(2)
+    canvas.after:
+        Color:
+            rgba: utils.get_color_from_hex('#6BB562')
+        Line:
+            width: 1.2
+            rectangle: (self.x, self.y, self.width, self.height)
 
 <BudgetEditScreen>:
     FloatLayout:
+        canvas.before:
+            Color:
+                rgba: utils.get_color_from_hex('#4D4D4D')
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
         FloatLayout:
             size_hint: None, None
             width: min(root.width * 0.78, dp(860))
             height: dp(125)
-            pos_hint: {'center_x': 0.5, 'top': 0.76}
+            pos_hint: {'center_x': 0.5, 'top': 0.84}
 
             canvas.before:
                 Color:
@@ -66,11 +91,11 @@
             Label:
                 text: 'Current Budget'
                 size_hint: None, None
-                size: dp(140), dp(28)
-                pos_hint: {'center_x': 0.25, 'top': 1.14}
+                size: dp(180), dp(30)
+                pos_hint: {'center_x': 0.25, 'top': 1.24}
                 color: utils.get_color_from_hex('#656565')
-                font_size: '14sp'
-                bold: True
+                font_size: '20sp'
+                bold: False
                 halign: 'center'
                 valign: 'middle'
                 text_size: self.size
@@ -89,16 +114,16 @@
             BudgetEditValueInput:
                 id: current_input
                 text: root.current_budget
-                pos_hint: {'center_x': 0.25, 'center_y': 0.47}
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
 
             Label:
                 text: 'Monthly Budget'
                 size_hint: None, None
-                size: dp(140), dp(28)
-                pos_hint: {'center_x': 0.75, 'top': 1.14}
+                size: dp(180), dp(30)
+                pos_hint: {'center_x': 0.75, 'top': 1.24}
                 color: utils.get_color_from_hex('#656565')
-                font_size: '14sp'
-                bold: True
+                font_size: '20sp'
+                bold: False
                 halign: 'center'
                 valign: 'middle'
                 text_size: self.size
@@ -117,13 +142,18 @@
             BudgetEditValueInput:
                 id: monthly_input
                 text: root.monthly_budget
-                pos_hint: {'center_x': 0.75, 'center_y': 0.47}
+                pos_hint: {'center_x': 0.75, 'center_y': 0.5}
+
+        Widget:
+            size_hint: None, None
+            size: min(root.width * 0.78, dp(860)), dp(16)
+            pos_hint: {'center_x': 0.5, 'top': 0.67}
 
         FloatLayout:
             size_hint: None, None
             width: min(root.width * 0.78, dp(860))
-            height: dp(250)
-            pos_hint: {'center_x': 0.5, 'top': 0.54}
+            height: dp(320)
+            pos_hint: {'center_x': 0.5, 'top': 0.57}
 
             canvas.before:
                 Color:
@@ -140,11 +170,11 @@
             Label:
                 text: 'Categories'
                 size_hint: None, None
-                size: dp(130), dp(28)
+                size: dp(150), dp(30)
                 pos_hint: {'center_x': 0.5, 'y': 1}
                 color: utils.get_color_from_hex('#656565')
-                font_size: '14sp'
-                bold: True
+                font_size: '20sp'
+                bold: False
                 halign: 'center'
                 valign: 'middle'
                 text_size: self.size
@@ -163,102 +193,107 @@
             BoxLayout:
                 orientation: 'horizontal'
                 size_hint: None, None
-                size: dp(480), dp(26)
-                pos_hint: {'center_x': 0.5, 'top': 0.90}
+                size: dp(402), dp(26)
+                pos_hint: {'center_x': 0.52, 'top': 0.90}
                 spacing: dp(10)
 
                 Label:
-                    text: 'Categories'
-                    color: utils.get_color_from_hex('#519D4A')
-                    font_size: '17sp'
-                    bold: True
-                    halign: 'left'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 0.58
-
-                Label:
-                    text: 'Percent'
+                    text: '[u]Name[/u]'
+                    markup: True
                     color: utils.get_color_from_hex('#519D4A')
                     font_size: '16sp'
-                    bold: True
+                    bold: False
                     halign: 'center'
                     valign: 'middle'
                     text_size: self.size
-                    size_hint_x: 0.42
+                    size_hint_x: None
+                    width: dp(160)
 
-            ScrollView:
+                Widget:
+                    size_hint_x: None
+                    width: dp(30)
+
+                Label:
+                    text: '[u]Percent[/u]'
+                    markup: True
+                    color: utils.get_color_from_hex('#519D4A')
+                    font_size: '16sp'
+                    bold: False
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint_x: None
+                    width: dp(160)
+
+                Widget:
+                    size_hint_x: None
+                    width: dp(22)
+
+            GridLayout:
+                id: categories_grid
+                cols: 1
+                spacing: dp(8)
                 size_hint: None, None
-                size: dp(480), dp(145)
-                pos_hint: {'center_x': 0.5, 'top': 0.77}
-                do_scroll_x: False
-                bar_width: dp(6)
-
-                GridLayout:
-                    id: categories_grid
-                    cols: 1
-                    spacing: dp(8)
-                    size_hint_x: 1
-                    size_hint_y: None
-                    height: self.minimum_height
-
-        Button:
-            text: 'Add Category'
-            size_hint: None, None
-            size: dp(95), dp(24)
-            pos_hint: {'center_x': 0.5, 'y': 0.12}
-            background_normal: ''
-            background_down: ''
-            background_color: utils.get_color_from_hex('#DAFFC8')
-            color: utils.get_color_from_hex('#519D4A')
-            font_size: '14sp'
-            bold: True
-            on_release: root.add_category()
-            canvas.after:
-                Color:
-                    rgba: utils.get_color_from_hex('#6BB562')
-                Line:
-                    width: 1.2
-                    rectangle: (self.x, self.y, self.width, self.height)
-
-        BoxLayout:
-            orientation: 'horizontal'
-            size_hint: None, None
-            size: dp(220), dp(24)
-            pos_hint: {'center_x': 0.5, 'y': 0.06}
-            spacing: dp(30)
+                size: dp(402), dp(170)
+                pos_hint: {'center_x': 0.52, 'top': 0.80}
 
             Button:
-                text: 'Cancel'
+                text: 'Add Category'
                 size_hint: None, None
                 size: dp(95), dp(24)
-                background_normal: ''
-                background_down: ''
-                background_color: 1, 1, 1, 1
-                color: utils.get_color_from_hex('#519D4A')
-                font_size: '14sp'
-                on_release: root.cancel_edit()
-                canvas.after:
-                    Color:
-                        rgba: utils.get_color_from_hex('#6BB562')
-                    Line:
-                        width: 1.2
-                        rectangle: (self.x, self.y, self.width, self.height)
-
-            Button:
-                text: 'Save'
-                size_hint: None, None
-                size: dp(95), dp(24)
+                pos_hint: {'center_x': 0.5, 'y': 0.169}
                 background_normal: ''
                 background_down: ''
                 background_color: utils.get_color_from_hex('#DAFFC8')
                 color: utils.get_color_from_hex('#519D4A')
                 font_size: '14sp'
-                bold: True
-                on_release: root.save_edit()
+                bold: False
+                on_release: root.add_category()
                 canvas.after:
                     Color:
                         rgba: utils.get_color_from_hex('#6BB562')
                     Line:
                         width: 1.2
                         rectangle: (self.x, self.y, self.width, self.height)
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: None, None
+                size: dp(220), dp(24)
+                pos_hint: {'center_x': 0.5, 'y': 0.069}
+                spacing: dp(30)
+
+                Button:
+                    text: 'Cancel'
+                    size_hint: None, None
+                    size: dp(95), dp(24)
+                    background_normal: ''
+                    background_down: ''
+                    background_color: 1, 1, 1, 1
+                    color: utils.get_color_from_hex('#519D4A')
+                    font_size: '14sp'
+                    on_release: root.cancel_edit()
+                    canvas.after:
+                        Color:
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+                Button:
+                    text: 'Save'
+                    size_hint: None, None
+                    size: dp(95), dp(24)
+                    background_normal: ''
+                    background_down: ''
+                    background_color: utils.get_color_from_hex('#DAFFC8')
+                    color: utils.get_color_from_hex('#519D4A')
+                    font_size: '14sp'
+                    bold: False
+                    on_release: root.save_edit()
+                    canvas.after:
+                        Color:
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)

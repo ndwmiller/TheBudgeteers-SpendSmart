@@ -12,13 +12,13 @@
 <BudgetChipLabel@Label>:
     color: utils.get_color_from_hex('#519D4A')
     font_size: '20sp'
-    bold: True
+    bold: False
     halign: 'center'
     valign: 'middle'
     text_size: self.size
     canvas.before:
         Color:
-            rgba: utils.get_color_from_hex('#E3E3E3')
+            rgba: 1, 1, 1, 1
         Rectangle:
             pos: self.pos
             size: self.size
@@ -42,7 +42,7 @@
             size_hint: None, None
             width: min(root.width * 0.78, dp(860))
             height: dp(125)
-            pos_hint: {'center_x': 0.5, 'top': 0.76}
+            pos_hint: {'center_x': 0.5, 'top': 0.84}
 
             canvas.before:
                 Color:
@@ -63,11 +63,11 @@
             Label:
                 text: 'Current Budget'
                 size_hint: None, None
-                size: dp(140), dp(28)
-                pos_hint: {'center_x': 0.25, 'top': 1.14}
+                size: dp(180), dp(30)
+                pos_hint: {'center_x': 0.25, 'top': 1.24}
                 color: utils.get_color_from_hex('#656565')
-                font_size: '14sp'
-                bold: True
+                font_size: '20sp'
+                bold: False
                 halign: 'center'
                 valign: 'middle'
                 text_size: self.size
@@ -92,11 +92,11 @@
             Label:
                 text: 'Monthly Budget'
                 size_hint: None, None
-                size: dp(140), dp(28)
-                pos_hint: {'center_x': 0.75, 'top': 1.14}
+                size: dp(180), dp(30)
+                pos_hint: {'center_x': 0.75, 'top': 1.24}
                 color: utils.get_color_from_hex('#656565')
-                font_size: '14sp'
-                bold: True
+                font_size: '20sp'
+                bold: False
                 halign: 'center'
                 valign: 'middle'
                 text_size: self.size
@@ -117,12 +117,16 @@
                 size_hint: 0.5, 1
                 pos_hint: {'x': 0.5, 'y': 0}
 
+        Widget:
+            size_hint_y: None
+            height: dp(30)
+
         # === Categories Section ===
         FloatLayout:
             size_hint: None, None
             width: min(root.width * 0.78, dp(860))
-            height: dp(250)
-            pos_hint: {'center_x': 0.5, 'top': 0.54}
+            height: dp(300)
+            pos_hint: {'center_x': 0.5, 'top': 0.57}
 
             canvas.before:
                 Color:
@@ -140,11 +144,11 @@
             Label:
                 text: 'Categories'
                 size_hint: None, None
-                size: dp(130), dp(28)
+                size: dp(150), dp(30)
                 pos_hint: {'center_x': 0.5, 'y': 1}
                 color: utils.get_color_from_hex('#656565')
-                font_size: '14sp'
-                bold: True
+                font_size: '20sp'
+                bold: False
                 halign: 'center'
                 valign: 'middle'
                 text_size: self.size
@@ -165,38 +169,33 @@
                 orientation: 'horizontal'
                 size_hint: None, None
                 size: dp(560), dp(26)
-                pos_hint: {'center_x': 0.53, 'top': 0.90}
+                pos_hint: {'center_x': 0.5, 'top': 0.90}
                 spacing: dp(10)
 
-                Label:
-                    text: 'Categories'
-                    color: utils.get_color_from_hex('#519D4A')
-                    font_size: '17sp'
-                    bold: True
-                    halign: 'left'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 0.46
+                Widget:
+                    size_hint_x: 0.33
 
                 Label:
-                    text: 'Percent'
+                    text: '[u]Percent[/u]'
+                    markup: True
                     color: utils.get_color_from_hex('#519D4A')
                     font_size: '16sp'
-                    bold: True
+                    bold: False
                     halign: 'center'
                     valign: 'middle'
                     text_size: self.size
-                    size_hint_x: 0.23
+                    size_hint_x: 0.33
 
                 Label:
-                    text: 'Remaining'
+                    text: '  [u]Remaining[/u]'
+                    markup: True
                     color: utils.get_color_from_hex('#519D4A')
                     font_size: '16sp'
-                    bold: True
+                    bold: False
                     halign: 'center'
                     valign: 'middle'
                     text_size: self.size
-                    size_hint_x: 0.31
+                    size_hint_x: 0.34
 
             # Categories Rows
             GridLayout:
@@ -205,24 +204,24 @@
                 spacing: dp(8)
                 size_hint: None, None
                 size: dp(560), dp(145)
-                pos_hint: {'center_x': 0.53, 'top': 0.77}
+                pos_hint: {'center_x': 0.5, 'top': 0.77}
 
-        # Edit Budget Button
-        Button:
-            text: 'Edit Budget'
-            size_hint: None, None
-            size: dp(95), dp(24)
-            pos_hint: {'center_x': 0.5, 'y': 0.04}
-            background_normal: ''
-            background_down: ''
-            background_color: utils.get_color_from_hex('#DAFFC8')
-            color: utils.get_color_from_hex('#519D4A')
-            font_size: '14sp'
-            bold: True
-            on_release: root.open_edit_budget()
-            canvas.after:
-                Color:
-                    rgba: utils.get_color_from_hex('#6BB562')
-                Line:
-                    width: 1.2
-                    rectangle: (self.x, self.y, self.width, self.height)
+            # Edit Budget Button
+            Button:
+                text: 'Edit Budget'
+                size_hint: None, None
+                size: dp(95), dp(24)
+                pos_hint: {'center_x': 0.5, 'y': 0.04}
+                background_normal: ''
+                background_down: ''
+                background_color: utils.get_color_from_hex('#DAFFC8')
+                color: utils.get_color_from_hex('#519D4A')
+                font_size: '14sp'
+                bold: False
+                on_release: root.open_edit_budget()
+                canvas.after:
+                    Color:
+                        rgba: utils.get_color_from_hex('#6BB562')
+                    Line:
+                        width: 1.2
+                        rectangle: (self.x, self.y, self.width, self.height)

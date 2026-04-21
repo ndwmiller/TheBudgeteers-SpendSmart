@@ -1,6 +1,7 @@
 from kivy.app import App
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ListProperty, StringProperty
+from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.factory import Factory
@@ -39,36 +40,43 @@ class BudgetScreen(Screen):
         for cat in self.categories:
             row = BoxLayout(
                 orientation='horizontal',
-                spacing=dp(10),
+                spacing=dp(20),
                 size_hint_y=None,
                 height=dp(26),
+                
             )
 
             name_label = Label(
-                text='* ' + cat.get('name', 'Example'),
+                text='• ' + cat.get('name', 'Example'),
                 color=(0.32, 0.62, 0.29, 1),
                 font_size='16sp',
-                bold=True,
-                halign='left',
+                bold=False,
+                halign='center',
                 valign='middle',
                 text_size=(0, 0),
-                size_hint_x=0.46,
+                size_hint_x=0.33,
             )
             name_label.bind(size=lambda instance, value: setattr(instance, 'text_size', value))
 
+            percent_col = AnchorLayout(size_hint_x=0.33, anchor_x='center', anchor_y='center')
             percent_chip = Factory.BudgetChipLabel(
                 text=cat.get('percent', 'XX.XX%'),
-                size_hint_x=0.23,
+                size_hint=(None, 1),
+                width=dp(105),
             )
+            percent_col.add_widget(percent_chip)
 
+            remaining_col = AnchorLayout(size_hint_x=0.34, anchor_x='center', anchor_y='center')
             remaining_chip = Factory.BudgetChipLabel(
                 text=cat.get('remaining', '$ XXXXX.XX'),
-                size_hint_x=0.31,
+                size_hint=(None, 1),
+                width=dp(120),
             )
+            remaining_col.add_widget(remaining_chip)
 
             row.add_widget(name_label)
-            row.add_widget(percent_chip)
-            row.add_widget(remaining_chip)
+            row.add_widget(percent_col)
+            row.add_widget(remaining_col)
             grid.add_widget(row)
 
     def open_edit_budget(self):

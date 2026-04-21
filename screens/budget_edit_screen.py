@@ -1,3 +1,4 @@
+from kivy.uix.widget import Widget
 from kivy.uix.screenmanager import Screen
 from kivy.properties import StringProperty, ListProperty
 from kivy.uix.boxlayout import BoxLayout
@@ -53,14 +54,14 @@ class BudgetEditScreen(Screen):
         for i, cat in enumerate(self.categories):
             row = BoxLayout(
                 orientation='horizontal',
-                size_hint_y=None,
+                size_hint=(None, None),
                 height=dp(26),
+                width=dp(402),
                 spacing=dp(10)
             )
 
             name_input = Factory.BudgetEditNameInput(
                 text=cat.get('name', 'Example'),
-                size_hint_x=0.58,
                 foreground_color=(0.32, 0.62, 0.29, 1)
             )
             name_input.bind(text=lambda instance, value, idx=i: self.update_category_name(idx, value))
@@ -70,9 +71,6 @@ class BudgetEditScreen(Screen):
                 multiline=False,
                 font_size='16sp',
                 halign='center',
-                size_hint_x=0.34,
-                size_hint_y=None,
-                height=dp(22),
                 foreground_color=(0.32, 0.62, 0.29, 1)
             )
             percent_input.bind(text=lambda instance, value, idx=i: self.update_category_percent(idx, value))
@@ -87,7 +85,9 @@ class BudgetEditScreen(Screen):
             )
             delete_btn.bind(on_release=lambda instance, idx=i: self.delete_category(idx))
 
+            gap = Widget(size_hint=(None, None), size=(dp(30), dp(26)))
             row.add_widget(name_input)
+            row.add_widget(gap)
             row.add_widget(percent_input)
             row.add_widget(delete_btn)
             grid.add_widget(row)
