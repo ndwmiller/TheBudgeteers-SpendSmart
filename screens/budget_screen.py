@@ -62,7 +62,7 @@ class BudgetScreen(Screen):
             percent_chip = Factory.BudgetChipLabel(
                 text=cat.get('percent', 'XX.XX%'),
                 size_hint=(None, 1),
-                width=dp(90),
+                width=dp(105),
             )
             percent_col.add_widget(percent_chip)
 

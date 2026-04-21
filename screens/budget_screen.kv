@@ -171,21 +171,9 @@
                 size: dp(560), dp(26)
                 pos_hint: {'center_x': 0.5, 'top': 0.90}
                 spacing: dp(10)
-                canvas.before:
-                    Color:
-                        rgba: 1, 1, 1, 1
-                    Rectangle:
-                        pos: self.pos
-                        size: self.size
 
                 Widget:
                     size_hint_x: 0.33
-                    canvas.before:
-                        Color:
-                            rgba: 1, 0, 0, 1
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size
 
                 Label:
                     text: '[u]Percent[/u]'
@@ -197,15 +185,9 @@
                     valign: 'middle'
                     text_size: self.size
                     size_hint_x: 0.33
-                    canvas.before:
-                        Color:
-                            rgba: 0, 1, 0, 1
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size
 
                 Label:
-                    text: '[u]Remaining[/u]'
+                    text: '  [u]Remaining[/u]'
                     markup: True
                     color: utils.get_color_from_hex('#519D4A')
                     font_size: '16sp'
@@ -214,12 +196,6 @@
                     valign: 'middle'
                     text_size: self.size
                     size_hint_x: 0.34
-                    canvas.before:
-                        Color:
-                            rgba: 0, 0, 1, 1
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size
 
             # Categories Rows
             GridLayout:
