@@ -91,8 +91,17 @@
         Button:
             text: "Edit"
             background_normal: ""
+            background_down: ""
             background_color: 0.83, 0.96, 0.77, 1
             color: 0.44, 0.62, 0.38, 1
+
+            canvas.before:
+                Color:
+                    rgba: 0.65, 0.82, 0.60, 1
+                Line:
+                    rectangle: (self.x, self.y, self.width, self.height)
+                    width: 1.2
+
             on_release: root.parent_screen.open_edit_popup(root.row_data)
 
     BoxLayout:
@@ -114,15 +123,24 @@
         Button:
             text: "Delete"
             background_normal: ""
+            background_down: ""
             background_color: 0.97, 0.90, 0.90, 1
             color: 0.72, 0.34, 0.34, 1
+
+            canvas.before:
+                Color:
+                    rgba: 0.82, 0.62, 0.62, 1
+                Line:
+                    rectangle: (self.x, self.y, self.width, self.height)
+                    width: 1.2
+
             on_release: root.parent_screen.delete_row(root.row_data[0])
 
 
 <TransactionsScreen>:
     BoxLayout:
         orientation: "vertical"
-        padding: dp(110), dp(32), dp(110), dp(36)
+        padding: dp(90), dp(36), dp(90), dp(36)
         spacing: dp(18)
 
         canvas.before:
@@ -131,14 +149,6 @@
             Rectangle:
                 pos: self.pos
                 size: self.size
-
-        Label:
-            text: "Transactions"
-            size_hint_y: None
-            height: dp(42)
-            color: 0.30, 0.65, 0.28, 1
-            bold: True
-            font_size: "24sp"
 
         BoxLayout:
             orientation: "vertical"
@@ -159,9 +169,9 @@
 
             BoxLayout:
                 size_hint_y: None
-                height: dp(74)
-                padding: dp(26), dp(14), dp(26), dp(14)
-                spacing: dp(18)
+                height: dp(84)
+                padding: dp(26), dp(18), dp(26), dp(14)
+                spacing: dp(16)
 
                 canvas.before:
                     Color:
@@ -189,7 +199,20 @@
                     hint_text: "..."
                     multiline: False
                     size_hint_x: None
-                    width: dp(320)
+                    width: dp(330)
+                    background_normal: ""
+                    background_active: ""
+                    background_color: 1, 1, 1, 1
+                    foreground_color: 0.35, 0.35, 0.35, 1
+                    padding: dp(12), dp(10)
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.72, 0.82, 0.70, 1
+                        Line:
+                            rectangle: (self.x, self.y, self.width, self.height)
+                            width: 1.2
+
                     on_text: root.load_transactions()
 
                 Spinner:
@@ -198,6 +221,18 @@
                     values: []
                     size_hint_x: None
                     width: dp(170)
+                    background_normal: ""
+                    background_down: ""
+                    background_color: 0.97, 0.97, 0.97, 1
+                    color: 0.35, 0.35, 0.35, 1
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.65, 0.82, 0.60, 1
+                        Line:
+                            rectangle: (self.x, self.y, self.width, self.height)
+                            width: 1.2
+
                     on_text: root.load_transactions()
 
                 Button:
@@ -205,8 +240,17 @@
                     size_hint_x: None
                     width: dp(210)
                     background_normal: ""
+                    background_down: ""
                     background_color: 0.83, 0.96, 0.77, 1
                     color: 0.44, 0.62, 0.38, 1
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.65, 0.82, 0.60, 1
+                        Line:
+                            rectangle: (self.x, self.y, self.width, self.height)
+                            width: 1.2
+
                     on_release: root.open_add_popup()
 
                 Widget:
