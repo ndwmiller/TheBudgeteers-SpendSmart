@@ -1,14 +1,191 @@
-#:import utils kivy.utils
+#:import dp kivy.metrics.dp
+
+<SpinnerOption@Button>:
+    background_normal: ""
+    background_down: ""
+    background_color: 1,1,1,1
+    color: 0.2,0.2,0.2,1
+
+    canvas.before:
+        Color:
+            rgba: 0.42, 0.72, 0.38, 1
+        Line:
+            rectangle: (self.x, self.y, self.width, self.height)
+
 <EditTransaction>:
-    # size_hint: (, )
-    # size: ('', '')  
+    title: ""
+    separator_height: 0
     size_hint: None, None
-    size: dp(350), dp(400)
+    size: dp(560), dp(520)
     auto_dismiss: True
+    background: ""
+    background_color: 0, 0, 0, 0
 
-    background: ''
-    background_color: [0, 0, 0, 0] 
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 0.35
+            Rectangle:
+                pos: self.pos
+                size: self.size
 
-    # popup frontend layout
-    # BoxLayout:
-        # ...
+        BoxLayout:
+            orientation: "vertical"
+            size_hint: None, None
+            size: dp(500), dp(440)
+            pos_hint: {"center_x": 0.5, "center_y": 0.42}
+
+            canvas.before:
+                Color:
+                    rgba: 0.95, 0.95, 0.95, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [18]
+                Color:
+                    rgba: 0.42, 0.72, 0.38, 1
+                Line:
+                    rounded_rectangle: (self.x, self.y, self.width, self.height, 18)
+                    width: 1.6
+
+            Widget:
+                size_hint_y: None
+                height: dp(95)
+
+            GridLayout:
+                cols: 2
+                size_hint: None, None
+                size: dp(400), dp(240)
+                pos_hint: {"center_x": 0.5}
+                spacing: dp(16)
+
+                Label:
+                    text: "Date:"
+                    color: 0.42, 0.72, 0.38, 1
+
+                TextInput:
+                    id: date_input
+                    multiline: False
+                    hint_text: "MM/DD/YYYY"
+                    background_normal: ""
+                    background_color: 1,1,1,1
+                    padding: dp(10), dp(12)
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.42,0.72,0.38,1
+                        Line:
+                            rectangle: (self.x,self.y,self.width,self.height)
+
+                Label:
+                    text: "Name:"
+                    color: 0.42, 0.72, 0.38, 1
+
+                TextInput:
+                    id: name_input
+                    multiline: False
+                    hint_text: "Name"
+                    background_normal: ""
+                    background_color: 1,1,1,1
+                    padding: dp(10), dp(12)
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.42,0.72,0.38,1
+                        Line:
+                            rectangle: (self.x,self.y,self.width,self.height)
+
+                Label:
+                    text: "Category:"
+                    color: 0.42, 0.72, 0.38, 1
+
+                Spinner:
+                    id: category_spinner
+                    text: "Category"
+                    values: []
+                    option_cls: 'SpinnerOption'
+                    background_normal: ""
+                    background_down: ""
+                    background_color: 1, 1, 1, 1
+                    color: 0.2, 0.2, 0.2, 1
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.42, 0.72, 0.38, 1
+                        Line:
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+                Label:
+                    text: "Amount:"
+                    color: 0.42, 0.72, 0.38, 1
+
+                TextInput:
+                    id: amount_input
+                    multiline: False
+                    hint_text: "0.00"
+                    input_filter: "float"
+                    background_normal: ""
+                    background_color: 1,1,1,1
+                    padding: dp(10), dp(12)
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.42,0.72,0.38,1
+                        Line:
+                            rectangle: (self.x,self.y,self.width,self.height)
+
+            Widget:
+
+            BoxLayout:
+                size_hint_y: None
+                height: dp(70)
+                padding: dp(25), dp(15)
+                spacing: dp(15)
+
+                Button:
+                    text: "Cancel"
+                    background_normal: ""
+                    background_color: 0.95,0.95,0.95,1
+                    color: 0.42,0.72,0.38,1
+                    on_release: root.dismiss()
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.42,0.72,0.38,1
+                        Line:
+                            rectangle: (self.x,self.y,self.width,self.height)
+
+                Button:
+                    text: "Save"
+                    background_normal: ""
+                    background_color: 0.83,0.96,0.77,1
+                    color: 0.42,0.72,0.38,1
+                    on_release: root.save_transaction()
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.42,0.72,0.38,1
+                        Line:
+                            rectangle: (self.x,self.y,self.width,self.height)
+
+        BoxLayout:
+            size_hint: None, None
+            size: dp(260), dp(65)
+            pos_hint: {"center_x": 0.5, "center_y": 0.94}
+
+            canvas.before:
+                Color:
+                    rgba: 0.95,0.95,0.95,1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20]
+                Color:
+                    rgba: 0.42,0.72,0.38,1
+                Line:
+                    rounded_rectangle: (self.x,self.y,self.width,self.height,20)
+
+            Label:
+                text: "Edit Transaction"
+                font_size: "20sp"
+                color: 0.2,0.2,0.2,1
