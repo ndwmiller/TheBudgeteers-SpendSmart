@@ -1,10 +1,231 @@
 #:import utils kivy.utils
 <AddBill>:
-    # size_hint: (, )
-    # size: ('', '')  
-    auto_dismiss: True         # clicking outside closes it
-    background_color: [0, 0, 0, 0.6]  # for the dim background
+    size_hint: None, None
+    size: dp(350), dp(400)
+    auto_dismiss: True
 
-    # popup frontend layout
-    # BoxLayout:
-        # ...
+    background: ''
+    background_color: [0, 0, 0, 0] 
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        # Add Bill label
+        Label:
+            pos_hint: { 'center_x': .5, 'center_y': .5 }
+            text: "Add Bill"
+            font_size: '20sp'
+            color: utils.get_color_from_hex('#656565')
+            halign: 'center'
+            valign: 'middle'
+            text_size: self.size
+            size_hint: None, None
+            width: '220dp'
+            height: '35dp'
+
+            canvas.before:
+                Color:
+                    rgba: utils.get_color_from_hex('#D7D7D7')
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: (dp(15), dp(15), 0, 0) # only the top two corners
+
+            canvas.after:
+                Color: 
+                    rgba: utils.get_color_from_hex('#6BB562')
+                Line:
+                    width: dp(1)
+                    rounded_rectangle: (self.x, self.y, self.width, self.height, dp(15), dp(15), 0, 0)
+
+        # Add bill Container
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(20)
+            spacing: dp(15)
+            canvas.before:
+                Color:
+                    rgba: utils.get_color_from_hex('#D7D7D7')
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [dp(15)]
+            
+            canvas.after:
+                Color: 
+                    rgba: utils.get_color_from_hex('#6BB562')
+                Line:
+                    width: dp(1)
+                    rounded_rectangle: (self.x, self.y, self.width, self.height, dp(15))
+
+            # inputs
+            # Name input and label
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: dp(40)
+
+                # Name Label
+                Label:
+                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                    text: "Name:"
+                    font_size: '18sp'
+                    color: utils.get_color_from_hex('#6BB562')
+                    halign: 'left'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint_x: 0.35
+                    size_hint_y: None
+                    height: '30dp'
+                
+                # Name input
+                TextInput:
+                    background_normal: ''
+                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                    id: name_input
+                    hint_text: "Name"
+                    multiline: False
+                    write_tab: False # tab doesn't add a space
+                    halign: 'left'
+                    padding_y: [self.height / 2.0 - (self.line_height / 2.0), 0] # valign middle
+                    on_text: root.clear_error()
+                    size_hint_x: 0.7
+
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+            # Amount input and label
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: dp(40)
+
+                # Amount Label
+                Label:
+                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                    text: "Amount:"
+                    font_size: '18sp'
+                    color: utils.get_color_from_hex('#6BB562')
+                    halign: 'left'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint_x: 0.31
+                    size_hint_y: None
+                    height: '30dp'
+
+                AmountInput:
+                    id: amount_input
+                    size_hint_x: 0.8
+                    pos_hint: {'center_x': .5}
+                    on_text: root.clear_error()
+
+            # Date input and label
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: dp(40)
+
+                # Date Label
+                Label:
+                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                    text: "Date Due:"
+                    font_size: '18sp'
+                    color: utils.get_color_from_hex('#6BB562')
+                    halign: 'left'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint_x: 0.35
+                    size_hint_y: None
+                    height: '30dp'
+
+                DateInput:
+                    id: date_input
+                    background_normal: ''
+                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                    hint_text: "MM/DD/YYYY"
+                    multiline: False
+                    halign: 'left'
+                    padding_y: [self.height / 2.0 - (self.line_height / 2.0), 0] # valign middle
+                    on_text: root.clear_error()
+                    size_hint_x: 0.7
+
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
+            
+            # Validation error label
+            Label:
+                id: error_label
+                text: ""
+                color: utils.get_color_from_hex('#e44949')
+                font_size: '14sp'
+                size_hint_y: None
+                height: dp(20) if self.text else 0 
+                halign: 'center'
+
+            Widget:
+                size_hint_y: 0.1
+
+            # bottom buttons
+            BoxLayout:
+                size_hint_y: None
+                height: dp(50)
+                spacing: dp(10)
+                padding: [0, dp(10), 0, 0]
+
+                # Cancel button
+                Button:
+                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                    background_normal: ''
+                    background_down: ''
+                    background_color: utils.get_color_from_hex('#d7d7d7') if self.state == 'down' else utils.get_color_from_hex('#ffffff')
+                    color: utils.get_color_from_hex('#6BB562')
+                    font_size: '18sp'
+                    
+                    size_hint_y: None
+                    height: '30dp'
+                    text_size: self.size
+                    halign: 'center'
+                    valign: 'middle'
+                    
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: dp(1)
+                            rectangle: (self.x, self.y, self.width, self.height)
+                    text: "Cancel"
+                    # dismiss popup
+                    on_release: root.dismiss()
+
+                # add button
+                Button:
+                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                    background_normal: ''
+                    background_down: ''
+                    background_color: utils.get_color_from_hex('#abff80') if self.state == 'down' else utils.get_color_from_hex('#DAFFC8')
+                    color: utils.get_color_from_hex('#6BB562')
+                    font_size: '18sp'
+                    
+                    size_hint_y: None
+                    height: '30dp'
+                    text_size: self.size
+                    halign: 'center'
+                    valign: 'middle'
+                    
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: dp(1)
+                            rectangle: (self.x, self.y, self.width, self.height)
+                    text: "Add"
+                    # validate the input and send to dashboard to make a new bill
+                    on_release: root.validate_and_submit()
