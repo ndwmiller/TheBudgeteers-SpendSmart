@@ -63,7 +63,7 @@ class Database:
         ('reminders', 'False')
         ]
 
-        query = "INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)"
+        query = "INSERT OR IGNORE INTO setstat (key, value) VALUES (?, ?)"
 
         self.cursor.executemany(query, default_settings)
         self.connection.commit()
