@@ -25,10 +25,18 @@ class BudgetScreen(Screen):
         return default
 
     def on_kv_post(self, base_widget):
+        self.recalculate_current_budget()
         self.refresh_category_rows()
 
     def on_categories(self, instance, value):
+        self.recalculate_current_budget()
         self.refresh_category_rows()
+
+    def recalculate_current_budget(self):
+        total_remaining = 0.0
+        for cat in self.categories:
+            total_remaining += self._parse_currency(cat.get('remaining', '$ 0.00'))
+        self.current_budget = self._format_currency(total_remaining)
 
     def refresh_category_rows(self):
         grid = self.ids.get('categories_grid')
@@ -83,3 +91,15 @@ class BudgetScreen(Screen):
         app = App.get_running_app()
         app.shell.ids.sm.current = 'budget_edit'
         return None
+
+    @staticmethod
+    def _parse_currency(value: str) -> float:
+        cleaned = ''.join(ch for ch in value if ch.isdigit() or ch in '.-')
+        try:
+            return float(cleaned) if cleaned else 0.0
+        except ValueError:
+            return 0.0
+
+    @staticmethod
+    def _format_currency(value: float) -> str:
+        return f"$ {value:,.2f}"
