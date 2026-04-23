@@ -1,5 +1,5 @@
 from app_shell import AppShell
-# from database import databaseClassName
+from database import Database
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.properties import StringProperty
@@ -78,13 +78,22 @@ class GlobalScaler(FloatLayout):
         return ret
 
 class SpendSmartApp(App):
+    # makes the db a property of the app
+    db = None
     # keeps path to project root
     base_path = StringProperty(os.path.dirname(os.path.abspath(__file__)))
 
     def build(self):
+        # sets path for database
+        data_dir = os.path.join(os.path.dirname(__file__), "resources", "data")
+        if not os.path.exists(data_dir):
+            os.makedirs(data_dir)
+        
+        db_path = os.path.join(data_dir, "spendsmart.db")
+
         # initialize database
-        # db_file = os.path.join(self.base_path, "resources", "data", "databaseName.db") 
-        # self.db = databaseClassName(db_file)
+        self.db = Database(db_path)
+
 
         # initialize the UI shell
         root = GlobalScaler()
@@ -96,10 +105,10 @@ class SpendSmartApp(App):
         root.recompute_scale()
         return root
     
-    # close the conncetion to the DB here
-    # def on_stop(self):
-        # if hasattr(self, 'db'):
-            # self.db.close()
+    # close the conncetion to the DB when app closed
+    def on_stop(self):
+        if self.db:
+            self.db.connection.close()
     
     
 if __name__ == "__main__":
