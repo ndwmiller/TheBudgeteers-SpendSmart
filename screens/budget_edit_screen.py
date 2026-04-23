@@ -6,10 +6,11 @@ from kivy.factory import Factory
 from kivy.uix.button import Button
 from kivy.metrics import dp
 from kivy.app import App
+from kivy.uix.popup import Popup
+from kivy.uix.label import Label
 
 
 class BudgetEditScreen(Screen):
-    current_budget = StringProperty("$ 0.00")
     monthly_budget = StringProperty("$ 0.00")
     max_categories = 5
 
@@ -28,7 +29,6 @@ class BudgetEditScreen(Screen):
             sm = app.shell.ids.sm
             budget_screen = sm.get_screen('budget')
 
-            self.current_budget = budget_screen.current_budget
             self.monthly_budget = budget_screen.monthly_budget
 
             # Deep copy categories so we don't modify the original until Save
@@ -122,8 +122,12 @@ class BudgetEditScreen(Screen):
             sm = app.shell.ids.sm
             budget_screen = sm.get_screen('budget')
 
+            total_percent = sum(self._parse_percent(cat.get('percent', '0%')) for cat in self.categories)
+            if total_percent > 100:
+                self._show_error("Total category percent cannot exceed 100%.")
+                return
+
             # Update main budget screen with edited data
-            budget_screen.current_budget = self.ids.current_input.text
             budget_screen.monthly_budget = self.ids.monthly_input.text
             monthly_amount = self._parse_currency(self.ids.monthly_input.text)
             saved_categories = []
@@ -138,11 +142,23 @@ class BudgetEditScreen(Screen):
                 })
 
             budget_screen.categories = saved_categories
+            budget_screen.recalculate_current_budget()
 
             # Go back to view screen
             sm.current = 'budget'
         except Exception as e:
             print(f"Save error: {e}")
+
+    def _show_error(self, message: str):
+        popup = Popup(
+            title='Invalid Categories',
+            content=Label(text=message, halign='center', valign='middle'),
+            size_hint=(None, None),
+            size=(dp(360), dp(180)),
+            auto_dismiss=True,
+        )
+        popup.content.bind(size=lambda instance, value: setattr(instance, 'text_size', value))
+        popup.open()
 
     @staticmethod
     def _parse_currency(value: str) -> float:
