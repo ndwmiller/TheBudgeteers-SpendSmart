@@ -33,7 +33,6 @@
                         rectangle: (self.x, self.y, self.width, self.height)
 
                 Image:
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                     source: app.base_path + '/resources/Images/settings_icon.png'
                     size_hint: None, None
                     size: dp(34), dp(34)
@@ -42,7 +41,6 @@
                     keep_ratio: True
 
                 Label:
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                     text: "Settings"
                     font_size: '22sp'
                     bold: True
@@ -58,7 +56,7 @@
             cols: 2
             spacing: 0
 
-            # Appearance 
+            # Appearance
             BoxLayout:
                 orientation: 'vertical'
                 padding: [dp(20), dp(15), dp(20), dp(15)]
@@ -78,7 +76,6 @@
                         width: 1.2
                         rectangle: (self.x, self.y, self.width, self.height)
 
-                # Section title
                 Label:
                     markup: True
                     text: "[u]Appearance[/u]"
@@ -90,13 +87,12 @@
                     size_hint_y: None
                     height: dp(30)
 
-                # Light Mode
                 BoxLayout:
                     orientation: 'horizontal'
                     size_hint: None, None
                     height: dp(40)
                     width: dp(140)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    pos_hint: {'center_x': 0.5}
                     spacing: dp(10)
 
                     CheckBox:
@@ -116,13 +112,12 @@
                         valign: 'middle'
                         text_size: self.size
 
-                # Dark Mode
                 BoxLayout:
                     orientation: 'horizontal'
                     size_hint: None, None
                     height: dp(40)
                     width: dp(140)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    pos_hint: {'center_x': 0.5}
                     spacing: dp(10)
 
                     CheckBox:
@@ -143,13 +138,12 @@
                         valign: 'middle'
                         text_size: self.size
 
-                # Font size
                 BoxLayout:
                     orientation: 'horizontal'
                     size_hint: None, None
                     height: dp(40)
                     width: dp(220)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    pos_hint: {'center_x': 0.5}
                     spacing: dp(10)
 
                     Label:
@@ -161,7 +155,6 @@
                         text_size: self.size
                         size_hint_x: None
                         width: dp(90)
-
 
                     Spinner:
                         id: font_spinner
@@ -183,7 +176,6 @@
                             Line:
                                 width: 1.2
                                 rectangle: (self.x, self.y, self.width, self.height)
-
                 Widget:
 
             # Notifications
@@ -206,7 +198,6 @@
                         width: 1.2
                         rectangle: (self.x, self.y, self.width, self.height)
 
-                # Section title
                 Label:
                     markup: True
                     text: "[u]Notifications[/u]"
@@ -221,15 +212,13 @@
                 Widget:
                     size_hint_y: 0.3
 
-                # Budget Alerts
                 BoxLayout:
                     orientation: 'horizontal'
                     size_hint: None, None
                     spacing: dp(15)
                     height: dp(44)
                     width: dp(250)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-
+                    pos_hint: {'center_x': 0.5}
 
                     Label:
                         text: "Budget Alerts"
@@ -247,14 +236,13 @@
                         pos_hint: {'center_y': 0.5}
                         on_active: root.toggle_budget_alerts(self.active)
 
-                # Bill Reminders 
                 BoxLayout:
                     orientation: 'horizontal'
                     size_hint: None, None
                     spacing: dp(15)
                     height: dp(44)
                     width: dp(250)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    pos_hint: {'center_x': 0.5}
 
                     Label:
                         text: "Bill Reminders"
@@ -271,10 +259,9 @@
                         size: dp(72), dp(36)
                         pos_hint: {'center_y': 0.5}
                         on_active: root.toggle_bill_reminders(self.active)
-
                 Widget:
 
-            # Data Management 
+            # Data Management
             BoxLayout:
                 orientation: 'vertical'
                 padding: [dp(20), dp(15), dp(20), dp(15)]
@@ -293,9 +280,7 @@
                     Line:
                         width: 1.2
                         rectangle: (self.x, self.y, self.width, self.height)
-                
 
-                # Section title
                 Label:
                     markup: True
                     text: "[u]Data Management[/u]"
@@ -307,20 +292,17 @@
                     size_hint_y: None
                     height: dp(30)
 
-                BoxLayout:
-                    orientation: 'vertical'
-                    size_hint: None, None
-                    width: dp(200)
-                    height: dp(180)
-                    spacing: dp(25)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                AnchorLayout:
+                    anchor_x: 'center'
+                    anchor_y: 'center'
+                    size_hint_y: None
+                    height: dp(113)
 
-                    # Clear Data button
                     Button:
                         text: "Clear Data"
                         font_size: '18sp'
                         size_hint: None, None
-                        size: dp(200), dp(44)
+                        size: dp(350), dp(44)
                         background_normal: ''
                         background_down: ''
                         background_color: 0, 0, 0, 0
@@ -329,82 +311,22 @@
                         halign: 'center'
                         valign: 'middle'
                         canvas.before:
-                            Color: 
+                            Color:
                                 rgba: utils.get_color_from_hex('#abff80') if self.state == 'down' else utils.get_color_from_hex('#DAFFC8')
                             RoundedRectangle:
                                 pos: self.pos
                                 size: self.size
                                 radius: [self.height / 2]
-
                         canvas.after:
                             Color:
                                 rgba: utils.get_color_from_hex('#6BB562')
                             Line:
                                 width: dp(1)
                                 rounded_rectangle: (self.x, self.y, self.width, self.height, self.height / 2)
-
                         on_release: root.clear_data()
-
-                    # Reset Defaults button
-                    Button:
-                        text: "Reset Defaults"
-                        font_size: '18sp'
-                        size_hint: None, None
-                        size: dp(200), dp(44)
-                        background_normal: ''
-                        background_down: ''
-                        background_color: 0, 0, 0, 0
-                        color: utils.get_color_from_hex('#6BB562')
-                        text_size: self.size
-                        halign: 'center'
-                        valign: 'middle'
-                        canvas.before:
-                            Color: 
-                                rgba: utils.get_color_from_hex('#abff80') if self.state == 'down' else utils.get_color_from_hex('#DAFFC8')
-                            RoundedRectangle:
-                                pos: self.pos
-                                size: self.size
-                                radius: [self.height / 2]
-
-                        canvas.after:
-                            Color:
-                                rgba: utils.get_color_from_hex('#6BB562')
-                            Line:
-                                width: dp(1)
-                                rounded_rectangle: (self.x, self.y, self.width, self.height, self.height / 2)
-                        on_release: root.reset_defaults()
-
-                    # Delete Account button
-                    Button:
-                        text: "Delete Account"
-                        font_size: '18sp'
-                        size_hint: None, None
-                        size: dp(200), dp(44)
-                        background_normal: ''
-                        background_down: ''
-                        background_color: 0, 0, 0, 0
-                        color: utils.get_color_from_hex('#ffffff')
-                        text_size: self.size
-                        halign: 'center'
-                        valign: 'middle'
-                        canvas.before:
-                            Color: 
-                                rgba: utils.get_color_from_hex('#f5b8b8') if self.state == 'down' else utils.get_color_from_hex('#d9534f')
-                            RoundedRectangle:
-                                pos: self.pos
-                                size: self.size
-                                radius: [self.height / 2]
-
-                        canvas.after:
-                            Color:
-                                rgba: utils.get_color_from_hex('#6BB562')
-                            Line:
-                                width: dp(1)
-                                rounded_rectangle: (self.x, self.y, self.width, self.height, self.height / 2)
-                        on_release: root.delete_account()
                 Widget:
 
-            # Security
+            # Reset Defaults
             BoxLayout:
                 orientation: 'vertical'
                 padding: [dp(20), dp(15), dp(20), dp(15)]
@@ -424,10 +346,9 @@
                         width: 1.2
                         rectangle: (self.x, self.y, self.width, self.height)
 
-                # Section title
                 Label:
                     markup: True
-                    text: "[u]Security[/u]"
+                    text: "[u]Reset Defaults[/u]"
                     font_size: '20sp'
                     color: utils.get_color_from_hex('#6BB562')
                     halign: 'center'
@@ -436,16 +357,15 @@
                     size_hint_y: None
                     height: dp(30)
 
-                BoxLayout:
-                    orientation: 'horizontal'
-                    size_hint_x: None
-                    width: dp(350)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-                    
-                    # Change Password button
+                AnchorLayout:
+                    anchor_x: 'center'
+                    anchor_y: 'center'
+                    size_hint_y: None
+                    height: dp(113)
+
                     Button:
                         markup: True
-                        text: "Change Password                    [b]-->[/b]"
+                        text: "Reset App Data                    [b]-->[/b]"
                         font_size: '18sp'
                         size_hint: None, None
                         size: dp(350), dp(44)
@@ -457,24 +377,23 @@
                         halign: 'center'
                         valign: 'middle'
                         canvas.before:
-                            Color: 
+                            Color:
                                 rgba: utils.get_color_from_hex('#abff80') if self.state == 'down' else utils.get_color_from_hex('#DAFFC8')
                             RoundedRectangle:
                                 pos: self.pos
                                 size: self.size
                                 radius: [self.height / 2]
-
                         canvas.after:
                             Color:
                                 rgba: utils.get_color_from_hex('#6BB562')
                             Line:
                                 width: dp(1)
                                 rounded_rectangle: (self.x, self.y, self.width, self.height, self.height / 2)
-                        on_release: root.open_change_password()
+                        on_release: root.open_reset_app_data()
                 Widget:
 
 
-# Spinner option 
+# Spinner option
 <SettingsSpinnerOption@SpinnerOption>:
     background_normal: ''
     background_color: utils.get_color_from_hex('#ffffff')
