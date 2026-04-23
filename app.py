@@ -15,9 +15,8 @@ WINDOW_SIZE = (1920, 1160)
 Window.size = WINDOW_SIZE
 Window.clearcolor = DARK_BACK
 
-# Scales the design (1920x1160) to fit any window size.
-# Uses canvas matrix transforms for rendering and manually inverse-transforms
-# touch coordinates so hit boxes always match what's visible on screen.
+# scales the design (1920x1160) to fit any window size.
+# uses canvas matrix transforms for rendering and manually inverse-transforms
 class GlobalScaler(FloatLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -46,10 +45,7 @@ class GlobalScaler(FloatLayout):
         with self.canvas.after:
             PopMatrix()
 
-    # These two methods teach Kivy's coordinate system about our canvas scaling.
-    # They're used by the grab-dispatch path in kivy/base.py so that touch
-    # coordinates are correctly mapped to design space when grabbed widgets
-    # receive on_touch_up/move directly.
+    # tells Kivy's coordinate system about our canvas scaling.
     def to_local(self, x, y, relative=False):
         if relative:
             return x / self._scale, y / self._scale
@@ -86,7 +82,7 @@ class SpendSmartApp(App):
     base_path = StringProperty(os.path.dirname(os.path.abspath(__file__)))
 
     def build(self):
-        # initialize database here. this is just an example, it may end up looking different
+        # initialize database
         # db_file = os.path.join(self.base_path, "resources", "data", "databaseName.db") 
         # self.db = databaseClassName(db_file)
 
