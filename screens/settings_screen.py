@@ -66,13 +66,6 @@ class SettingsScreen(Screen):
         self.ids.budget_toggle.active = True
         self.ids.bill_toggle.active   = False
 
-    def delete_account(self):
-        # app = App.get_running_app()
-        # app.db.cursor.execute("DELETE FROM users")
-        # app.db.connection.commit()
-        # app.root.current = 'login'
-        pass
-
-    def open_change_password(self):
+    def open_reset_app_data(self):
         popup = ChangePassword()
         popup.open()
