@@ -12,14 +12,6 @@
 #:include screens/widgets/add_bill.kv
 #:include screens/budget_edit_screen.kv
 
-# This  makes the window scale correctly
-<GlobalScaler>:
-    canvas.before:
-        Color:
-            rgba: utils.get_color_from_hex('#4D4D4D')
-        Rectangle:
-            pos: -self.pos[0]/self.scale, -self.pos[1]/self.scale 
-            size: Window.width/self.scale, Window.height/self.scale
 
 <AppShell>:
     orientation: 'vertical'
@@ -43,21 +35,14 @@
             size_hint_x: None
             anchor_x: 'left'
             anchor_y: 'center'
-        
-            Widget:
+
+            Image:
                 size_hint: (None, None)
                 size: ('80dp', '80dp')
-                canvas:
-                    Color:
-                        rgba: 0.8, 0.8, 0.8, 1 
-                    Rectangle:
-                        pos: self.pos
-                        size: self.size
-                Label:
-                    text: "LOGO"
-                    center: self.parent.center
-                    color: 0.5, 0.5, 0.5, 1
+                source: app.base_path + '/resources/Images/logo_icon.png'
 
+                allow_stretch: True
+                keep_ratio: True
         # spacer
         Widget:
             size_hint_x: None
@@ -72,6 +57,8 @@
             Label:
                 text: "SPEND"
                 bold: True
+                outline_width: 2
+                outline_color: utils.get_color_from_hex('#4D4D4D')
                 font_size: '30sp'
                 color: utils.get_color_from_hex('#14CC00')
                 halign: 'center'
@@ -80,6 +67,8 @@
             Label:
                 text: "SMART"
                 bold: True
+                outline_width: 2
+                outline_color: utils.get_color_from_hex('#4D4D4D')
                 font_size: '30sp'
                 color: utils.get_color_from_hex('#14CC00')
                 halign: 'center'
