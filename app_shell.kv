@@ -12,14 +12,6 @@
 #:include screens/widgets/add_bill.kv
 #:include screens/budget_edit_screen.kv
 
-# This  makes the window scale correctly
-<GlobalScaler>:
-    canvas.before:
-        Color:
-            rgba: utils.get_color_from_hex('#4D4D4D')
-        Rectangle:
-            pos: -self.pos[0]/self.scale, -self.pos[1]/self.scale 
-            size: Window.width/self.scale, Window.height/self.scale
 
 <AppShell>:
     orientation: 'vertical'
