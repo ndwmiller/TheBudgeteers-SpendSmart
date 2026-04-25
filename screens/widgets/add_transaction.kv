@@ -258,25 +258,4 @@
                         Line:
                             rectangle: (self.x,self.y,self.width,self.height)
 
-        # TITLE TAB
-        BoxLayout:
-            size_hint: None, None
-            size: dp(260), dp(65)
-            pos_hint: {"center_x": 0.5, "center_y": 0.94}
-
-            canvas.before:
-                Color:
-                    rgba: 0.95,0.95,0.95,1
-                RoundedRectangle:
-                    pos: self.pos
-                    size: self.size
-                    radius: [20]
-                Color:
-                    rgba: 0.42,0.72,0.38,1
-                Line:
-                    rounded_rectangle: (self.x,self.y,self.width,self.height,20)
-
-            Label:
-                text: "Add Transaction"
-                font_size: "20sp"
-                color: 0.2,0.2,0.2,1
+        
