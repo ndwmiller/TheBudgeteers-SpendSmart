@@ -5,12 +5,8 @@
     orientation: 'horizontal'
     size_hint_y: None
     height: dp(60)
-    padding: [dp(15), dp(10)] 
-    spacing: dp(20)
-    
-    bill_name: "Example"
-    bill_date: "XX/XX/XXXX"
-    bill_amount: "XXX.XX"
+    padding: [dp(15), dp(10)]
+    spacing: dp(3)
 
     # Outline and Background
     canvas.before:
@@ -33,7 +29,7 @@
         size: dp(25), dp(25)
         pos_hint: {'center_y': .5}
         background_color: 0, 0, 0, 0  # Makes button invisible
-        on_release: root.parent.remove_widget(root)
+        on_release: root.on_delete() # Deletes the bill
 
         Image:
             source: app.base_path + '/resources/Images/trash_icon.png'
@@ -42,7 +38,7 @@
             size: dp(25), dp(25)
             allow_stretch: True
             keep_ratio: True
-
+    
     # Name and Date
     BoxLayout:
         orientation: 'vertical'
@@ -50,15 +46,15 @@
         size_hint_x: None
         width: "130dp"
         Label:
-            text: root.bill_name
+            text: root.bill_amount
             color: utils.get_color_from_hex('#6BB562')
-            font_size: '22sp'
+            font_size: '21sp'
             halign: 'left'
             valign: 'bottom'
             text_size: self.size
 
         Label:
-            text: root.bill_date
+            text: root.bill_name
             color: utils.get_color_from_hex('#6BB562')
             font_size: '18sp'
             halign: 'left'
@@ -68,13 +64,61 @@
     # Bill Amount
     Label:
         pos_hint: { 'center_x': .5, 'center_y': .5 }
-        text: "$ " + root.bill_amount 
+        text: "$ " + root.bill_date
         color: utils.get_color_from_hex('#6BB562')
         font_size: '18sp'
         halign: 'center'
         valign: 'middle'
         text_size: self.size
         #size_hint_x: 0.2
+        size_hint_y: None
+        height: '30dp'
+
+        canvas.before:
+            Color:
+                rgba: utils.get_color_from_hex('#ffffff')
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # Green Outline
+        canvas.after:
+            Color: 
+                rgba: utils.get_color_from_hex('#6BB562')
+            Line:
+                width: 1.2
+                rectangle: (self.x, self.y, self.width, self.height)
+
+# Cat Element
+<CatElement@BoxLayout>:
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: dp(30)
+    padding: [dp(15), 0]
+    spacing: dp(20)
+    # Category Name
+    Label:
+        text: "• " + root.cat_name
+        pos_hint: {'center_y': .5}
+        color: utils.get_color_from_hex('#6BB562')
+        halign: 'left'
+        valign: 'middle'
+        text_size: self.size
+        font_size: '18sp'
+        size_hint_x: 0.5
+        size_hint_y: None
+        height: '30dp'
+
+    # Remaining Amount
+    Label:
+        pos_hint: { 'center_x': .5, 'center_y': .5 }
+        text: "$ " + root.cat_amount
+        color: utils.get_color_from_hex('#6BB562')
+        font_size: '18sp'
+        halign: 'center'
+        valign: 'middle'
+        text_size: self.size
+        size_hint_x: 0.4
         size_hint_y: None
         height: '30dp'
 
@@ -136,7 +180,7 @@
 
                 # Remaining Balance Amount
                 Label:
-                    text: "$ " + "XXXXX.XX" # CHANGE THIS TO CHANGE SHOWN AMOUNT
+                    text: "$ " + root.big_total()
                     bold: True
                     font_size: '34sp'
                     color: utils.get_color_from_hex('#6BB562')
@@ -191,7 +235,8 @@
 
                 # Monthly Income Amount
                 Label:
-                    text: "$ " + "XXXX.XX" # CHANGE THIS TO CHANGE SHOWN AMOUNT
+                    text: "$ " + root.monthly_income()
+
                     bold: True
                     font_size: '34sp'
                     color: utils.get_color_from_hex('#6BB562')
@@ -246,7 +291,8 @@
 
                 # Monthly Expenses Amount
                 Label:
-                    text: "$ " + "XXXX.XX" # CHANGE THIS TO CHANGE SHOWN AMOUNT
+                    text: "$ " + root.monthly_expenses()
+
                     bold: True
                     font_size: '34sp'
                     color: utils.get_color_from_hex('#6BB562')
@@ -411,7 +457,8 @@
                                     rectangle: (self.x, self.y, self.width, self.height)
 
                         Label:
-                            text: "$ " + "XXXXX.XX" # CHANGE THIS TO CHANGE SHOWN AMOUNT
+                            text: "$ " + root.monthly_budget()
+
                             bold: True
                             font_size: '28sp'
                             color: utils.get_color_from_hex('#6BB562')
@@ -467,8 +514,11 @@
 
                         # Categories container
                         BoxLayout:
-                            orientation: 'horizontal'
-                            padding: [50, 10, 50, 30]
+                            orientation: 'vertical'
+                            padding: [50, 3, 50, 3]
+                            size_hint_y: None
+                            height: dp(201.5)
+                            #spacing: dp(5)
 
                             canvas.before:
                                 Color:
@@ -479,83 +529,22 @@
 
                             # Green Outline
                             canvas.after:
-                                Color: 
+                                Color:
                                     rgba: utils.get_color_from_hex('#6BB562')
                                 Line:
                                     width: 1.2
                                     rectangle: (self.x, self.y, self.width, self.height)
-                            
-                            # Spacer
-                            Widget:
-                                size_hint_x: 0.1
 
-                            # Category Names
+                            # Remaining Header
                             BoxLayout:
-                                orientation: 'vertical'
+                                orientation: 'horizontal'
+                                size_hint_y: None
+                                height: '30dp'
 
-                                # Spacer
                                 Widget:
+                                    size_hint_x: None
+                                    width: dp(250)
 
-                                # Cat 1
-                                Label:
-                                    text: "• " + "Empty" # REPLACE CAT 1 NAME HERE
-                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
-                                    halign: 'left'
-                                    valign: 'middle'   
-                                    text_size: self.size
-                                    font_size: '18sp'
-                                    size_hint_y: None
-                                    height: '30dp'
-                                
-                                # Cat 2
-                                Label:
-                                    text: "• " + "Empty" # REPLACE CAT 2 NAME HERE
-                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
-                                    halign: 'left'
-                                    valign: 'middle'   
-                                    text_size: self.size
-                                    font_size: '18sp'
-                                    size_hint_y: None
-                                    height: '30dp'
-
-                                # Cat 3
-                                Label:
-                                    text: "• " + "Empty" # REPLACE CAT 3 NAME HERE
-                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
-                                    halign: 'left'
-                                    valign: 'middle'   
-                                    text_size: self.size
-                                    font_size: '18sp'
-                                    size_hint_y: None
-                                    height: '30dp'
-
-                                # Cat 4
-                                Label:
-                                    text: "• " + "Empty" # REPLACE CAT 4 NAME HERE
-                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
-                                    halign: 'left'
-                                    valign: 'middle'   
-                                    text_size: self.size
-                                    font_size: '18sp'
-                                    size_hint_y: None
-                                    height: '30dp'
-
-                                # Cat 5
-                                Label:
-                                    text: "• " + "Empty" # REPLACE CAT 5 NAME HERE
-                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
-                                    halign: 'left'
-                                    valign: 'middle'   
-                                    text_size: self.size
-                                    font_size: '18sp'
-                                    size_hint_y: None
-                                    height: '30dp'
-
-                            # Category Amounts
-                            BoxLayout:
-                                orientation: 'vertical'
-
-                                # Header
                                 Label:
                                     markup: True
                                     text: "[u]Remaining[/u]"
@@ -565,147 +554,17 @@
                                     valign: 'middle'
                                     text_size: self.size
                                     size_hint_y: None
-                                    height: '30dp'
+                                    height: '25dp'
 
-                                # Boxed Amount 1
-                                Label:
-                                    pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                    text: "$ " + "XXXXX.XX" # CHANGE CAT AMOUNT HERE
-                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
-                                    font_size: '18sp'
-                                    halign: 'center'
-                                    valign: 'middle'
-                                    text_size: self.size
-                                    size_hint_x: 0.6
-                                    size_hint_y: None
-                                    height: '30dp'
+                            BoxLayout:
+                                orientation: 'vertical'
+                                id: cat_container
+                                size_hint_y: None
+                                height: self.minimum_height
+                                spacing: dp(5)
 
-                                    canvas.before:
-                                        Color:
-                                            rgba: utils.get_color_from_hex('#ffffff')
-                                        Rectangle:
-                                            pos: self.pos
-                                            size: self.size
-
-                                    # Green Outline
-                                    canvas.after:
-                                        Color: 
-                                            rgba: utils.get_color_from_hex('#6BB562')
-                                        Line:
-                                            width: 1.2
-                                            rectangle: (self.x, self.y, self.width, self.height)
-
-                                # Boxed amount 2
-                                Label:
-                                    pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                    text: "$ " + "XXXXX.XX" # CHANGE CAT AMOUNT HERE
-                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
-                                    font_size: '18sp'
-                                    halign: 'center'
-                                    valign: 'middle'
-                                    text_size: self.size
-                                    size_hint_x: 0.6
-                                    size_hint_y: None
-                                    height: '30dp'
-
-                                    canvas.before:
-                                        Color:
-                                            rgba: utils.get_color_from_hex('#ffffff')
-                                        Rectangle:
-                                            pos: self.pos
-                                            size: self.size
-
-                                    # Green Outline
-                                    canvas.after:
-                                        Color: 
-                                            rgba: utils.get_color_from_hex('#6BB562')
-                                        Line:
-                                            width: 1.2
-                                            rectangle: (self.x, self.y, self.width, self.height)
-                                
-                                # Boxed Amount 3
-                                Label:
-                                    pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                    text: "$ " + "XXXXX.XX" # CHANGE CAT AMOUNT HERE
-                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
-                                    font_size: '18sp'
-                                    halign: 'center'
-                                    valign: 'middle'
-                                    text_size: self.size
-                                    size_hint_x: 0.6
-                                    size_hint_y: None
-                                    height: '30dp'
-
-                                    canvas.before:
-                                        Color:
-                                            rgba: utils.get_color_from_hex('#ffffff')
-                                        Rectangle:
-                                            pos: self.pos
-                                            size: self.size
-
-                                    # Green Outline
-                                    canvas.after:
-                                        Color: 
-                                            rgba: utils.get_color_from_hex('#6BB562')
-                                        Line:
-                                            width: 1.2
-                                            rectangle: (self.x, self.y, self.width, self.height)
-
-                                # Boxed amount 4
-                                Label:
-                                    pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                    text: "$ " + "XXXXX.XX" # CHANGE CAT AMOUNT HERE
-                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
-                                    font_size: '18sp'
-                                    halign: 'center'
-                                    valign: 'middle'
-                                    text_size: self.size
-                                    size_hint_x: 0.6
-                                    size_hint_y: None
-                                    height: '30dp'
-
-                                    canvas.before:
-                                        Color:
-                                            rgba: utils.get_color_from_hex('#ffffff')
-                                        Rectangle:
-                                            pos: self.pos
-                                            size: self.size
-
-                                    # Green Outline
-                                    canvas.after:
-                                        Color: 
-                                            rgba: utils.get_color_from_hex('#6BB562')
-                                        Line:
-                                            width: 1.2
-                                            rectangle: (self.x, self.y, self.width, self.height)
-                                
-                                # Boxed amount 5
-                                Label:
-                                    pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                    text: "$ " + "XXXXX.XX" # CHANGE CAT AMOUNT HERE
-                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
-                                    font_size: '18sp'
-                                    halign: 'center'
-                                    valign: 'middle'
-                                    text_size: self.size
-                                    size_hint_x: 0.6
-                                    size_hint_y: None
-                                    height: '30dp'
-
-                                    canvas.before:
-                                        Color:
-                                            rgba: utils.get_color_from_hex('#ffffff')
-                                        Rectangle:
-                                            pos: self.pos
-                                            size: self.size
-
-                                    # Green Outline
-                                    canvas.after:
-                                        Color: 
-                                            rgba: utils.get_color_from_hex('#6BB562')
-                                        Line:
-                                            width: 1.2
-                                            rectangle: (self.x, self.y, self.width, self.height)
+                            Widget:
+                                size_hint_y: 1
 
                 # Analytics layout
                 BoxLayout:
@@ -775,7 +634,7 @@
                                 # Avg Day Expenses Amount
                                 Label:
                                     pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                    text: "$ " + "XXX.XX" # CHANGE AMOUNT HERE
+                                    text: "$ " + root.day_expenses_this_week()
                                     color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
                                     font_size: '18sp'
                                     halign: 'center'
@@ -800,14 +659,14 @@
                                             width: 1.2
                                             rectangle: (self.x, self.y, self.width, self.height)
 
-                            # Avg Week Expenses Row
+                            # Week Expenses Row
                             BoxLayout:
                                 orientation: 'horizontal'
 
-                                # Avg Week Expenses Text
+                                # Week Expenses Text
                                 Label:
                                     pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                    text: "Avg. Week Expenses:"
+                                    text: "Weekly Expenses:"
                                     font_size: '18sp'
                                     color: utils.get_color_from_hex('#6BB562')
                                     halign: 'left'
@@ -817,10 +676,11 @@
                                     size_hint_y: None
                                     height: '30dp'
 
-                                # Avg Week Expenses Amount
+                                # Week Expenses Amount
                                 Label:
                                     pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                    text: "$ " + "XXXX.XX" # CHANGE AMOUNT HERE
+                                    text: "$ " + root.week_expenses_this_week()
+
                                     color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
                                     font_size: '18sp'
                                     halign: 'center'
@@ -868,7 +728,8 @@
                             # Highest Spending Cat
                             Label:
                                 pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                text: "Empty"
+                                text: root.high_cat_name_this_week()
+
                                 font_size: '18sp'
                                 color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
                                 halign: 'left'
@@ -881,7 +742,8 @@
                             # Highest Spending Amount
                             Label:
                                 pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                text: "$ " + "XXXX.XX" # CHANGE AMOUNT HERE
+                                text: "$ " + root.high_cat_amount_this_week()
+
                                 color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
                                 font_size: '18sp'
                                 halign: 'center'
@@ -900,7 +762,7 @@
 
                                 # Green Outline
                                 canvas.after:
-                                    Color: 
+                                    Color:
                                         rgba: utils.get_color_from_hex('#6BB562')
                                     Line:
                                         width: 1.2
@@ -970,7 +832,8 @@
                                 # Avg Day Expenses Amount
                                 Label:
                                     pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                    text: "$ " + "XXX.XX" # CHANGE AMOUNT HERE
+                                    text: "$ " + root.day_expenses_last_week()
+
                                     color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
                                     font_size: '18sp'
                                     halign: 'center'
@@ -995,14 +858,14 @@
                                             width: 1.2
                                             rectangle: (self.x, self.y, self.width, self.height)
 
-                            # Avg Week Expenses Row
+                            # Week Expenses Row
                             BoxLayout:
                                 orientation: 'horizontal'
 
-                                # Avg Week Expenses Text
+                                # Week Expenses Text
                                 Label:
                                     pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                    text: "Avg. Week Expenses:"
+                                    text: "Weely Expenses:"
                                     font_size: '18sp'
                                     color: utils.get_color_from_hex('#6BB562')
                                     halign: 'left'
@@ -1012,10 +875,11 @@
                                     size_hint_y: None
                                     height: '30dp'
 
-                                # Avg Week Expenses Amount
+                                # Week Expenses Amount
                                 Label:
                                     pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                    text: "$ " + "XXXX.XX" # CHANGE AMOUNT HERE
+                                    text: "$ " + root.week_expenses_last_week()
+
                                     color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
                                     font_size: '18sp'
                                     halign: 'center'
@@ -1063,7 +927,8 @@
                             # Highest Spending Cat
                             Label:
                                 pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                text: "Empty"
+                                text: root.high_cat_name_last_week()
+
                                 font_size: '18sp'
                                 color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
                                 halign: 'left'
@@ -1076,7 +941,8 @@
                             # Highest Spending Amount
                             Label:
                                 pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                text: "$ " + "XXXX.XX" # CHANGE AMOUNT HERE
+                                text: "$ " + root.high_cat_amount_last_week()
+
                                 color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
                                 font_size: '18sp'
                                 halign: 'center'
@@ -1095,7 +961,7 @@
 
                                 # Green Outline
                                 canvas.after:
-                                    Color: 
+                                    Color:
                                         rgba: utils.get_color_from_hex('#6BB562')
                                     Line:
                                         width: 1.2

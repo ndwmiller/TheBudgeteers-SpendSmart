@@ -1,6 +1,7 @@
 from kivy.uix.modalview import ModalView
 from kivy.properties import ObjectProperty
 from kivy.app import App
+from database import Database
 
 class AddBill(ModalView):
     # adds the UI element in dashboard
@@ -20,12 +21,25 @@ class AddBill(ModalView):
         if not name or not amount or not date:
             self.ids.error_label.text = "Please fill in all fields."
             return
+        if len(name) > 11:
+            self.ids.error_label.text = "Name cannot exceed 11 characters"
+            return
 
         # amount validation
         try:
             float(amount)
+            
+            # check for decimals beyond two places
+            if len(amount.split('.')[-1]) > 2 and '.' in amount:
+                self.ids.error_label.text = "Maximum 2 decimal places allowed."
+                return
+
         except ValueError:
             self.ids.error_label.text = "Invalid amount format."
+            return
+
+        if float(amount) > float(99999):
+            self.ids.error_label.text = "Bill amount cannot exceed $99,999.99"
             return
         
         # date avlidation
@@ -36,6 +50,6 @@ class AddBill(ModalView):
 
         # send to dashboard
         if self.callback:
-            self.callback(name, amount, date)
+            self.callback(name, amount, Database.date_to_db(date))
         
         self.dismiss()

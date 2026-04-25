@@ -1,4 +1,5 @@
 import sqlite3 as sql
+from datetime import datetime, timedelta
 
 class Database:
     def __init__(self, db_path):
@@ -8,7 +9,7 @@ class Database:
         self.fill_setstat()
     
     def create_tables(self):
-        # transactions table: ID | DATE (xx-xx-xxxx) | NAME | AMOUNT (can be negative)
+        # transactions table: ID | DATE (YYYY-MM-DD) | NAME | AMOUNT (can be negative)
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS transactions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             date TEXT,
@@ -18,7 +19,7 @@ class Database:
             FOREIGN KEY (category_id) REFERENCES categories (id)
         )''')
 
-        # upcoming bills: ID | DATE (xx-xx-xxxx) | NAME | AMOUNT
+        # upcoming bills: ID | DATE (YYYY-MM-DD) | NAME | AMOUNT
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS bills (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             date TEXT,
@@ -27,13 +28,15 @@ class Database:
         )''')
 
         # categories: ID | NAME | PERCENT (of monthly budget)
-        # first entry is always income category. not to be shown on budget page
+        # first entry is always None category, second is always Income. neither to be shown on budget page
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS categories (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT UNIQUE,
             percent REAL
         )''')
+        self.cursor.execute("INSERT OR IGNORE INTO categories (name, percent) VALUES (?, ?)", ('None', 0.0))
         self.cursor.execute("INSERT OR IGNORE INTO categories (name, percent) VALUES (?, ?)", ('Income', 0.0))
+        
         self.connection.commit()
 
         # settings and monthly budget: KEY (item name) | VALUE
@@ -42,7 +45,7 @@ class Database:
             value TEXT
         )''')
 
-        # goals: ID | NAME | AMOUNT | SAVED | DATE (xx-xx-xxxx)
+        # goals: ID | NAME | AMOUNT | SAVED | DATE (YYYY-MM-DD)
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS goals (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
@@ -68,11 +71,32 @@ class Database:
         self.cursor.executemany(query, default_settings)
         self.connection.commit()
     
+    '''**DATE CONVERTERS**'''
+    # makes this safely callable from anywhere
+    @staticmethod
+    def date_to_db(ui_date):
+        # converts MM/DD/YYYY to YYYY-MM-DD
+        try:
+            m, d, y = ui_date.split('/')
+            return f"{y}-{m}-{d}"
+        except ValueError:
+            return ui_date
+    # makes this safely callable from anywhere
+    @staticmethod
+    def date_to_ui(db_date):
+        # converts YYYY-MM-DD to MM/DD/YYYY
+        try:
+            y, m, d = db_date.split('-')
+            return f"{m}/{d}/{y}"
+        except ValueError:
+            return db_date
+
+
     '''**INDIVIDUAL GETTERS**'''
     # returns string (e.g., "dark") or None
     # works for budget too. search by name (budget, theme, font, alerts, reminders)
     def get_setting(self, key_name):
-        self.cursor.execute("SELECT value FROM settings WHERE key = ?", (key_name,))
+        self.cursor.execute("SELECT value FROM setstat WHERE key = ?", (key_name,))
         result = self.cursor.fetchone()
         # returns just the value string or None if not found
         return result[0] if result else None
@@ -142,7 +166,7 @@ class Database:
         cat = self.get_cat(cat_name)
         if not cat: return 0
         
-        raw_cat_value = budget * (cat['percent'] / 100)
+        raw_cat_value = budget * (cat[2] / 100)
         
         # sum transactions for this category
         query = '''
@@ -165,39 +189,83 @@ class Database:
         return total
     
     # returns float of sum of all transactions
-    def get_bigtotal(self):
+    def get_big_total(self):
         self.cursor.execute("SELECT COALESCE(SUM(amount), 0) FROM transactions")
         return self.cursor.fetchone()[0]
 
-    # returns float of sum of income transactions
+    # helper function for month sums
+    # returns either sum of income or sum of not income (expenses) over last 30 days
+    def get_month_sum(self, income=True):
+        thirty_days_ago = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+        if income:
+            self.cursor.execute(
+                "SELECT COALESCE(SUM(amount), 0) FROM transactions WHERE amount > 0 AND date >= ?",
+                (thirty_days_ago,)
+            )
+        else:
+            self.cursor.execute(
+                "SELECT COALESCE(ABS(SUM(amount)), 0) FROM transactions WHERE amount < 0 AND date >= ?",
+                (thirty_days_ago,)
+            )
+        return self.cursor.fetchone()[0]
+
+    # returns float of sum of income transactions for the last 30 days
     def get_income(self):
+        return self.get_month_sum(income=True)
+
+    # returns float of sum of negative transactions for the last 30 days
+    def get_expenses(self):
+        return self.get_month_sum(income=False)
+
+    # helper function for week sums
+    # returns start and end of week with offset 0 being current week and offset 1 being last week 
+    def get_week(self, week_offset):
+        today = datetime.now()
+        start_of_current_week = today - timedelta(days=today.weekday())
+        
+        target_week_start = start_of_current_week - timedelta(weeks=week_offset)
+        target_week_end = target_week_start + timedelta(days=6)
+        
+        return target_week_start, target_week_end
+
+    # get the week's expenses
+    def get_week_expenses(self, week_offset):
+        start, end = self.get_week(week_offset)
+        start_str = start.strftime("%Y-%m-%d")
+        end_str = end.strftime("%Y-%m-%d")
+        self.cursor.execute(
+            "SELECT COALESCE(SUM(ABS(amount)), 0) FROM transactions WHERE amount < 0 AND date >= ? AND date <= ?",
+            (start_str, end_str)
+        )
+        return self.cursor.fetchone()[0]
+
+    # get the average daily expenses per week
+    def get_day_expenses(self, week_offset):
+        total = self.get_week_expenses(week_offset)
+        return total / 7.0
+    
+    # get the week's highest spending category
+    # returns (name, total_spent) or (None, 0.0) if no data
+    def get_high_cat(self, week_offset):
+        start, end = self.get_week(week_offset)
+        start_str = start.strftime("%Y-%m-%d")
+        end_str = end.strftime("%Y-%m-%d")
+        # gets catagories from past week with highest spending, and selects the highest one
         query = '''
-            SELECT COALESCE(SUM(t.amount), 0) 
+            SELECT c.name, ABS(SUM(t.amount)) as total
             FROM transactions t
             JOIN categories c ON t.category_id = c.id
-            WHERE c.name = 'Income'
+            WHERE t.amount < 0
+              AND t.date >= ?
+              AND t.date <= ?
+              AND c.id > 2
+            GROUP BY t.category_id
+            ORDER BY total DESC
+            LIMIT 1
         '''
-        self.cursor.execute(query)
-        return self.cursor.fetchone()[0]
-
-    # returns float of sum of negative transactions
-    def get_expenses(self):
-        self.cursor.execute("SELECT COALESCE(SUM(amount), 0) FROM transactions WHERE amount < 0")
-        return self.cursor.fetchone()[0]
-
-    # these 3 will need today's date i think. will implement later
-    def get_day_expenses(self, week):
-        pass
-
-    def get_week_expenses(self, week):
-        pass
-
-    def get_high_cat(self, week):
-        pass
-
-
-
-
+        self.cursor.execute(query, (start_str, end_str))
+        result = self.cursor.fetchone()
+        return result if result else (None, 0.0)
 
     '''**ADD AND EDIT FUNCTIONS**'''
     # --categories--
@@ -305,6 +373,55 @@ class Database:
     def change_font(self, new_font):
         self.cursor.execute("UPDATE settings SET value = ? WHERE key = ?", (new_font, 'font'))
         self.connection.commit()
+
+    '''**DELETE FUNCTIONS**'''
+    def delete_bill(self, id):
+        try:
+            self.cursor.execute("DELETE FROM bills WHERE id = ?", (id,))
+            self.connection.commit()
+            return True
+        except:
+            self.connection.rollback() # undo changes if something failed
+            print('delete bill function failed')
+            return False
+        
+    def delete_transaction(self, id):
+        try:
+            self.cursor.execute("DELETE FROM transactions WHERE id = ?", (id,))
+            self.connection.commit()
+            return True
+        except:
+            self.connection.rollback() # undo changes if something failed
+            print('delete transaction function failed')
+            return False
+        
+    def delete_goal(self, id):
+        try:
+            self.cursor.execute("DELETE FROM goals WHERE id = ?", (id,))
+            return True
+        except:
+            self.connection.rollback() # undo changes if something failed
+            print('delete goal function failed')
+            return False
+        
+    def delete_cat(self, id):
+        # prevents deletion of hardcoded cats
+        if id <= 2:
+            print("cannot delete protected system categories (None, Income)")
+            return False
+        try:
+            # changes transacions under that category to None
+            self.cursor.execute("UPDATE transactions SET category_id = 1 WHERE category_id = ?", (id,))
+            # delete cat
+            self.cursor.execute("DELETE FROM categories WHERE id = ?", (id,))
+            self.connection.commit()
+            return True
+
+        except:
+            self.connection.rollback() # undo changes if something failed
+            print('delete cat function failed')
+            return False
+
 
     '''**DATA MANAGEMENT**'''
     # restore default settings
