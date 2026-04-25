@@ -1,13 +1,403 @@
 #:import utils kivy.utils
-# Write screen frontend here
+
 <SettingsScreen>:
     BoxLayout:
         orientation: 'vertical'
-        padding: (10)
+        padding: [118, 40, 118, 40]
 
-        Label:
-            text: "Settings"
-            color: (0, 0, 0, 1)
-            font_size: "40sp"
-            size_hint: (1, None)
-            height: 100
+        # settings label
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(10)
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: (0.2, None)
+                height: dp(40)
+                padding: dp(25)
+                spacing: dp(10)
+
+                canvas.before:
+                    Color:
+                        rgba: utils.get_color_from_hex('#D7D7D7')
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                canvas.after:
+                    Color:
+                        rgba: utils.get_color_from_hex('#6BB562')
+                    Line:
+                        width: 1.2
+                        rectangle: (self.x, self.y, self.width, self.height)
+
+                Image:
+                    source: app.base_path + '/resources/Images/settings_icon.png'
+                    size_hint: None, None
+                    size: dp(34), dp(34)
+                    pos_hint: {'center_y': 0.5}
+                    allow_stretch: True
+                    keep_ratio: True
+
+                Label:
+                    text: "Settings"
+                    font_size: '22sp'
+                    bold: True
+                    color: utils.get_color_from_hex('#656565')
+                    halign: 'left'
+                    valign: 'middle'
+                    text_size: self.size
+
+            Widget:
+
+        # 2×2 panel grid
+        GridLayout:
+            cols: 2
+            spacing: 0
+
+            # Appearance
+            BoxLayout:
+                orientation: 'vertical'
+                padding: [dp(20), dp(15), dp(20), dp(15)]
+                spacing: dp(18)
+
+                canvas.before:
+                    Color:
+                        rgba: utils.get_color_from_hex('#D7D7D7')
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                canvas.after:
+                    Color:
+                        rgba: utils.get_color_from_hex('#6BB562')
+                    Line:
+                        width: 1.2
+                        rectangle: (self.x, self.y, self.width, self.height)
+
+                Label:
+                    markup: True
+                    text: "[u]Appearance[/u]"
+                    font_size: '20sp'
+                    color: utils.get_color_from_hex('#6BB562')
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint_y: None
+                    height: dp(30)
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: None, None
+                    height: dp(40)
+                    width: dp(140)
+                    pos_hint: {'center_x': 0.5}
+                    spacing: dp(10)
+
+                    CheckBox:
+                        id: light_mode_cb
+                        group: 'theme'
+                        size_hint: None, None
+                        size: dp(26), dp(26)
+                        pos_hint: {'center_y': 0.5}
+                        color: utils.get_color_from_hex('#6BB562')
+                        on_active: if self.active: root.set_theme('light')
+
+                    Label:
+                        text: "Light Mode"
+                        font_size: '20sp'
+                        color: utils.get_color_from_hex('#6BB562')
+                        halign: 'left'
+                        valign: 'middle'
+                        text_size: self.size
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: None, None
+                    height: dp(40)
+                    width: dp(140)
+                    pos_hint: {'center_x': 0.5}
+                    spacing: dp(10)
+
+                    CheckBox:
+                        id: dark_mode_cb
+                        group: 'theme'
+                        active: True
+                        size_hint: None, None
+                        size: dp(26), dp(26)
+                        pos_hint: {'center_y': 0.5}
+                        color: utils.get_color_from_hex('#6BB562')
+                        on_active: if self.active: root.set_theme('dark')
+
+                    Label:
+                        text: "Dark Mode"
+                        font_size: '20sp'
+                        color: utils.get_color_from_hex('#6BB562')
+                        halign: 'left'
+                        valign: 'middle'
+                        text_size: self.size
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: None, None
+                    height: dp(40)
+                    width: dp(220)
+                    pos_hint: {'center_x': 0.5}
+                    spacing: dp(10)
+
+                    Label:
+                        text: "Font Size"
+                        font_size: '20sp'
+                        color: utils.get_color_from_hex('#6BB562')
+                        halign: 'left'
+                        valign: 'middle'
+                        text_size: self.size
+                        size_hint_x: None
+                        width: dp(90)
+
+                    Spinner:
+                        id: font_spinner
+                        text: 'Medium'
+                        values: ['Small', 'Medium', 'Large']
+                        size_hint: None, None
+                        size: dp(120), dp(34)
+                        pos_hint: {'center_y': 0.5}
+                        background_normal: ''
+                        background_color: utils.get_color_from_hex('#ffffff')
+                        color: utils.get_color_from_hex('#656565')
+                        font_size: '18sp'
+                        option_cls: 'SettingsSpinnerOption'
+                        on_text: root.set_font_size(self.text)
+
+                        canvas.after:
+                            Color:
+                                rgba: utils.get_color_from_hex('#6BB562')
+                            Line:
+                                width: 1.2
+                                rectangle: (self.x, self.y, self.width, self.height)
+                Widget:
+
+            # Notifications
+            BoxLayout:
+                orientation: 'vertical'
+                padding: [dp(20), dp(15), dp(20), dp(15)]
+                spacing: dp(16)
+
+                canvas.before:
+                    Color:
+                        rgba: utils.get_color_from_hex('#D7D7D7')
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                canvas.after:
+                    Color:
+                        rgba: utils.get_color_from_hex('#6BB562')
+                    Line:
+                        width: 1.2
+                        rectangle: (self.x, self.y, self.width, self.height)
+
+                Label:
+                    markup: True
+                    text: "[u]Notifications[/u]"
+                    font_size: '20sp'
+                    color: utils.get_color_from_hex('#6BB562')
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint_y: None
+                    height: dp(30)
+
+                Widget:
+                    size_hint_y: 0.3
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: None, None
+                    spacing: dp(15)
+                    height: dp(44)
+                    width: dp(250)
+                    pos_hint: {'center_x': 0.5}
+
+                    Label:
+                        text: "Budget Alerts"
+                        font_size: '20sp'
+                        color: utils.get_color_from_hex('#6BB562')
+                        halign: 'left'
+                        valign: 'middle'
+                        text_size: self.size
+
+                    Switch:
+                        id: budget_toggle
+                        active: True
+                        size_hint: None, None
+                        size: dp(72), dp(36)
+                        pos_hint: {'center_y': 0.5}
+                        on_active: root.toggle_budget_alerts(self.active)
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: None, None
+                    spacing: dp(15)
+                    height: dp(44)
+                    width: dp(250)
+                    pos_hint: {'center_x': 0.5}
+
+                    Label:
+                        text: "Bill Reminders"
+                        font_size: '20sp'
+                        color: utils.get_color_from_hex('#6BB562')
+                        halign: 'left'
+                        valign: 'middle'
+                        text_size: self.size
+
+                    Switch:
+                        id: bill_toggle
+                        active: False
+                        size_hint: None, None
+                        size: dp(72), dp(36)
+                        pos_hint: {'center_y': 0.5}
+                        on_active: root.toggle_bill_reminders(self.active)
+                Widget:
+
+            # Data Management
+            BoxLayout:
+                orientation: 'vertical'
+                padding: [dp(20), dp(15), dp(20), dp(15)]
+                spacing: dp(20)
+
+                canvas.before:
+                    Color:
+                        rgba: utils.get_color_from_hex('#D7D7D7')
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                canvas.after:
+                    Color:
+                        rgba: utils.get_color_from_hex('#6BB562')
+                    Line:
+                        width: 1.2
+                        rectangle: (self.x, self.y, self.width, self.height)
+
+                Label:
+                    markup: True
+                    text: "[u]Data Management[/u]"
+                    font_size: '20sp'
+                    color: utils.get_color_from_hex('#6BB562')
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint_y: None
+                    height: dp(30)
+
+                AnchorLayout:
+                    anchor_x: 'center'
+                    anchor_y: 'center'
+                    size_hint_y: None
+                    height: dp(113)
+
+                    Button:
+                        text: "Clear Data"
+                        font_size: '18sp'
+                        size_hint: None, None
+                        size: dp(350), dp(44)
+                        background_normal: ''
+                        background_down: ''
+                        background_color: 0, 0, 0, 0
+                        color: utils.get_color_from_hex('#6BB562')
+                        text_size: self.size
+                        halign: 'center'
+                        valign: 'middle'
+                        canvas.before:
+                            Color:
+                                rgba: utils.get_color_from_hex('#abff80') if self.state == 'down' else utils.get_color_from_hex('#DAFFC8')
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [self.height / 2]
+                        canvas.after:
+                            Color:
+                                rgba: utils.get_color_from_hex('#6BB562')
+                            Line:
+                                width: dp(1)
+                                rounded_rectangle: (self.x, self.y, self.width, self.height, self.height / 2)
+                        on_release: root.clear_data()
+                Widget:
+
+            # Reset Defaults
+            BoxLayout:
+                orientation: 'vertical'
+                padding: [dp(20), dp(15), dp(20), dp(15)]
+                spacing: dp(14)
+
+                canvas.before:
+                    Color:
+                        rgba: utils.get_color_from_hex('#D7D7D7')
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                canvas.after:
+                    Color:
+                        rgba: utils.get_color_from_hex('#6BB562')
+                    Line:
+                        width: 1.2
+                        rectangle: (self.x, self.y, self.width, self.height)
+
+                Label:
+                    markup: True
+                    text: "[u]Reset Defaults[/u]"
+                    font_size: '20sp'
+                    color: utils.get_color_from_hex('#6BB562')
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint_y: None
+                    height: dp(30)
+
+                AnchorLayout:
+                    anchor_x: 'center'
+                    anchor_y: 'center'
+                    size_hint_y: None
+                    height: dp(113)
+
+                    Button:
+                        markup: True
+                        text: "Reset App Data                    [b]-->[/b]"
+                        font_size: '18sp'
+                        size_hint: None, None
+                        size: dp(350), dp(44)
+                        background_normal: ''
+                        background_down: ''
+                        background_color: 0, 0, 0, 0
+                        color: utils.get_color_from_hex('#6BB562')
+                        text_size: self.size
+                        halign: 'center'
+                        valign: 'middle'
+                        canvas.before:
+                            Color:
+                                rgba: utils.get_color_from_hex('#abff80') if self.state == 'down' else utils.get_color_from_hex('#DAFFC8')
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [self.height / 2]
+                        canvas.after:
+                            Color:
+                                rgba: utils.get_color_from_hex('#6BB562')
+                            Line:
+                                width: dp(1)
+                                rounded_rectangle: (self.x, self.y, self.width, self.height, self.height / 2)
+                        on_release: root.open_reset_app_data()
+                Widget:
+
+
+# Spinner option
+<SettingsSpinnerOption@SpinnerOption>:
+    background_normal: ''
+    background_color: utils.get_color_from_hex('#ffffff')
+    color: utils.get_color_from_hex('#656565')
+    font_size: '18sp'
+    height: dp(40)
+    size_hint_y: None

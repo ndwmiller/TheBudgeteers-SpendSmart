@@ -1,13 +1,1055 @@
 #:import utils kivy.utils
-# Write screen frontend here
+
+# Bill Element
+<BillElement@BoxLayout>:
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: dp(60)
+    padding: [dp(15), dp(10)]
+    spacing: dp(3)
+
+    # Outline and Background
+    canvas.before:
+        Color:
+            rgba: utils.get_color_from_hex('#6BB562')
+        Line:
+            width: dp(1.5)
+            rounded_rectangle: (self.x, self.y, self.width, self.height, dp(10))
+        
+        Color:
+            rgba: utils.get_color_from_hex('#D7D7D7')
+        RoundedRectangle:
+            pos: self.x + dp(1), self.y + dp(1)
+            size: self.width - dp(2), self.height - dp(2)
+            radius: [dp(10)]
+
+    # Trash Icon Button
+    Button:
+        size_hint: None, None
+        size: dp(25), dp(25)
+        pos_hint: {'center_y': .5}
+        background_color: 0, 0, 0, 0  # Makes button invisible
+        on_release: root.on_delete() # Deletes the bill
+
+        Image:
+            source: app.base_path + '/resources/Images/trash_icon.png'
+            center_x: self.parent.center_x
+            center_y: self.parent.center_y
+            size: dp(25), dp(25)
+            allow_stretch: True
+            keep_ratio: True
+    
+    # Name and Date
+    BoxLayout:
+        orientation: 'vertical'
+        pos_hint: {'center_y': .5}
+        size_hint_x: None
+        width: "130dp"
+        Label:
+            text: root.bill_amount
+            color: utils.get_color_from_hex('#6BB562')
+            font_size: '21sp'
+            halign: 'left'
+            valign: 'bottom'
+            text_size: self.size
+
+        Label:
+            text: root.bill_name
+            color: utils.get_color_from_hex('#6BB562')
+            font_size: '18sp'
+            halign: 'left'
+            valign: 'top'
+            text_size: self.size
+
+    # Bill Amount
+    Label:
+        pos_hint: { 'center_x': .5, 'center_y': .5 }
+        text: "$ " + root.bill_date
+        color: utils.get_color_from_hex('#6BB562')
+        font_size: '18sp'
+        halign: 'center'
+        valign: 'middle'
+        text_size: self.size
+        #size_hint_x: 0.2
+        size_hint_y: None
+        height: '30dp'
+
+        canvas.before:
+            Color:
+                rgba: utils.get_color_from_hex('#ffffff')
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # Green Outline
+        canvas.after:
+            Color: 
+                rgba: utils.get_color_from_hex('#6BB562')
+            Line:
+                width: 1.2
+                rectangle: (self.x, self.y, self.width, self.height)
+
+# Cat Element
+<CatElement@BoxLayout>:
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: dp(30)
+    padding: [dp(15), 0]
+    spacing: dp(20)
+    # Category Name
+    Label:
+        text: "• " + root.cat_name
+        pos_hint: {'center_y': .5}
+        color: utils.get_color_from_hex('#6BB562')
+        halign: 'left'
+        valign: 'middle'
+        text_size: self.size
+        font_size: '18sp'
+        size_hint_x: 0.5
+        size_hint_y: None
+        height: '30dp'
+
+    # Remaining Amount
+    Label:
+        pos_hint: { 'center_x': .5, 'center_y': .5 }
+        text: "$ " + root.cat_amount
+        color: utils.get_color_from_hex('#6BB562')
+        font_size: '18sp'
+        halign: 'center'
+        valign: 'middle'
+        text_size: self.size
+        size_hint_x: 0.4
+        size_hint_y: None
+        height: '30dp'
+
+        canvas.before:
+            Color:
+                rgba: utils.get_color_from_hex('#ffffff')
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # Green Outline
+        canvas.after:
+            Color: 
+                rgba: utils.get_color_from_hex('#6BB562')
+            Line:
+                width: 1.2
+                rectangle: (self.x, self.y, self.width, self.height)
+
 <DashboardScreen>:
     BoxLayout:
         orientation: 'vertical'
-        padding: (10)
+        padding: [118, 40, 118, 40]
 
+        # balance overview
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: '130dp'
+
+            # balance
+            BoxLayout:
+                orientation: 'vertical'
+
+                Label:
+                    text: "Remaining Balance"
+                    font_size: '20sp'
+                    color: utils.get_color_from_hex('#656565')
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint: None, None
+                    width: '220dp'
+                    height: '30dp'
+
+                    canvas.before:
+                        Color:
+                            rgba: utils.get_color_from_hex('#D7D7D7')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    # Green Outline
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+                # Remaining Balance Amount
+                Label:
+                    text: "$ " + root.big_total()
+                    bold: True
+                    font_size: '34sp'
+                    color: utils.get_color_from_hex('#6BB562')
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+
+                    canvas.before:
+                        Color:
+                            rgba: utils.get_color_from_hex('#D7D7D7')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    # Green Outline
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+            # income
+            BoxLayout:
+                orientation: 'vertical'
+
+                Label:
+                    text: "Monthly Income"
+                    font_size: '20sp'
+                    color: utils.get_color_from_hex('#656565')
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint: None, None
+                    width: '220dp'
+                    height: '30dp'
+
+                    canvas.before:
+                        Color:
+                            rgba: utils.get_color_from_hex('#D7D7D7')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    # Green Outline
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+                # Monthly Income Amount
+                Label:
+                    text: "$ " + root.monthly_income()
+
+                    bold: True
+                    font_size: '34sp'
+                    color: utils.get_color_from_hex('#6BB562')
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+
+                    canvas.before:
+                        Color:
+                            rgba: utils.get_color_from_hex('#D7D7D7')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    # Green Outline
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+            # expenses
+            BoxLayout:
+                orientation: 'vertical'
+
+                Label:
+                    text: "Monthly Expenses"
+                    font_size: '20sp'
+                    color: utils.get_color_from_hex('#656565')
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint: None, None
+                    width: '220dp'
+                    height: '30dp'
+
+                    canvas.before:
+                        Color:
+                            rgba: utils.get_color_from_hex('#D7D7D7')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    # Green Outline
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+                # Monthly Expenses Amount
+                Label:
+                    text: "$ " + root.monthly_expenses()
+
+                    bold: True
+                    font_size: '34sp'
+                    color: utils.get_color_from_hex('#6BB562')
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+
+                    canvas.before:
+                        Color:
+                            rgba: utils.get_color_from_hex('#D7D7D7')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    # Green Outline
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+        Widget:
+            size_hint_y: None
+            height: '40dp'
+
+        # the bottom half of it
+        BoxLayout:
+            orientation: 'horizontal'
+
+            # Upcoming bills layout
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.335
+
+                Label:
+                    text: "Upcoming Bills"
+                    font_size: '20sp'
+                    color: utils.get_color_from_hex('#656565')
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint: None, None
+                    width: '180dp'
+                    height: '30dp'
+
+                    canvas.before:
+                        Color:
+                            rgba: utils.get_color_from_hex('#D7D7D7')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    # Green Outline
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+                # Upcoming bills container
+                BoxLayout:
+                    orientation: 'vertical'
+                    padding: [20]
+                    canvas.before:
+                        Color:
+                            rgba: utils.get_color_from_hex('#D7D7D7')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    # Green Outline
+                    canvas.after:
+                        Color: 
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: 1.2
+                            rectangle: (self.x, self.y, self.width, self.height)
+                    
+                    # scrollable area
+                    ScrollView:
+                        do_scroll_x: False
+                        do_scroll_y: True
+                        
+                        BoxLayout:
+                            id: bill_container
+                            orientation: 'vertical'
+                            size_hint_y: None
+                            height: self.minimum_height
+                            spacing: dp(10)
+                            padding: dp(10)
+
+                    # Add button
+                    BoxLayout:
+                        size_hint_x: 0.4
+                        size_hint_y: None
+                        height: "30dp"
+                        pos_hint: { 'center_x': .5, 'center_y': .5 }
+                        Button:
+                            pos_hint: { 'center_x': .5, 'center_y': .5 }
+                            background_normal: ''
+                            background_down: ''
+                            background_color: utils.get_color_from_hex('#abff80') if self.state == 'down' else utils.get_color_from_hex('#DAFFC8')
+                            color: utils.get_color_from_hex('#6BB562')
+                            font_size: '18sp'
+                            
+                            size_hint_y: None
+                            height: '30dp'
+                            text_size: self.size
+                            halign: 'center'
+                            valign: 'middle'
+                            
+                            canvas.after:
+                                Color: 
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
+                            text: "Add"
+                            on_release: root.trigger_add_bill() # Will call the popup widget
+
+            # Budget | Categories | Analytics
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.665
+
+                # Budget | Categories
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_y: 1.1
+
+                    # Monthly budget
+                    BoxLayout:
+                        orientation: 'vertical'
+                        size_hint_x: 0.3
+
+                        Label:
+                            text: "Monthly Budget"
+                            font_size: '20sp'
+                            color: utils.get_color_from_hex('#656565')
+                            halign: 'center'
+                            valign: 'middle'
+                            text_size: self.size
+                            size_hint: None, None
+                            width: '180dp'
+                            height: '30dp'
+
+                            canvas.before:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+
+                            # Green Outline
+                            canvas.after:
+                                Color: 
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
+
+                        Label:
+                            text: "$ " + root.monthly_budget()
+
+                            bold: True
+                            font_size: '28sp'
+                            color: utils.get_color_from_hex('#6BB562')
+                            halign: 'center'
+                            valign: 'middle'
+                            text_size: self.size
+
+                            canvas.before:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+
+                            # Green Outline
+                            canvas.after:
+                                Color: 
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
+
+                    # Categories Layout
+                    BoxLayout:
+                        orientation: 'vertical'
+                        size_hint_x: 0.7
+
+                        Label:
+                            text: "Budget Categories"
+                            font_size: '20sp'
+                            color: utils.get_color_from_hex('#656565')
+                            halign: 'center'
+                            valign: 'middle'
+                            text_size: self.size
+                            size_hint: None, None
+                            width: '220dp'
+                            height: '30dp'
+
+                            canvas.before:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+
+                            # Green Outline
+                            canvas.after:
+                                Color: 
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
+
+                        # Categories container
+                        BoxLayout:
+                            orientation: 'vertical'
+                            padding: [50, 3, 50, 3]
+                            size_hint_y: None
+                            height: dp(201.5)
+                            #spacing: dp(5)
+
+                            canvas.before:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+
+                            # Green Outline
+                            canvas.after:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
+
+                            # Remaining Header
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                size_hint_y: None
+                                height: '30dp'
+
+                                Widget:
+                                    size_hint_x: None
+                                    width: dp(250)
+
+                                Label:
+                                    markup: True
+                                    text: "[u]Remaining[/u]"
+                                    font_size: '18sp'
+                                    color: utils.get_color_from_hex('#6BB562')
+                                    halign: 'center'
+                                    valign: 'middle'
+                                    text_size: self.size
+                                    size_hint_y: None
+                                    height: '25dp'
+
+                            BoxLayout:
+                                orientation: 'vertical'
+                                id: cat_container
+                                size_hint_y: None
+                                height: self.minimum_height
+                                spacing: dp(5)
+
+                            Widget:
+                                size_hint_y: 1
+
+                # Analytics layout
+                BoxLayout:
+                    orientation: 'horizontal'
+
+                    # This week layout
+                    BoxLayout:
+                        orientation: 'vertical'
+
+                        # Avg expenses
+                        BoxLayout:
+                            orientation: 'vertical'
+                            padding: [15, 5, 10, 35]
+                            size_hint_y: 0.65
+                            canvas.before:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+
+                            # Green Outline
+                            canvas.after:
+                                Color: 
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
+
+                            # This week header
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                size_hint_y: None
+                                height: '30dp'
+
+                                Label:
+                                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                                    markup: True
+                                    text: "[u]This Week[/u]"
+                                    font_size: '18sp'
+                                    color: utils.get_color_from_hex('#6BB562')
+                                    halign: 'left'
+                                    valign: 'middle'
+                                    text_size: self.size
+                                    size_hint_x: 0.35
+                                    size_hint_y: None
+                                    height: '30dp'
+                                Widget:
+                            
+                            # Avg Day Expenses Row
+                            BoxLayout:
+                                orientation: 'horizontal'
+
+                                # Avg Day Expenses Text
+                                Label:
+                                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                                    text: "Avg. Day Expenses:"
+                                    font_size: '18sp'
+                                    color: utils.get_color_from_hex('#6BB562')
+                                    halign: 'left'
+                                    valign: 'middle'
+                                    text_size: self.size
+                                    size_hint_x: 0.35
+                                    size_hint_y: None
+                                    height: '30dp'
+
+                                # Avg Day Expenses Amount
+                                Label:
+                                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                                    text: "$ " + root.day_expenses_this_week()
+                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
+                                    font_size: '18sp'
+                                    halign: 'center'
+                                    valign: 'middle'
+                                    text_size: self.size
+                                    size_hint_x: 0.2
+                                    size_hint_y: None
+                                    height: '30dp'
+
+                                    canvas.before:
+                                        Color:
+                                            rgba: utils.get_color_from_hex('#ffffff')
+                                        Rectangle:
+                                            pos: self.pos
+                                            size: self.size
+
+                                    # Green Outline
+                                    canvas.after:
+                                        Color: 
+                                            rgba: utils.get_color_from_hex('#6BB562')
+                                        Line:
+                                            width: 1.2
+                                            rectangle: (self.x, self.y, self.width, self.height)
+
+                            # Week Expenses Row
+                            BoxLayout:
+                                orientation: 'horizontal'
+
+                                # Week Expenses Text
+                                Label:
+                                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                                    text: "Weekly Expenses:"
+                                    font_size: '18sp'
+                                    color: utils.get_color_from_hex('#6BB562')
+                                    halign: 'left'
+                                    valign: 'middle'
+                                    text_size: self.size
+                                    size_hint_x: 0.35
+                                    size_hint_y: None
+                                    height: '30dp'
+
+                                # Week Expenses Amount
+                                Label:
+                                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                                    text: "$ " + root.week_expenses_this_week()
+
+                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
+                                    font_size: '18sp'
+                                    halign: 'center'
+                                    valign: 'middle'
+                                    text_size: self.size
+                                    size_hint_x: 0.2
+                                    size_hint_y: None
+                                    height: '30dp'
+
+                                    canvas.before:
+                                        Color:
+                                            rgba: utils.get_color_from_hex('#ffffff')
+                                        Rectangle:
+                                            pos: self.pos
+                                            size: self.size
+
+                                    # Green Outline
+                                    canvas.after:
+                                        Color: 
+                                            rgba: utils.get_color_from_hex('#6BB562')
+                                        Line:
+                                            width: 1.2
+                                            rectangle: (self.x, self.y, self.width, self.height)
+
+                        # Highest cat layout
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            size_hint_y: 0.35
+                            padding: [15, 10, 10, 10]
+                            canvas.before:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+
+                            # Green Outline
+                            canvas.after:
+                                Color: 
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
+
+                            # Highest Spending Cat
+                            Label:
+                                pos_hint: { 'center_x': .5, 'center_y': .5 }
+                                text: root.high_cat_name_this_week()
+
+                                font_size: '18sp'
+                                color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
+                                halign: 'left'
+                                valign: 'middle'
+                                text_size: self.size
+                                size_hint_x: 0.35
+                                size_hint_y: None
+                                height: '30dp'
+
+                            # Highest Spending Amount
+                            Label:
+                                pos_hint: { 'center_x': .5, 'center_y': .5 }
+                                text: "$ " + root.high_cat_amount_this_week()
+
+                                color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
+                                font_size: '18sp'
+                                halign: 'center'
+                                valign: 'middle'
+                                text_size: self.size
+                                size_hint_x: 0.2
+                                size_hint_y: None
+                                height: '30dp'
+
+                                canvas.before:
+                                    Color:
+                                        rgba: utils.get_color_from_hex('#ffffff')
+                                    Rectangle:
+                                        pos: self.pos
+                                        size: self.size
+
+                                # Green Outline
+                                canvas.after:
+                                    Color:
+                                        rgba: utils.get_color_from_hex('#6BB562')
+                                    Line:
+                                        width: 1.2
+                                        rectangle: (self.x, self.y, self.width, self.height)
+
+                    # Last week layout
+                    BoxLayout:
+                        orientation: 'vertical'
+
+                        # Avg expenses
+                        BoxLayout:
+                            orientation: 'vertical'
+                            padding: [15, 5, 10, 35]
+                            size_hint_y: 0.65
+                            canvas.before:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+
+                            # Green Outline
+                            canvas.after:
+                                Color: 
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
+
+                            # Last week header
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                size_hint_y: None
+                                height: '30dp'
+
+                                Label:
+                                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                                    markup: True
+                                    text: "[u]Last Week[/u]"
+                                    font_size: '18sp'
+                                    color: utils.get_color_from_hex('#6BB562')
+                                    halign: 'left'
+                                    valign: 'middle'
+                                    text_size: self.size
+                                    size_hint_x: 0.35
+                                    size_hint_y: None
+                                    height: '30dp'
+                                Widget:
+                            
+                            # Avg Day Expenses Row
+                            BoxLayout:
+                                orientation: 'horizontal'
+
+                                # Avg Day Expenses Text
+                                Label:
+                                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                                    text: "Avg. Day Expenses:"
+                                    font_size: '18sp'
+                                    color: utils.get_color_from_hex('#6BB562')
+                                    halign: 'left'
+                                    valign: 'middle'
+                                    text_size: self.size
+                                    size_hint_x: 0.35
+                                    size_hint_y: None
+                                    height: '30dp'
+
+                                # Avg Day Expenses Amount
+                                Label:
+                                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                                    text: "$ " + root.day_expenses_last_week()
+
+                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
+                                    font_size: '18sp'
+                                    halign: 'center'
+                                    valign: 'middle'
+                                    text_size: self.size
+                                    size_hint_x: 0.2
+                                    size_hint_y: None
+                                    height: '30dp'
+
+                                    canvas.before:
+                                        Color:
+                                            rgba: utils.get_color_from_hex('#ffffff')
+                                        Rectangle:
+                                            pos: self.pos
+                                            size: self.size
+
+                                    # Green Outline
+                                    canvas.after:
+                                        Color: 
+                                            rgba: utils.get_color_from_hex('#6BB562')
+                                        Line:
+                                            width: 1.2
+                                            rectangle: (self.x, self.y, self.width, self.height)
+
+                            # Week Expenses Row
+                            BoxLayout:
+                                orientation: 'horizontal'
+
+                                # Week Expenses Text
+                                Label:
+                                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                                    text: "Weely Expenses:"
+                                    font_size: '18sp'
+                                    color: utils.get_color_from_hex('#6BB562')
+                                    halign: 'left'
+                                    valign: 'middle'
+                                    text_size: self.size
+                                    size_hint_x: 0.35
+                                    size_hint_y: None
+                                    height: '30dp'
+
+                                # Week Expenses Amount
+                                Label:
+                                    pos_hint: { 'center_x': .5, 'center_y': .5 }
+                                    text: "$ " + root.week_expenses_last_week()
+
+                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
+                                    font_size: '18sp'
+                                    halign: 'center'
+                                    valign: 'middle'
+                                    text_size: self.size
+                                    size_hint_x: 0.2
+                                    size_hint_y: None
+                                    height: '30dp'
+
+                                    canvas.before:
+                                        Color:
+                                            rgba: utils.get_color_from_hex('#ffffff')
+                                        Rectangle:
+                                            pos: self.pos
+                                            size: self.size
+
+                                    # Green Outline
+                                    canvas.after:
+                                        Color: 
+                                            rgba: utils.get_color_from_hex('#6BB562')
+                                        Line:
+                                            width: 1.2
+                                            rectangle: (self.x, self.y, self.width, self.height)
+
+                        # Highest cat layout
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            size_hint_y: 0.35
+                            padding: [15, 10, 10, 10]
+                            canvas.before:
+                                Color:
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+
+                            # Green Outline
+                            canvas.after:
+                                Color: 
+                                    rgba: utils.get_color_from_hex('#6BB562')
+                                Line:
+                                    width: 1.2
+                                    rectangle: (self.x, self.y, self.width, self.height)
+
+                            # Highest Spending Cat
+                            Label:
+                                pos_hint: { 'center_x': .5, 'center_y': .5 }
+                                text: root.high_cat_name_last_week()
+
+                                font_size: '18sp'
+                                color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
+                                halign: 'left'
+                                valign: 'middle'
+                                text_size: self.size
+                                size_hint_x: 0.35
+                                size_hint_y: None
+                                height: '30dp'
+
+                            # Highest Spending Amount
+                            Label:
+                                pos_hint: { 'center_x': .5, 'center_y': .5 }
+                                text: "$ " + root.high_cat_amount_last_week()
+
+                                color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
+                                font_size: '18sp'
+                                halign: 'center'
+                                valign: 'middle'
+                                text_size: self.size
+                                size_hint_x: 0.2
+                                size_hint_y: None
+                                height: '30dp'
+
+                                canvas.before:
+                                    Color:
+                                        rgba: utils.get_color_from_hex('#ffffff')
+                                    Rectangle:
+                                        pos: self.pos
+                                        size: self.size
+
+                                # Green Outline
+                                canvas.after:
+                                    Color:
+                                        rgba: utils.get_color_from_hex('#6BB562')
+                                    Line:
+                                        width: 1.2
+                                        rectangle: (self.x, self.y, self.width, self.height)
+    # Floating Labels
+    FloatLayout:
+        pos_hint: { 'center_x': .5, 'center_y': .5 }
+
+        # Analytics label        
         Label:
-            text: "Dashboard"
-            color: (0, 0, 0, 1)
-            font_size: "40sp"
-            size_hint: (1, None)
-            height: 100
+            pos_hint: { 'center_x': .394, 'center_y': .379 }
+            text: "Analytics"
+            font_size: '20sp'
+            color: utils.get_color_from_hex('#656565')
+            halign: 'center'
+            valign: 'middle'
+            text_size: self.size
+            size_hint: None, None
+            width: '100dp'
+            height: '30dp'
+
+            canvas.before:
+                Color:
+                    rgba: utils.get_color_from_hex('#D7D7D7')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            # Green Outline
+            canvas.after:
+                Color: 
+                    rgba: utils.get_color_from_hex('#6BB562')
+                Line:
+                    width: 1.2
+                    rectangle: (self.x, self.y, self.width, self.height)
+
+        # Highest Spending Label This Week
+        Label:
+            pos_hint: { 'center_x': .41, 'center_y': .166 }
+            text: "Highest Spending"
+            font_size: '16sp'
+            color: utils.get_color_from_hex('#656565')
+            halign: 'center'
+            valign: 'middle'
+            text_size: self.size
+            size_hint: None, None
+            width: '140dp'
+            height: '20dp'
+
+            canvas.before:
+                Color:
+                    rgba: utils.get_color_from_hex('#D7D7D7')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            # Green Outline
+            canvas.after:
+                Color: 
+                    rgba: utils.get_color_from_hex('#6BB562')
+                Line:
+                    width: 1.2
+                    rectangle: (self.x, self.y, self.width, self.height)
+
+        # Highest Spending Label Last Week
+        Label:
+            pos_hint: { 'center_x': .702, 'center_y': .166 }
+            text: "Highest Spending"
+            font_size: '16sp'
+            color: utils.get_color_from_hex('#656565')
+            halign: 'center'
+            valign: 'middle'
+            text_size: self.size
+            size_hint: None, None
+            width: '140dp'
+            height: '20dp'
+
+            canvas.before:
+                Color:
+                    rgba: utils.get_color_from_hex('#D7D7D7')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            # Green Outline
+            canvas.after:
+                Color: 
+                    rgba: utils.get_color_from_hex('#6BB562')
+                Line:
+                    width: 1.2
+                    rectangle: (self.x, self.y, self.width, self.height)
