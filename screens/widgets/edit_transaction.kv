@@ -1,171 +1,255 @@
+#:import utils kivy.utils
 #:import dp kivy.metrics.dp
 
 <SpinnerOption@Button>:
     background_normal: ""
     background_down: ""
-    background_color: 1,1,1,1
-    color: 0.2,0.2,0.2,1
-
-    canvas.before:
-        Color:
-            rgba: 0.42, 0.72, 0.38, 1
-        Line:
-            rectangle: (self.x, self.y, self.width, self.height)
+    background_color: utils.get_color_from_hex("#ffffff")
+    color: utils.get_color_from_hex("#656565")
+    font_size: "16sp"
 
 <EditTransaction>:
-    title: ""
-    separator_height: 0
     size_hint: None, None
-    size: dp(560), dp(520)
+    size: dp(350), dp(430)
     auto_dismiss: True
     background: ""
-    background_color: 0, 0, 0, 0
+    background_color: [0, 0, 0, 0]
+    title: ""
+    title_size: 0
+    separator_height: 0
 
-    FloatLayout:
-        canvas.before:
-            Color:
-                rgba: 0, 0, 0, 0.35
-            Rectangle:
-                pos: self.pos
-                size: self.size
+    BoxLayout:
+        orientation: "vertical"
 
-        BoxLayout:
-            orientation: "vertical"
+        Label:
+            text: "Edit Transaction"
+            font_size: "20sp"
+            color: utils.get_color_from_hex("#656565")
+            halign: "center"
+            valign: "middle"
+            text_size: self.size
             size_hint: None, None
-            size: dp(500), dp(440)
-            pos_hint: {"center_x": 0.5, "center_y": 0.42}
+            width: dp(220)
+            height: dp(35)
+            pos_hint: {"center_x": 0.5}
 
             canvas.before:
                 Color:
-                    rgba: 0.95, 0.95, 0.95, 1
+                    rgba: utils.get_color_from_hex("#D7D7D7")
                 RoundedRectangle:
                     pos: self.pos
                     size: self.size
-                    radius: [18]
+                    radius: (dp(15), dp(15), 0, 0)
+
+            canvas.after:
                 Color:
-                    rgba: 0.42, 0.72, 0.38, 1
+                    rgba: utils.get_color_from_hex("#6BB562")
                 Line:
-                    rounded_rectangle: (self.x, self.y, self.width, self.height, 18)
-                    width: 1.6
+                    width: dp(1.3)
+                    rounded_rectangle: (self.x, self.y, self.width, self.height, dp(15), dp(15), 0, 0)
 
-            Widget:
+        BoxLayout:
+            orientation: "vertical"
+            padding: dp(20)
+            spacing: dp(15)
+
+            canvas.before:
+                Color:
+                    rgba: utils.get_color_from_hex("#D7D7D7")
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [dp(15)]
+
+            canvas.after:
+                Color:
+                    rgba: utils.get_color_from_hex("#6BB562")
+                Line:
+                    width: dp(1.3)
+                    rounded_rectangle: (self.x, self.y, self.width, self.height, dp(15))
+
+            BoxLayout:
                 size_hint_y: None
-                height: dp(95)
-
-            GridLayout:
-                cols: 2
-                size_hint: None, None
-                size: dp(400), dp(240)
-                pos_hint: {"center_x": 0.5}
-                spacing: dp(16)
-
-                Label:
-                    text: "Date:"
-                    color: 0.42, 0.72, 0.38, 1
-
-                TextInput:
-                    id: date_input
-                    multiline: False
-                    hint_text: "MM/DD/YYYY"
-                    background_normal: ""
-                    background_color: 1,1,1,1
-                    padding: dp(10), dp(12)
-
-                    canvas.before:
-                        Color:
-                            rgba: 0.42,0.72,0.38,1
-                        Line:
-                            rectangle: (self.x,self.y,self.width,self.height)
+                height: dp(40)
 
                 Label:
                     text: "Name:"
-                    color: 0.42, 0.72, 0.38, 1
+                    font_size: "18sp"
+                    color: utils.get_color_from_hex("#6BB562")
+                    halign: "left"
+                    valign: "middle"
+                    text_size: self.size
+                    size_hint_x: None
+                    width: dp(120)
 
                 TextInput:
                     id: name_input
                     multiline: False
-                    hint_text: "Name"
                     background_normal: ""
-                    background_color: 1,1,1,1
-                    padding: dp(10), dp(12)
+                    background_active: ""
+                    padding_y: [self.height / 2.0 - (self.line_height / 2.0), 0]
+                    on_text: root.clear_error()
 
-                    canvas.before:
+                    canvas.after:
                         Color:
-                            rgba: 0.42,0.72,0.38,1
+                            rgba: utils.get_color_from_hex("#6BB562")
                         Line:
-                            rectangle: (self.x,self.y,self.width,self.height)
+                            width: dp(1.3)
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+            BoxLayout:
+                size_hint_y: None
+                height: dp(40)
+
+                Label:
+                    text: "Amount:"
+                    font_size: "18sp"
+                    color: utils.get_color_from_hex("#6BB562")
+                    halign: "left"
+                    valign: "middle"
+                    text_size: self.size
+                    size_hint_x: None
+                    width: dp(120)
+
+                BoxLayout:
+                    orientation: "horizontal"
+
+                    canvas.after:
+                        Color:
+                            rgba: utils.get_color_from_hex("#6BB562")
+                        Line:
+                            width: dp(1.3)
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+                    Label:
+                        text: "$"
+                        font_size: "18sp"
+                        color: utils.get_color_from_hex("#6BB562")
+                        size_hint_x: None
+                        width: dp(22)
+
+                    TextInput:
+                        id: amount_input
+                        multiline: False
+                        input_filter: "float"
+                        background_normal: ""
+                        background_active: ""
+                        padding_y: [self.height / 2.0 - (self.line_height / 2.0), 0]
+                        on_text: root.clear_error()
+
+            BoxLayout:
+                size_hint_y: None
+                height: dp(40)
+
+                Label:
+                    text: "Date:"
+                    font_size: "18sp"
+                    color: utils.get_color_from_hex("#6BB562")
+                    halign: "left"
+                    valign: "middle"
+                    text_size: self.size
+                    size_hint_x: None
+                    width: dp(120)
+
+                DateInput:
+                    id: date_input
+                    multiline: False
+                    background_normal: ""
+                    background_active: ""
+                    padding_y: [self.height / 2.0 - (self.line_height / 2.0), 0]
+                    on_text: root.clear_error()
+
+                    canvas.after:
+                        Color:
+                            rgba: utils.get_color_from_hex("#6BB562")
+                        Line:
+                            width: dp(1.3)
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+            BoxLayout:
+                size_hint_y: None
+                height: dp(40)
 
                 Label:
                     text: "Category:"
-                    color: 0.42, 0.72, 0.38, 1
+                    font_size: "18sp"
+                    color: utils.get_color_from_hex("#6BB562")
+                    halign: "left"
+                    valign: "middle"
+                    text_size: self.size
+                    size_hint_x: None
+                    width: dp(120)
 
                 Spinner:
                     id: category_spinner
                     text: "Category"
                     values: []
-                    option_cls: 'SpinnerOption'
+                    option_cls: "SpinnerOption"
                     background_normal: ""
                     background_down: ""
-                    background_color: 1, 1, 1, 1
-                    color: 0.2, 0.2, 0.2, 1
+                    background_color: utils.get_color_from_hex("#ffffff")
+                    color: utils.get_color_from_hex("#656565")
+                    font_size: "16sp"
+                    on_text: root.clear_error()
 
-                    canvas.before:
+                    canvas.after:
                         Color:
-                            rgba: 0.42, 0.72, 0.38, 1
+                            rgba: utils.get_color_from_hex("#6BB562")
                         Line:
+                            width: dp(1.3)
                             rectangle: (self.x, self.y, self.width, self.height)
 
-                Label:
-                    text: "Amount:"
-                    color: 0.42, 0.72, 0.38, 1
-
-                TextInput:
-                    id: amount_input
-                    multiline: False
-                    hint_text: "0.00"
-                    input_filter: "float"
-                    background_normal: ""
-                    background_color: 1,1,1,1
-                    padding: dp(10), dp(12)
-
-                    canvas.before:
-                        Color:
-                            rgba: 0.42,0.72,0.38,1
-                        Line:
-                            rectangle: (self.x,self.y,self.width,self.height)
+            Label:
+                id: error_label
+                text: ""
+                color: utils.get_color_from_hex("#e44949")
+                font_size: "14sp"
+                size_hint_y: None
+                height: dp(20) if self.text else 0
+                halign: "center"
 
             Widget:
 
             BoxLayout:
                 size_hint_y: None
-                height: dp(70)
-                padding: dp(25), dp(15)
-                spacing: dp(15)
+                height: dp(50)
+                spacing: dp(10)
+                padding: [0, dp(10), 0, 0]
 
                 Button:
                     text: "Cancel"
                     background_normal: ""
-                    background_color: 0.95,0.95,0.95,1
-                    color: 0.42,0.72,0.38,1
+                    background_down: ""
+                    background_color: utils.get_color_from_hex("#d7d7d7") if self.state == "down" else utils.get_color_from_hex("#ffffff")
+                    color: utils.get_color_from_hex("#6BB562")
+                    font_size: "18sp"
+                    size_hint_y: None
+                    height: dp(30)
                     on_release: root.dismiss()
 
-                    canvas.before:
+                    canvas.after:
                         Color:
-                            rgba: 0.42,0.72,0.38,1
+                            rgba: utils.get_color_from_hex("#6BB562")
                         Line:
-                            rectangle: (self.x,self.y,self.width,self.height)
+                            width: dp(1.3)
+                            rectangle: (self.x, self.y, self.width, self.height)
 
                 Button:
                     text: "Save"
                     background_normal: ""
-                    background_color: 0.83,0.96,0.77,1
-                    color: 0.42,0.72,0.38,1
-                    on_release: root.save_transaction()
+                    background_down: ""
+                    background_color: utils.get_color_from_hex("#abff80") if self.state == "down" else utils.get_color_from_hex("#DAFFC8")
+                    color: utils.get_color_from_hex("#6BB562")
+                    font_size: "18sp"
+                    size_hint_y: None
+                    height: dp(30)
+                    on_release: root.validate_and_submit()
 
-                    canvas.before:
+                    canvas.after:
                         Color:
-                            rgba: 0.42,0.72,0.38,1
+                            rgba: utils.get_color_from_hex("#6BB562")
                         Line:
+<<<<<<< Updated upstream
                             rectangle: (self.x,self.y,self.width,self.height)
 
         BoxLayout:
@@ -189,3 +273,7 @@
                 text: "Edit Transaction"
                 font_size: "20sp"
                 color: 0.2,0.2,0.2,1
+=======
+                            width: dp(1.3)
+                            rectangle: (self.x, self.y, self.width, self.height)
+>>>>>>> Stashed changes
