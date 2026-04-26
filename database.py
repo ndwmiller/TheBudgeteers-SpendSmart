@@ -60,7 +60,7 @@ class Database:
     def fill_setstat(self):
         default_settings = [
         ('budget', '0'),
-        ('theme', 'dark'),
+        ('theme', 'light'),
         ('font', 'medium'),
         ('alerts', 'True'),
         ('reminders', 'False')
@@ -100,6 +100,10 @@ class Database:
         result = self.cursor.fetchone()
         # returns just the value string or None if not found
         return result[0] if result else None
+
+    def set_setting(self, key_name, value):
+        self.cursor.execute("UPDATE setstat SET value = ? WHERE key = ?", (value, key_name))
+        self.connection.commit()
 
     # returns row object. behaves like a dictionary (you can use keys) and a tuple (you can use index numbers)
     # -> {'id': int, 'name': str, 'percent': float}
@@ -339,27 +343,16 @@ class Database:
     # --budget--
     # only updates if value provided, else keep current
     def edit_monthly_budget(self, new_amount):
-        # get current
-        self.cursor.execute("SELECT name, percent FROM categories WHERE id = budget")
-        current = self.cursor.fetchone()
-
-        # new value if provided, else keep current
-        budget = new_amount if new_amount is not None else current[0]
-
-        self.cursor.execute("UPDATE settings SET value = ? WHERE key = ?", (budget, 'budget'))
-        self.connection.commit()
+        current = self.get_setting('budget')
+        budget = new_amount if new_amount is not None else current
+        self.set_setting('budget', str(budget))
 
     # --settings--
     # reusable func for toggle settings
     def _toggle_setting(self, key, option_a, option_b):
-        # get current
-        self.cursor.execute("SELECT value FROM settings WHERE key = ?", (key,))
-        current = self.cursor.fetchone()[0]
-
-        # swap current with other option
+        current = self.get_setting(key)
         new_val = option_b if current == option_a else option_a
-        self.cursor.execute("UPDATE settings SET value = ? WHERE key = ?", (new_val, key))
-        self.connection.commit()
+        self.set_setting(key, new_val)
 
     def swap_theme(self):
         self._toggle_setting('theme', 'dark', 'light')
@@ -371,8 +364,7 @@ class Database:
         self._toggle_setting('reminders', 'True', 'False')
 
     def change_font(self, new_font):
-        self.cursor.execute("UPDATE settings SET value = ? WHERE key = ?", (new_font, 'font'))
-        self.connection.commit()
+        self.set_setting('font', new_font)
 
     '''**DELETE FUNCTIONS**'''
     def delete_bill(self, id):
@@ -427,25 +419,23 @@ class Database:
     # restore default settings
     def restore_defaults(self):
         reset_values = [
-        ('dark', 'theme'),
+        ('0', 'budget'),
+        ('light', 'theme'),
         ('medium', 'font'),
         ('True', 'alerts'),
         ('False', 'reminders')
         ]
-
-        query = "UPDATE settings SET value = ? WHERE key = ?"
-        
-        self.cursor.executemany(query, reset_values)
-        self.connection.commit()
+        for value, key in reset_values:
+            self.set_setting(key, value)
     
     # clear all data and restore defaults
     def clear_data(self):
-        # Wipe tables
-        tables = ['transactions', 'bills', 'categories', 'goals', 'settings']
+        tables = ['transactions', 'bills', 'goals']
         for table in tables:
             self.cursor.execute(f"DELETE FROM {table}")
-        
-        # Re-fill the default settings
+        self.cursor.execute("DELETE FROM categories WHERE name NOT IN ('None', 'Income')")
+        self.cursor.execute("UPDATE categories SET percent = 0 WHERE name IN ('None', 'Income')")
         self.connection.commit()
         self.fill_setstat()
+        self.restore_defaults()
 

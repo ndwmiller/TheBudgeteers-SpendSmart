@@ -1,0 +1,116 @@
+#:import utils kivy.utils
+
+<ResetDefaults>:
+    size_hint: None, None
+    size: dp(400), dp(300)
+    auto_dismiss: True
+    background_color: [0, 0, 0, 0.2]
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            text: "Reset Defaults"
+            font_size: '20sp'
+            color: utils.get_color_from_hex('#656565')
+            halign: 'center'
+            valign: 'middle'
+            text_size: self.size
+            size_hint: None, None
+            width: dp(270)
+            height: dp(35)
+
+            canvas.before:
+                Color:
+                    rgba: utils.get_color_from_hex('#D7D7D7')
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: (dp(15), dp(15), 0, 0)
+
+            canvas.after:
+                Color:
+                    rgba: utils.get_color_from_hex('#6BB562')
+                Line:
+                    width: dp(1)
+                    rounded_rectangle: (self.x, self.y, self.width, self.height, dp(15), dp(15), 0, 0)
+
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(20)
+            spacing: dp(15)
+
+            canvas.before:
+                Color:
+                    rgba: utils.get_color_from_hex('#D7D7D7')
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [dp(15)]
+
+            canvas.after:
+                Color:
+                    rgba: utils.get_color_from_hex('#6BB562')
+                Line:
+                    width: dp(1)
+                    rounded_rectangle: (self.x, self.y, self.width, self.height, dp(15))
+
+            Label:
+                text: "Reset all settings to their default values?"
+                font_size: '18sp'
+                color: utils.get_color_from_hex('#6BB562')
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.size
+
+            Widget:
+                size_hint_y: 0.2
+
+            BoxLayout:
+                size_hint_y: None
+                height: dp(50)
+                spacing: dp(10)
+                padding: [0, dp(10), 0, 0]
+
+                Button:
+                    background_normal: ''
+                    background_down: ''
+                    background_color: utils.get_color_from_hex('#d7d7d7') if self.state == 'down' else utils.get_color_from_hex('#ffffff')
+                    color: utils.get_color_from_hex('#6BB562')
+                    font_size: '18sp'
+                    size_hint_y: None
+                    height: dp(30)
+                    text_size: self.size
+                    halign: 'center'
+                    valign: 'middle'
+                    text: "Cancel"
+                    on_release: root.dismiss()
+
+                    canvas.after:
+                        Color:
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: dp(1)
+                            rectangle: (self.x, self.y, self.width, self.height)
+
+                Button:
+                    background_normal: ''
+                    background_down: ''
+                    background_color: utils.get_color_from_hex('#abff80') if self.state == 'down' else utils.get_color_from_hex('#DAFFC8')
+                    color: utils.get_color_from_hex('#6BB562')
+                    font_size: '18sp'
+                    size_hint_y: None
+                    height: dp(30)
+                    text_size: self.size
+                    halign: 'center'
+                    valign: 'middle'
+                    text: "Confirm"
+                    on_release: root.submit_data()
+
+                    canvas.after:
+                        Color:
+                            rgba: utils.get_color_from_hex('#6BB562')
+                        Line:
+                            width: dp(1)
+                            rectangle: (self.x, self.y, self.width, self.height)

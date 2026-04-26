@@ -6,13 +6,17 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 from kivy.clock import Clock
 from kivy.properties import NumericProperty, StringProperty
+from kivy.uix.popup import Popup
+from kivy.uix.label import Label
 from database import Database
+from datetime import datetime, timedelta
 
 class DashboardScreen(Screen):
     # database access and loads saved bills
     def on_enter(self):
         self.app = App.get_running_app()
         Clock.schedule_once(lambda dt: self.refresh_dashboard()) # waits 1 frame for the ids to bind
+        Clock.schedule_once(lambda dt: self.maybe_show_notifications())
 
     class BillElement(BoxLayout):
         db_id = NumericProperty(0)
@@ -85,6 +89,45 @@ class DashboardScreen(Screen):
         self.refresh_dashboard()
         if not deleted:
             print(f"couldn't delete bill with id: {id}")
+
+    def maybe_show_notifications(self):
+        messages = []
+
+        if self.app.alerts_enabled:
+            budget = float(self.app.db.get_setting('budget') or 0)
+            expenses = float(self.app.db.get_expenses() or 0)
+            if budget > 0 and expenses > budget:
+                messages.append(
+                    f"Budget alert: this month's expenses (${expenses:.2f}) are over budget (${budget:.2f})."
+                )
+
+        if self.app.reminders_enabled:
+            today = datetime.now().date()
+            upcoming_cutoff = today + timedelta(days=7)
+            due_bills = []
+            for bill in self.app.db.get_all_bills():
+                try:
+                    due_date = datetime.strptime(str(bill[1]), "%Y-%m-%d").date()
+                except ValueError:
+                    continue
+                if today <= due_date <= upcoming_cutoff:
+                    due_bills.append(f"{bill[2]} ({due_date.strftime('%m/%d/%Y')})")
+
+            if due_bills:
+                messages.append("Upcoming bills: " + ", ".join(due_bills[:3]))
+
+        if messages:
+            Popup(
+                title="Notifications",
+                size_hint=(None, None),
+                size=(560, 220),
+                content=Label(
+                    text="\n\n".join(messages),
+                    halign='center',
+                    valign='middle',
+                    text_size=(520, None),
+                ),
+            ).open()
     
     def big_total(self):
         return f"{self.app.db.get_big_total():.2f}"
