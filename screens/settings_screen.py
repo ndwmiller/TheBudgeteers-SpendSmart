@@ -1,71 +1,31 @@
 from kivy.uix.screenmanager import Screen
 from kivy.app import App
-from kivy.lang import Builder
+from kivy.clock import Clock
 from kivy.properties import StringProperty
-import os
 
-# Load this screen's kv — same pattern as app_shell.py Builder.load_file()
-_kv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "settings_screen.kv")
-Builder.load_file(_kv_path)
+# DO NOT call Builder.load_file here.
+# app_shell.kv already has:  #:include screens/settings_screen.kv
+# Adding Builder.load_file too causes a double-load which silently
+# breaks ALL on_release / on_active callbacks — they fire but root
+# resolves to the wrong (duplicate) rule set and nothing happens.
 
-# Import AFTER Builder.load_file so change_password.kv is loaded
-# before ChangePassword() is ever instantiated (fixes the crash)
-from screens.widgets import ChangePassword
+from screens.widgets import ResetAppData, ResetDefaults
+from .settings_backend import SettingsBackend
 
 
-class SettingsScreen(Screen):
-    # database access so that you can use app.db.cursor.execute(...)
-    # def on_enter(self):
-    #     app = App.get_running_app()
+class SettingsScreen(Screen, SettingsBackend):
 
     current_theme = StringProperty('dark')
 
-    def set_theme(self, theme):
-        from kivy.core.window import Window
-        self.current_theme = theme
-        if theme == 'light':
-            Window.clearcolor = (0.8, 0.8, 0.8, 1)
-        else:
-            Window.clearcolor = (0.302, 0.302, 0.302, 1)
-        # app = App.get_running_app()
-        # app.db.cursor.execute("UPDATE settings SET theme=?", (theme,))
-        # app.db.connection.commit()
-
-    def set_font_size(self, size_name):
-        # app = App.get_running_app()
-        # app.db.cursor.execute("UPDATE settings SET font_size=?", (size_name,))
-        # app.db.connection.commit()
-        pass
-
-    def toggle_budget_alerts(self, active):
-        # app = App.get_running_app()
-        # app.db.cursor.execute("UPDATE settings SET budget_alerts=?", (int(active),))
-        # app.db.connection.commit()
-        pass
-
-    def toggle_bill_reminders(self, active):
-        # app = App.get_running_app()
-        # app.db.cursor.execute("UPDATE settings SET bill_reminders=?", (int(active),))
-        # app.db.connection.commit()
-        pass
-
-    def clear_data(self):
-        # app = App.get_running_app()
-        # app.db.cursor.execute("DELETE FROM transactions")
-        # app.db.cursor.execute("DELETE FROM budgets")
-        # app.db.connection.commit()
-        pass
-
-    def reset_defaults(self):
-        from kivy.core.window import Window
-        Window.clearcolor = (0.302, 0.302, 0.302, 1)
-        self.current_theme = 'dark'
-        self.ids.dark_mode_cb.active  = True
-        self.ids.light_mode_cb.active = False
-        self.ids.font_spinner.text    = 'Medium'
-        self.ids.budget_toggle.active = True
-        self.ids.bill_toggle.active   = False
+    def on_enter(self):
+        self.app = App.get_running_app()
+        Clock.schedule_once(lambda dt: self.load_settings_from_db())
 
     def open_reset_app_data(self):
-        popup = ChangePassword()
+        popup = ResetAppData()
+        popup.open()
+
+    def open_reset_defaults(self):
+        popup = ResetDefaults()
+        popup.callback = self.reset_defaults
         popup.open()

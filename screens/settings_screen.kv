@@ -20,7 +20,7 @@
 
                 canvas.before:
                     Color:
-                        rgba: utils.get_color_from_hex('#D7D7D7')
+                        rgba: utils.get_color_from_hex('#D7D7D7') if root.current_theme == 'light' else utils.get_color_from_hex('#4D4D4D')
                     Rectangle:
                         pos: self.pos
                         size: self.size
@@ -44,7 +44,7 @@
                     text: "Settings"
                     font_size: '22sp'
                     bold: True
-                    color: utils.get_color_from_hex('#656565')
+                    color: utils.get_color_from_hex('#656565') if root.current_theme == 'light' else utils.get_color_from_hex('#E6E6E6')
                     halign: 'left'
                     valign: 'middle'
                     text_size: self.size
@@ -64,7 +64,7 @@
 
                 canvas.before:
                     Color:
-                        rgba: utils.get_color_from_hex('#D7D7D7')
+                        rgba: utils.get_color_from_hex('#D7D7D7') if root.current_theme == 'light' else utils.get_color_from_hex('#4D4D4D')
                     Rectangle:
                         pos: self.pos
                         size: self.size
@@ -90,8 +90,8 @@
                 BoxLayout:
                     orientation: 'horizontal'
                     size_hint: None, None
-                    height: dp(40)
-                    width: dp(140)
+                    height: dp(60)
+                    width: dp(240)
                     pos_hint: {'center_x': 0.5}
                     spacing: dp(10)
 
@@ -111,12 +111,14 @@
                         halign: 'left'
                         valign: 'middle'
                         text_size: self.size
+                        shorten: True
+                        shorten_from: 'right'
 
                 BoxLayout:
                     orientation: 'horizontal'
                     size_hint: None, None
-                    height: dp(40)
-                    width: dp(140)
+                    height: dp(60)
+                    width: dp(240)
                     pos_hint: {'center_x': 0.5}
                     spacing: dp(10)
 
@@ -137,12 +139,14 @@
                         halign: 'left'
                         valign: 'middle'
                         text_size: self.size
+                        shorten: True
+                        shorten_from: 'right'
 
                 BoxLayout:
                     orientation: 'horizontal'
                     size_hint: None, None
-                    height: dp(40)
-                    width: dp(220)
+                    height: dp(60)
+                    width: dp(280)
                     pos_hint: {'center_x': 0.5}
                     spacing: dp(10)
 
@@ -154,18 +158,18 @@
                         valign: 'middle'
                         text_size: self.size
                         size_hint_x: None
-                        width: dp(90)
+                        width: dp(120)
 
                     Spinner:
                         id: font_spinner
                         text: 'Medium'
                         values: ['Small', 'Medium', 'Large']
                         size_hint: None, None
-                        size: dp(120), dp(34)
+                        size: dp(140), dp(42)
                         pos_hint: {'center_y': 0.5}
                         background_normal: ''
-                        background_color: utils.get_color_from_hex('#ffffff')
-                        color: utils.get_color_from_hex('#656565')
+                        background_color: utils.get_color_from_hex('#ffffff') if root.current_theme == 'light' else utils.get_color_from_hex('#3D3D3D')
+                        color: utils.get_color_from_hex('#656565') if root.current_theme == 'light' else utils.get_color_from_hex('#E6E6E6')
                         font_size: '18sp'
                         option_cls: 'SettingsSpinnerOption'
                         on_text: root.set_font_size(self.text)
@@ -186,7 +190,7 @@
 
                 canvas.before:
                     Color:
-                        rgba: utils.get_color_from_hex('#D7D7D7')
+                        rgba: utils.get_color_from_hex('#D7D7D7') if root.current_theme == 'light' else utils.get_color_from_hex('#4D4D4D')
                     Rectangle:
                         pos: self.pos
                         size: self.size
@@ -216,8 +220,8 @@
                     orientation: 'horizontal'
                     size_hint: None, None
                     spacing: dp(15)
-                    height: dp(44)
-                    width: dp(250)
+                    height: dp(56)
+                    width: dp(320)
                     pos_hint: {'center_x': 0.5}
 
                     Label:
@@ -240,8 +244,8 @@
                     orientation: 'horizontal'
                     size_hint: None, None
                     spacing: dp(15)
-                    height: dp(44)
-                    width: dp(250)
+                    height: dp(56)
+                    width: dp(320)
                     pos_hint: {'center_x': 0.5}
 
                     Label:
@@ -269,7 +273,7 @@
 
                 canvas.before:
                     Color:
-                        rgba: utils.get_color_from_hex('#D7D7D7')
+                        rgba: utils.get_color_from_hex('#D7D7D7') if root.current_theme == 'light' else utils.get_color_from_hex('#4D4D4D')
                     Rectangle:
                         pos: self.pos
                         size: self.size
@@ -302,7 +306,7 @@
                         text: "Clear Data"
                         font_size: '18sp'
                         size_hint: None, None
-                        size: dp(350), dp(44)
+                        size: dp(380), dp(52)
                         background_normal: ''
                         background_down: ''
                         background_color: 0, 0, 0, 0
@@ -334,7 +338,7 @@
 
                 canvas.before:
                     Color:
-                        rgba: utils.get_color_from_hex('#D7D7D7')
+                        rgba: utils.get_color_from_hex('#D7D7D7') if root.current_theme == 'light' else utils.get_color_from_hex('#4D4D4D')
                     Rectangle:
                         pos: self.pos
                         size: self.size
@@ -365,10 +369,10 @@
 
                     Button:
                         markup: True
-                        text: "Reset App Data                    [b]-->[/b]"
+                        text: "Reset Defaults"
                         font_size: '18sp'
                         size_hint: None, None
-                        size: dp(350), dp(44)
+                        size: dp(380), dp(52)
                         background_normal: ''
                         background_down: ''
                         background_color: 0, 0, 0, 0
@@ -389,15 +393,15 @@
                             Line:
                                 width: dp(1)
                                 rounded_rectangle: (self.x, self.y, self.width, self.height, self.height / 2)
-                        on_release: root.open_reset_app_data()
+                        on_release: root.open_reset_defaults()
                 Widget:
 
 
 # Spinner option
 <SettingsSpinnerOption@SpinnerOption>:
     background_normal: ''
-    background_color: utils.get_color_from_hex('#ffffff')
-    color: utils.get_color_from_hex('#656565')
+    background_color: utils.get_color_from_hex('#ffffff') if app.theme == 'light' else utils.get_color_from_hex('#3D3D3D')
+    color: utils.get_color_from_hex('#656565') if app.theme == 'light' else utils.get_color_from_hex('#E6E6E6')
     font_size: '18sp'
     height: dp(40)
     size_hint_y: None
