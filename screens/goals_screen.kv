@@ -1,5 +1,6 @@
 #:import utils kivy.utils
 #:import dp kivy.metrics.dp
+#:import DateInput screens.widgets.date_input.DateInput
 #:set BORDER utils.get_color_from_hex('#6BB562')
 #:set BG_LIGHT utils.get_color_from_hex('#D7D7D7')
 #:set TEXT_DARK utils.get_color_from_hex('#656565')
@@ -7,6 +8,110 @@
 #:set BTN_BG utils.get_color_from_hex('#CFFFC0')
 #:set TEXT_HINT utils.get_color_from_hex('#B7B7B7')
 #:set PROGRESS_BG utils.get_color_from_hex('#4D4D4D')
+
+<GoalRow>:
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: dp(39)
+    spacing: 0
+    canvas.before:
+        Color:
+            rgba: BORDER
+        Line:
+            width: 1.0
+            points: [self.x, self.top, self.right, self.top]
+
+    Label:
+        text: root.goal_name
+        color: TEXT_GREEN
+        font_size: '19sp'
+        halign: 'center'
+        valign: 'middle'
+        text_size: self.size
+        size_hint_x: 1.2
+        canvas.after:
+            Color:
+                rgba: BORDER
+            Line:
+                width: 1.2
+                points: [self.right, self.y, self.right, self.top]
+
+    Label:
+        text: root.goal_amount
+        color: TEXT_GREEN
+        font_size: '19sp'
+        halign: 'center'
+        valign: 'middle'
+        text_size: self.size
+        size_hint_x: 1.2
+        canvas.after:
+            Color:
+                rgba: BORDER
+            Line:
+                width: 1.2
+                points: [self.right, self.y, self.right, self.top]
+
+    Label:
+        text: root.goal_saved
+        color: TEXT_GREEN
+        font_size: '19sp'
+        halign: 'center'
+        valign: 'middle'
+        text_size: self.size
+        size_hint_x: 1.2
+        canvas.after:
+            Color:
+                rgba: BORDER
+            Line:
+                width: 1.2
+                points: [self.right, self.y, self.right, self.top]
+
+    Label:
+        text: root.goal_date
+        color: TEXT_GREEN
+        font_size: '19sp'
+        halign: 'center'
+        valign: 'middle'
+        text_size: self.size
+        size_hint_x: 1.2
+        canvas.after:
+            Color:
+                rgba: BORDER
+            Line:
+                width: 1.2
+                points: [self.right, self.y, self.right, self.top]
+
+    BoxLayout:
+        size_hint_x: 1.4
+        padding: [dp(10), dp(7), dp(10), dp(7)]
+        spacing: dp(5)
+        BoxLayout:
+            size_hint_x: 1
+            canvas.before:
+                Color:
+                    rgba: PROGRESS_BG
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                Color:
+                    rgba: BTN_BG
+                Rectangle:
+                    pos: self.pos
+                    size: [self.width * root.progress_ratio, self.height]
+                Color:
+                    rgba: BORDER
+                Line:
+                    width: 1.2
+                    rectangle: (self.x, self.y, self.width, self.height)
+        Label:
+            text: root.progress_text
+            color: TEXT_GREEN
+            font_size: '15sp'
+            size_hint_x: None
+            width: dp(34)
+            halign: 'left'
+            valign: 'middle'
+            text_size: self.size
 
 <GoalsScreen>:
     BoxLayout:
@@ -160,505 +265,12 @@
                     text_size: self.size
                     size_hint_x: 1.4
 
-            # Row 1
-            BoxLayout:
+            GridLayout:
+                id: goals_rows_grid
+                cols: 1
                 size_hint_y: None
-                height: dp(39)
+                height: dp(195)
                 spacing: 0
-                canvas.before:
-                    Color:
-                        rgba: BORDER
-                    Line:
-                        width: 1.0
-                        points: [self.x, self.top, self.right, self.top]
-
-                Label:
-                    text: '• Example'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                Label:
-                    text: '$ XXXX.XX'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                Label:
-                    text: '$ XXX.XX'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                Label:
-                    text: 'XX/XX/XXXX'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                BoxLayout:
-                    size_hint_x: 1.4
-                    padding: [dp(10), dp(7), dp(10), dp(7)]
-                    spacing: dp(5)
-                    BoxLayout:
-                        size_hint_x: 1
-                        canvas.before:
-                            Color:
-                                rgba: PROGRESS_BG
-                            Rectangle:
-                                pos: self.pos
-                                size: self.size
-                            Color:
-                                rgba: BTN_BG
-                            Rectangle:
-                                pos: self.pos
-                                size: [self.width * 0.58, self.height]
-                            Color:
-                                rgba: BORDER
-                            Line:
-                                width: 1.2
-                                rectangle: (self.x, self.y, self.width, self.height)
-                    Label:
-                        text: '%xx'
-                        color: TEXT_GREEN
-                        font_size: '15sp'
-                        size_hint_x: None
-                        width: dp(34)
-                        halign: 'left'
-                        valign: 'middle'
-                        text_size: self.size
-
-            # Row 2
-            BoxLayout:
-                size_hint_y: None
-                height: dp(39)
-                spacing: 0
-                canvas.before:
-                    Color:
-                        rgba: BORDER
-                    Line:
-                        width: 1.0
-                        points: [self.x, self.top, self.right, self.top]
-
-                Label:
-                    text: '• Example'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                Label:
-                    text: '$ XXXX.XX'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                Label:
-                    text: '$ XXX.XX'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                Label:
-                    text: 'XX/XX/XXXX'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                BoxLayout:
-                    size_hint_x: 1.4
-                    padding: [dp(10), dp(7), dp(10), dp(7)]
-                    spacing: dp(5)
-                    BoxLayout:
-                        size_hint_x: 1
-                        canvas.before:
-                            Color:
-                                rgba: PROGRESS_BG
-                            Rectangle:
-                                pos: self.pos
-                                size: self.size
-                            Color:
-                                rgba: BTN_BG
-                            Rectangle:
-                                pos: self.pos
-                                size: [self.width * 0.32, self.height]
-                            Color:
-                                rgba: BORDER
-                            Line:
-                                width: 1.2
-                                rectangle: (self.x, self.y, self.width, self.height)
-                    Label:
-                        text: '%xx'
-                        color: TEXT_GREEN
-                        font_size: '15sp'
-                        size_hint_x: None
-                        width: dp(34)
-                        halign: 'left'
-                        valign: 'middle'
-                        text_size: self.size
-
-            # Row 3
-            BoxLayout:
-                size_hint_y: None
-                height: dp(39)
-                spacing: 0
-                canvas.before:
-                    Color:
-                        rgba: BORDER
-                    Line:
-                        width: 1.0
-                        points: [self.x, self.top, self.right, self.top]
-
-                Label:
-                    text: '• Example'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                Label:
-                    text: '$ XXXX.XX'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                Label:
-                    text: '$ XXX.XX'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                Label:
-                    text: 'XX/XX/XXXX'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                BoxLayout:
-                    size_hint_x: 1.4
-                    padding: [dp(10), dp(7), dp(10), dp(7)]
-                    spacing: dp(5)
-                    BoxLayout:
-                        size_hint_x: 1
-                        canvas.before:
-                            Color:
-                                rgba: PROGRESS_BG
-                            Rectangle:
-                                pos: self.pos
-                                size: self.size
-                            Color:
-                                rgba: BTN_BG
-                            Rectangle:
-                                pos: self.pos
-                                size: [self.width * 0.76, self.height]
-                            Color:
-                                rgba: BORDER
-                            Line:
-                                width: 1.2
-                                rectangle: (self.x, self.y, self.width, self.height)
-                    Label:
-                        text: '%xx'
-                        color: TEXT_GREEN
-                        font_size: '15sp'
-                        size_hint_x: None
-                        width: dp(34)
-                        halign: 'left'
-                        valign: 'middle'
-                        text_size: self.size
-
-            # Row 4
-            BoxLayout:
-                size_hint_y: None
-                height: dp(39)
-                spacing: 0
-                canvas.before:
-                    Color:
-                        rgba: BORDER
-                    Line:
-                        width: 1.0
-                        points: [self.x, self.top, self.right, self.top]
-
-                Label:
-                    text: '• Example'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                Label:
-                    text: '$ XXXX.XX'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                Label:
-                    text: '$ XXX.XX'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                Label:
-                    text: 'XX/XX/XXXX'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                BoxLayout:
-                    size_hint_x: 1.4
-                    padding: [dp(10), dp(7), dp(10), dp(7)]
-                    spacing: dp(5)
-                    BoxLayout:
-                        size_hint_x: 1
-                        canvas.before:
-                            Color:
-                                rgba: PROGRESS_BG
-                            Rectangle:
-                                pos: self.pos
-                                size: self.size
-                            Color:
-                                rgba: BTN_BG
-                            Rectangle:
-                                pos: self.pos
-                                size: [self.width * 0.93, self.height]
-                            Color:
-                                rgba: BORDER
-                            Line:
-                                width: 1.2
-                                rectangle: (self.x, self.y, self.width, self.height)
-                    Label:
-                        text: '%xx'
-                        color: TEXT_GREEN
-                        font_size: '15sp'
-                        size_hint_x: None
-                        width: dp(34)
-                        halign: 'left'
-                        valign: 'middle'
-                        text_size: self.size
-
-            # Row 5
-            BoxLayout:
-                size_hint_y: None
-                height: dp(39)
-                spacing: 0
-                canvas.before:
-                    Color:
-                        rgba: BORDER
-                    Line:
-                        width: 1.0
-                        points: [self.x, self.top, self.right, self.top]
-
-                Label:
-                    text: '• Example'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                Label:
-                    text: '$ XXXX.XX'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                Label:
-                    text: '$ XXX.XX'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                Label:
-                    text: 'XX/XX/XXXX'
-                    color: TEXT_GREEN
-                    font_size: '19sp'
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1.2
-                    canvas.after:
-                        Color:
-                            rgba: BORDER
-                        Line:
-                            width: 1.2
-                            points: [self.right, self.y, self.right, self.top]
-                BoxLayout:
-                    size_hint_x: 1.4
-                    padding: [dp(10), dp(7), dp(10), dp(7)]
-                    spacing: dp(5)
-                    BoxLayout:
-                        size_hint_x: 1
-                        canvas.before:
-                            Color:
-                                rgba: PROGRESS_BG
-                            Rectangle:
-                                pos: self.pos
-                                size: self.size
-                            Color:
-                                rgba: BTN_BG
-                            Rectangle:
-                                pos: self.pos
-                                size: [self.width * 0.28, self.height]
-                            Color:
-                                rgba: BORDER
-                            Line:
-                                width: 1.2
-                                rectangle: (self.x, self.y, self.width, self.height)
-                    Label:
-                        text: '%xx'
-                        color: TEXT_GREEN
-                        font_size: '15sp'
-                        size_hint_x: None
-                        width: dp(34)
-                        halign: 'left'
-                        valign: 'middle'
-                        text_size: self.size
 
         Widget:
             size_hint_y: None
@@ -736,12 +348,13 @@
                             Label:
                                 text: 'Goal Name'
                                 color: TEXT_GREEN
-                                font_size: '19sp'
-                                size_hint_x: 0.42
+                                font_size: '18sp'
+                                size_hint_x: 0.40
                                 halign: 'right'
                                 valign: 'middle'
                                 text_size: self.size
                             TextInput:
+                                id: add_goal_name
                                 multiline: False
                                 hint_text: '...'
                                 hint_text_color: TEXT_HINT
@@ -749,7 +362,7 @@
                                 background_normal: ''
                                 background_active: ''
                                 background_color: 1, 1, 1, 1
-                                size_hint_x: 0.58
+                                size_hint_x: 0.60
                                 padding: [dp(6), dp(6), dp(6), dp(6)]
                                 canvas.after:
                                     Color:
@@ -765,27 +378,14 @@
                             Label:
                                 text: 'Target Amount'
                                 color: TEXT_GREEN
-                                font_size: '19sp'
-                                size_hint_x: 0.42
+                                font_size: '18sp'
+                                size_hint_x: 0.40
                                 halign: 'right'
                                 valign: 'middle'
                                 text_size: self.size
-                            TextInput:
-                                multiline: False
-                                hint_text: '$ XXXX.XX'
-                                hint_text_color: TEXT_HINT
-                                foreground_color: TEXT_DARK
-                                background_normal: ''
-                                background_active: ''
-                                background_color: 1, 1, 1, 1
-                                size_hint_x: 0.58
-                                padding: [dp(6), dp(6), dp(6), dp(6)]
-                                canvas.after:
-                                    Color:
-                                        rgba: BORDER
-                                    Line:
-                                        width: 1.2
-                                        rectangle: (self.x, self.y, self.width, self.height)
+                            AmountInput:
+                                id: add_goal_amount
+                                size_hint_x: 0.60
 
                         BoxLayout:
                             spacing: dp(10)
@@ -794,21 +394,19 @@
                             Label:
                                 text: 'Completion Date'
                                 color: TEXT_GREEN
-                                font_size: '19sp'
-                                size_hint_x: 0.42
+                                font_size: '18sp'
+                                size_hint_x: 0.40
                                 halign: 'right'
                                 valign: 'middle'
                                 text_size: self.size
-                            TextInput:
+                            DateInput:
+                                id: add_goal_date
+                                hint_text: 'MM/DD/YYYY'
                                 multiline: False
-                                hint_text: 'XX / XX / XXXX'
-                                hint_text_color: TEXT_HINT
-                                foreground_color: TEXT_DARK
                                 background_normal: ''
                                 background_active: ''
-                                background_color: 1, 1, 1, 1
-                                size_hint_x: 0.58
-                                padding: [dp(6), dp(6), dp(6), dp(6)]
+                                size_hint_x: 0.60
+                                padding_y: [self.height / 2.0 - (self.line_height / 2.0), 0]
                                 canvas.after:
                                     Color:
                                         rgba: BORDER
@@ -826,6 +424,7 @@
                             background_down: ''
                             background_color: BTN_BG
                             color: TEXT_GREEN
+                            on_release: root.add_goal()
                             canvas.after:
                                 Color:
                                     rgba: BORDER
@@ -892,19 +491,21 @@
                             Label:
                                 text: 'Goal'
                                 color: TEXT_GREEN
-                                font_size: '19sp'
-                                size_hint_x: 0.42
+                                font_size: '18sp'
+                                size_hint_x: 0.40
                                 halign: 'right'
                                 valign: 'middle'
                                 text_size: self.size
                             Spinner:
+                                id: update_goal_spinner
                                 text: 'Select a goal...'
-                                values: ['Goal 1', 'Goal 2']
+                                values: []
                                 background_normal: ''
                                 background_down: ''
                                 background_color: 1, 1, 1, 1
                                 color: TEXT_HINT
-                                size_hint_x: 0.58
+                                size_hint_x: 0.60
+                                on_text: root.load_goal_into_update_form(self.text)
                                 canvas.after:
                                     Color:
                                         rgba: BORDER
@@ -919,27 +520,14 @@
                             Label:
                                 text: 'Target Amount'
                                 color: TEXT_GREEN
-                                font_size: '19sp'
-                                size_hint_x: 0.42
+                                font_size: '18sp'
+                                size_hint_x: 0.40
                                 halign: 'right'
                                 valign: 'middle'
                                 text_size: self.size
-                            TextInput:
-                                multiline: False
-                                hint_text: '$ XXXX.XX'
-                                hint_text_color: TEXT_HINT
-                                foreground_color: TEXT_DARK
-                                background_normal: ''
-                                background_active: ''
-                                background_color: 1, 1, 1, 1
-                                size_hint_x: 0.58
-                                padding: [dp(6), dp(6), dp(6), dp(6)]
-                                canvas.after:
-                                    Color:
-                                        rgba: BORDER
-                                    Line:
-                                        width: 1.2
-                                        rectangle: (self.x, self.y, self.width, self.height)
+                            AmountInput:
+                                id: update_goal_amount
+                                size_hint_x: 0.60
 
                         BoxLayout:
                             spacing: dp(10)
@@ -948,27 +536,14 @@
                             Label:
                                 text: 'Saved Amount'
                                 color: TEXT_GREEN
-                                font_size: '19sp'
-                                size_hint_x: 0.42
+                                font_size: '18sp'
+                                size_hint_x: 0.40
                                 halign: 'right'
                                 valign: 'middle'
                                 text_size: self.size
-                            TextInput:
-                                multiline: False
-                                hint_text: '$ XXX.XX'
-                                hint_text_color: TEXT_HINT
-                                foreground_color: TEXT_DARK
-                                background_normal: ''
-                                background_active: ''
-                                background_color: 1, 1, 1, 1
-                                size_hint_x: 0.58
-                                padding: [dp(6), dp(6), dp(6), dp(6)]
-                                canvas.after:
-                                    Color:
-                                        rgba: BORDER
-                                    Line:
-                                        width: 1.2
-                                        rectangle: (self.x, self.y, self.width, self.height)
+                            AmountInput:
+                                id: update_goal_saved
+                                size_hint_x: 0.60
 
                         BoxLayout:
                             spacing: dp(10)
@@ -977,21 +552,19 @@
                             Label:
                                 text: 'Completion Date'
                                 color: TEXT_GREEN
-                                font_size: '19sp'
-                                size_hint_x: 0.42
+                                font_size: '18sp'
+                                size_hint_x: 0.40
                                 halign: 'right'
                                 valign: 'middle'
                                 text_size: self.size
-                            TextInput:
+                            DateInput:
+                                id: update_goal_date
+                                hint_text: 'MM/DD/YYYY'
                                 multiline: False
-                                hint_text: 'XX / XX / XXXX'
-                                hint_text_color: TEXT_HINT
-                                foreground_color: TEXT_DARK
                                 background_normal: ''
                                 background_active: ''
-                                background_color: 1, 1, 1, 1
-                                size_hint_x: 0.58
-                                padding: [dp(6), dp(6), dp(6), dp(6)]
+                                size_hint_x: 0.60
+                                padding_y: [self.height / 2.0 - (self.line_height / 2.0), 0]
                                 canvas.after:
                                     Color:
                                         rgba: BORDER
@@ -1009,6 +582,7 @@
                             background_down: ''
                             background_color: BTN_BG
                             color: TEXT_GREEN
+                            on_release: root.save_goal()
                             canvas.after:
                                 Color:
                                     rgba: BORDER

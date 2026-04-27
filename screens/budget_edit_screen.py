@@ -56,18 +56,18 @@ class BudgetEditScreen(Screen):
                 orientation='horizontal',
                 size_hint=(None, None),
                 height=dp(26),
-                width=dp(402),
-                spacing=dp(10)
+                width=dp(350),
+                spacing=dp(8)
             )
 
             name_input = Factory.BudgetEditNameInput(
-                text=cat.get('name', 'Example'),
+                text=cat.get('name', ''),
                 foreground_color=(0.32, 0.62, 0.29, 1)
             )
             name_input.bind(text=lambda instance, value, idx=i: self.update_category_name(idx, value))
 
             percent_input = Factory.BudgetEditCellInput(
-                text=cat.get('percent', 'XX.XX%'),
+                text=cat.get('percent', '0%'),
                 multiline=False,
                 font_size='16sp',
                 halign='center',
@@ -85,7 +85,7 @@ class BudgetEditScreen(Screen):
             )
             delete_btn.bind(on_release=lambda instance, idx=i: self.delete_category(idx))
 
-            gap = Widget(size_hint=(None, None), size=(dp(30), dp(26)))
+            gap = Widget(size_hint=(None, None), size=(dp(22), dp(26)))
             row.add_widget(name_input)
             row.add_widget(gap)
             row.add_widget(percent_input)
@@ -110,7 +110,7 @@ class BudgetEditScreen(Screen):
         try:
             if len(self.categories) >= self.max_categories:
                 return
-            self.categories.append({"name": "Example", "percent": "XX.XX%"})
+            self.categories.append({"name": "", "percent": "0%"})
             self.refresh_category_rows()
         except Exception as e:
             print(f"Add Category error: {e}")
@@ -122,21 +122,43 @@ class BudgetEditScreen(Screen):
             sm = app.shell.ids.sm
             budget_screen = sm.get_screen('budget')
 
-            total_percent = sum(self._parse_percent(cat.get('percent', '0%')) for cat in self.categories)
+            monthly_amount = self._parse_currency(self.ids.monthly_input.text)
+            if monthly_amount <= 0:
+                self._show_error("Monthly budget must be greater than 0.")
+                return
+
+            normalized_categories = []
+            for cat in self.categories:
+                name = cat.get('name', '').strip()
+                if not name:
+                    self._show_error("Category name cannot be empty.")
+                    return
+
+                percent_value = self._parse_percent(cat.get('percent', '0%'))
+                if percent_value < 0 or percent_value > 100:
+                    self._show_error("Each category percent must be between 0 and 100.")
+                    return
+
+                normalized_categories.append({
+                    'name': name,
+                    'percent_value': percent_value,
+                    'percent_text': f"{percent_value:.2f}%",
+                })
+
+            total_percent = sum(cat['percent_value'] for cat in normalized_categories)
             if total_percent > 100:
                 self._show_error("Total category percent cannot exceed 100%.")
                 return
 
             # Update main budget screen with edited data
             budget_screen.monthly_budget = self.ids.monthly_input.text
-            monthly_amount = self._parse_currency(self.ids.monthly_input.text)
             saved_categories = []
-            for cat in self.categories:
-                percent_text = cat.get('percent', '0%')
-                percent_value = self._parse_percent(percent_text)
+            for cat in normalized_categories:
+                percent_text = cat['percent_text']
+                percent_value = cat['percent_value']
                 remaining_amount = monthly_amount * (percent_value / 100.0)
                 saved_categories.append({
-                    "name": cat.get('name', 'Example'),
+                    "name": cat['name'],
                     "percent": percent_text,
                     "remaining": self._format_currency(remaining_amount),
                 })

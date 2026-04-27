@@ -3,7 +3,7 @@
 
 <BudgetEditValueInput@TextInput>:
     size_hint: None, None
-    size: dp(300), dp(70)
+    size: dp(255), dp(64)
     font_size: '30sp'
     halign: 'center'
     multiline: False
@@ -22,7 +22,7 @@
 
 <BudgetEditCellInput@TextInput>:
     size_hint: None, None
-    size: dp(160), dp(22)
+    size: dp(140), dp(22)
     font_size: '18sp'
     halign: 'center'
     multiline: False
@@ -41,7 +41,7 @@
 
 <BudgetEditNameInput@TextInput>:
     size_hint: None, None
-    size: dp(160), dp(22)
+    size: dp(140), dp(22)
     font_size: '16sp'
     halign: 'center'
     multiline: False
@@ -69,7 +69,7 @@
 
         FloatLayout:
             size_hint: None, None
-            width: min(root.width * 0.78, dp(860))
+            width: min(root.width * 0.62, dp(660))
             height: dp(125)
             pos_hint: {'center_x': 0.5, 'top': 0.84}
 
@@ -115,13 +115,13 @@
 
         Widget:
             size_hint: None, None
-            size: min(root.width * 0.78, dp(860)), dp(16)
+            size: min(root.width * 0.62, dp(660)), dp(16)
             pos_hint: {'center_x': 0.5, 'top': 0.67}
 
         FloatLayout:
             size_hint: None, None
-            width: min(root.width * 0.78, dp(860))
-            height: dp(320)
+            width: min(root.width * 0.62, dp(660))
+            height: dp(310)
             pos_hint: {'center_x': 0.5, 'top': 0.57}
 
             canvas.before:
@@ -162,9 +162,9 @@
             BoxLayout:
                 orientation: 'horizontal'
                 size_hint: None, None
-                size: dp(402), dp(26)
+                size: dp(350), dp(26)
                 pos_hint: {'center_x': 0.52, 'top': 0.90}
-                spacing: dp(10)
+                spacing: dp(8)
 
                 Label:
                     text: '[u]Name[/u]'
@@ -176,11 +176,11 @@
                     valign: 'middle'
                     text_size: self.size
                     size_hint_x: None
-                    width: dp(160)
+                    width: dp(140)
 
                 Widget:
                     size_hint_x: None
-                    width: dp(30)
+                    width: dp(22)
 
                 Label:
                     text: '[u]Percent[/u]'
@@ -192,7 +192,7 @@
                     valign: 'middle'
                     text_size: self.size
                     size_hint_x: None
-                    width: dp(160)
+                    width: dp(140)
 
                 Widget:
                     size_hint_x: None
@@ -203,7 +203,7 @@
                 cols: 1
                 spacing: dp(8)
                 size_hint: None, None
-                size: dp(402), dp(170)
+                size: dp(350), dp(170)
                 pos_hint: {'center_x': 0.52, 'top': 0.80}
 
             Button:
