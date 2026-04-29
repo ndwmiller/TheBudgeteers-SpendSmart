@@ -20,7 +20,7 @@
 
                 canvas.before:
                     Color:
-                        rgba: utils.get_color_from_hex('#D7D7D7') if root.current_theme == 'light' else utils.get_color_from_hex('#4D4D4D')
+                        rgba: utils.get_color_from_hex('#D7D7D7') if root.current_theme == 'light' else utils.get_color_from_hex('#414141')
                     Rectangle:
                         pos: self.pos
                         size: self.size
@@ -60,11 +60,11 @@
             BoxLayout:
                 orientation: 'vertical'
                 padding: [dp(20), dp(15), dp(20), dp(15)]
-                spacing: dp(18)
+                spacing: dp(25)
 
                 canvas.before:
                     Color:
-                        rgba: utils.get_color_from_hex('#D7D7D7') if root.current_theme == 'light' else utils.get_color_from_hex('#4D4D4D')
+                        rgba: utils.get_color_from_hex('#D7D7D7') if root.current_theme == 'light' else utils.get_color_from_hex('#414141')
                     Rectangle:
                         pos: self.pos
                         size: self.size
@@ -90,7 +90,7 @@
                 BoxLayout:
                     orientation: 'horizontal'
                     size_hint: None, None
-                    height: dp(60)
+                    height: dp(40)
                     width: dp(240)
                     pos_hint: {'center_x': 0.5}
                     spacing: dp(10)
@@ -117,7 +117,7 @@
                 BoxLayout:
                     orientation: 'horizontal'
                     size_hint: None, None
-                    height: dp(60)
+                    height: dp(40)
                     width: dp(240)
                     pos_hint: {'center_x': 0.5}
                     spacing: dp(10)
@@ -145,7 +145,7 @@
                 BoxLayout:
                     orientation: 'horizontal'
                     size_hint: None, None
-                    height: dp(60)
+                    height: dp(40)
                     width: dp(280)
                     pos_hint: {'center_x': 0.5}
                     spacing: dp(10)
@@ -168,7 +168,7 @@
                         size: dp(140), dp(42)
                         pos_hint: {'center_y': 0.5}
                         background_normal: ''
-                        background_color: utils.get_color_from_hex('#ffffff') if root.current_theme == 'light' else utils.get_color_from_hex('#3D3D3D')
+                        background_color: (0.8, 0.8, 0.8, 1) if root.current_theme == 'light' else (0.302, 0.302, 0.302, 1)
                         color: utils.get_color_from_hex('#656565') if root.current_theme == 'light' else utils.get_color_from_hex('#E6E6E6')
                         font_size: '18sp'
                         option_cls: 'SettingsSpinnerOption'
@@ -181,6 +181,8 @@
                                 width: 1.2
                                 rectangle: (self.x, self.y, self.width, self.height)
                 Widget:
+                    size_hint_y: None
+                    height: dp(8)
 
             # Notifications
             BoxLayout:
@@ -190,7 +192,7 @@
 
                 canvas.before:
                     Color:
-                        rgba: utils.get_color_from_hex('#D7D7D7') if root.current_theme == 'light' else utils.get_color_from_hex('#4D4D4D')
+                        rgba: utils.get_color_from_hex('#D7D7D7') if root.current_theme == 'light' else utils.get_color_from_hex('#414141')
                     Rectangle:
                         pos: self.pos
                         size: self.size
@@ -273,7 +275,7 @@
 
                 canvas.before:
                     Color:
-                        rgba: utils.get_color_from_hex('#D7D7D7') if root.current_theme == 'light' else utils.get_color_from_hex('#4D4D4D')
+                        rgba: utils.get_color_from_hex('#D7D7D7') if root.current_theme == 'light' else utils.get_color_from_hex('#414141')
                     Rectangle:
                         pos: self.pos
                         size: self.size
@@ -327,18 +329,18 @@
                             Line:
                                 width: dp(1)
                                 rounded_rectangle: (self.x, self.y, self.width, self.height, self.height / 2)
-                        on_release: root.clear_data()
+                        on_release: root.open_reset_app_data()
                 Widget:
 
             # Reset Defaults
             BoxLayout:
                 orientation: 'vertical'
                 padding: [dp(20), dp(15), dp(20), dp(15)]
-                spacing: dp(14)
+                spacing: dp(20)
 
                 canvas.before:
                     Color:
-                        rgba: utils.get_color_from_hex('#D7D7D7') if root.current_theme == 'light' else utils.get_color_from_hex('#4D4D4D')
+                        rgba: utils.get_color_from_hex('#D7D7D7') if root.current_theme == 'light' else utils.get_color_from_hex('#414141')
                     Rectangle:
                         pos: self.pos
                         size: self.size
@@ -400,7 +402,7 @@
 # Spinner option
 <SettingsSpinnerOption@SpinnerOption>:
     background_normal: ''
-    background_color: utils.get_color_from_hex('#ffffff') if app.theme == 'light' else utils.get_color_from_hex('#3D3D3D')
+    background_color: (0.8, 0.8, 0.8, 1) if app.theme == 'light' else (0.302, 0.302, 0.302, 1)
     color: utils.get_color_from_hex('#656565') if app.theme == 'light' else utils.get_color_from_hex('#E6E6E6')
     font_size: '18sp'
     height: dp(40)

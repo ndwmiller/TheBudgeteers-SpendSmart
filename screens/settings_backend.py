@@ -11,12 +11,12 @@ class SettingsBackend:
         alerts = db.get_setting('alerts')
         reminders = db.get_setting('reminders')
         self.current_theme = theme or 'light'
+        app.apply_theme(self.current_theme, rebuild=False)
 
         if theme == 'light':
             self.ids.light_mode_cb.active = True
         else:
             self.ids.dark_mode_cb.active = True
-        app.apply_theme(self.current_theme, rebuild=False)
 
         font_map = {'small': 'Small', 'medium': 'Medium', 'large': 'Large'}
         self.ids.font_spinner.text = font_map.get(font, 'Medium')

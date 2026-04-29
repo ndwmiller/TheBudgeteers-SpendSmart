@@ -76,7 +76,7 @@
 
         canvas.before:
             Color:
-                rgba: utils.get_color_from_hex('#ffffff')
+                rgba: (0.8, 0.8, 0.8, 1) if app.theme == 'light' else (0.302, 0.302, 0.302, 1)
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -124,7 +124,7 @@
 
         canvas.before:
             Color:
-                rgba: utils.get_color_from_hex('#ffffff')
+                rgba: (0.8, 0.8, 0.8, 1) if app.theme == 'light' else (0.302, 0.302, 0.302, 1)
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -635,7 +635,7 @@
                                 Label:
                                     pos_hint: { 'center_x': .5, 'center_y': .5 }
                                     text: "$ " + root.day_expenses_this_week()
-                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
+                                    color: utils.get_color_from_hex('#6BB562') # CHANGE TO #6BB562 WHEN NOT EMPTY, #6BB562 WHEN EMPTY
                                     font_size: '18sp'
                                     halign: 'center'
                                     valign: 'middle'
@@ -646,7 +646,7 @@
 
                                     canvas.before:
                                         Color:
-                                            rgba: utils.get_color_from_hex('#ffffff')
+                                            rgba: (0.8, 0.8, 0.8, 1) if app.theme == 'light' else (0.302, 0.302, 0.302, 1)
                                         Rectangle:
                                             pos: self.pos
                                             size: self.size
@@ -681,7 +681,7 @@
                                     pos_hint: { 'center_x': .5, 'center_y': .5 }
                                     text: "$ " + root.week_expenses_this_week()
 
-                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
+                                    color: utils.get_color_from_hex('#6BB562') # CHANGE TO #6BB562 WHEN NOT EMPTY, #6BB562 WHEN EMPTY
                                     font_size: '18sp'
                                     halign: 'center'
                                     valign: 'middle'
@@ -692,7 +692,7 @@
 
                                     canvas.before:
                                         Color:
-                                            rgba: utils.get_color_from_hex('#ffffff')
+                                            rgba: (0.8, 0.8, 0.8, 1) if app.theme == 'light' else (0.302, 0.302, 0.302, 1)
                                         Rectangle:
                                             pos: self.pos
                                             size: self.size
@@ -731,7 +731,7 @@
                                 text: root.high_cat_name_this_week()
 
                                 font_size: '18sp'
-                                color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
+                                color: utils.get_color_from_hex('#6BB562') # CHANGE TO #6BB562 WHEN NOT EMPTY, #6BB562 WHEN EMPTY
                                 halign: 'left'
                                 valign: 'middle'
                                 text_size: self.size
@@ -744,7 +744,7 @@
                                 pos_hint: { 'center_x': .5, 'center_y': .5 }
                                 text: "$ " + root.high_cat_amount_this_week()
 
-                                color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
+                                color: utils.get_color_from_hex('#6BB562') # CHANGE TO #6BB562 WHEN NOT EMPTY, #6BB562 WHEN EMPTY
                                 font_size: '18sp'
                                 halign: 'center'
                                 valign: 'middle'
@@ -755,7 +755,7 @@
 
                                 canvas.before:
                                     Color:
-                                        rgba: utils.get_color_from_hex('#ffffff')
+                                        rgba: (0.8, 0.8, 0.8, 1) if app.theme == 'light' else (0.302, 0.302, 0.302, 1)
                                     Rectangle:
                                         pos: self.pos
                                         size: self.size
@@ -834,7 +834,7 @@
                                     pos_hint: { 'center_x': .5, 'center_y': .5 }
                                     text: "$ " + root.day_expenses_last_week()
 
-                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
+                                    color: utils.get_color_from_hex('#6BB562') # CHANGE TO #6BB562 WHEN NOT EMPTY, #6BB562 WHEN EMPTY
                                     font_size: '18sp'
                                     halign: 'center'
                                     valign: 'middle'
@@ -845,7 +845,7 @@
 
                                     canvas.before:
                                         Color:
-                                            rgba: utils.get_color_from_hex('#ffffff')
+                                            rgba: (0.8, 0.8, 0.8, 1) if app.theme == 'light' else (0.302, 0.302, 0.302, 1)
                                         Rectangle:
                                             pos: self.pos
                                             size: self.size
@@ -880,7 +880,7 @@
                                     pos_hint: { 'center_x': .5, 'center_y': .5 }
                                     text: "$ " + root.week_expenses_last_week()
 
-                                    color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
+                                    color: utils.get_color_from_hex('#6BB562') # CHANGE TO #6BB562 WHEN NOT EMPTY, #6BB562 WHEN EMPTY
                                     font_size: '18sp'
                                     halign: 'center'
                                     valign: 'middle'
@@ -891,7 +891,7 @@
 
                                     canvas.before:
                                         Color:
-                                            rgba: utils.get_color_from_hex('#ffffff')
+                                            rgba: (0.8, 0.8, 0.8, 1) if app.theme == 'light' else (0.302, 0.302, 0.302, 1)
                                         Rectangle:
                                             pos: self.pos
                                             size: self.size
@@ -930,7 +930,7 @@
                                 text: root.high_cat_name_last_week()
 
                                 font_size: '18sp'
-                                color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
+                                color: utils.get_color_from_hex('#6BB562') # CHANGE TO #6BB562 WHEN NOT EMPTY, #6BB562 WHEN EMPTY
                                 halign: 'left'
                                 valign: 'middle'
                                 text_size: self.size
@@ -943,7 +943,7 @@
                                 pos_hint: { 'center_x': .5, 'center_y': .5 }
                                 text: "$ " + root.high_cat_amount_last_week()
 
-                                color: utils.get_color_from_hex('#97C392') # CHANGE TO #6BB562 WHEN NOT EMPTY, #97C392 WHEN EMPTY
+                                color: utils.get_color_from_hex('#6BB562') # CHANGE TO #6BB562 WHEN NOT EMPTY, #6BB562 WHEN EMPTY
                                 font_size: '18sp'
                                 halign: 'center'
                                 valign: 'middle'
@@ -954,7 +954,7 @@
 
                                 canvas.before:
                                     Color:
-                                        rgba: utils.get_color_from_hex('#ffffff')
+                                        rgba: (0.8, 0.8, 0.8, 1) if app.theme == 'light' else (0.302, 0.302, 0.302, 1)
                                     Rectangle:
                                         pos: self.pos
                                         size: self.size

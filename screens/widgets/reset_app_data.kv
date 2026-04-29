@@ -5,7 +5,7 @@
     size: dp(400), dp(300)
     auto_dismiss: True
     # Dark overlay — same as add_bill.kv
-    background_color: [0, 0, 0, 0.2]
+    background_color: [0, 0, 0, 0]
 
     BoxLayout:
         orientation: 'vertical'
@@ -93,7 +93,7 @@
                     pos_hint: {'center_x': .5, 'center_y': .5}
                     background_normal: ''
                     background_down: ''
-                    background_color: utils.get_color_from_hex('#d7d7d7') if self.state == 'down' else utils.get_color_from_hex('#ffffff')
+                    background_color: (0.24, 0.24, 0.24, 1) if self.state == 'down' else (0.302, 0.302, 0.302, 1)
                     color: utils.get_color_from_hex('#6BB562')
                     font_size: '18sp'
                     size_hint_y: None

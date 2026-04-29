@@ -13,7 +13,7 @@ _ORIGINAL_GET_COLOR_FROM_HEX = kivy_utils.get_color_from_hex
 
 _DARK_THEME_COLOR_MAP = {
     '#4d4d4d': '#2F2F2F',
-    '#d7d7d7': '#4D4D4D',
+    '#d7d7d7': '#414141',
     '#ffffff': '#3D3D3D',
     '#656565': '#E6E6E6',
     '#c8e6c2': '#516951',
@@ -201,7 +201,11 @@ class SpendSmartApp(App):
         new_shell.size = WINDOW_SIZE
         root.add_widget(new_shell)
         self.shell = new_shell
+        from kivy.uix.screenmanager import NoTransition
+        saved_transition = new_shell.ids.sm.transition
+        new_shell.ids.sm.transition = NoTransition()
         new_shell.ids.sm.current = current_screen
+        new_shell.ids.sm.transition = saved_transition
         self.apply_font_size(self.font_setting)
     
     # close the conncetion to the DB when app closed
