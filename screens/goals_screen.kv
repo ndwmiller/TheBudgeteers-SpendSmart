@@ -1,13 +1,48 @@
 #:import utils kivy.utils
 #:import dp kivy.metrics.dp
 #:import DateInput screens.widgets.date_input.DateInput
-#:set BORDER utils.get_color_from_hex('#6BB562')
-#:set BG_LIGHT utils.get_color_from_hex('#D7D7D7')
-#:set TEXT_DARK utils.get_color_from_hex('#656565')
-#:set TEXT_GREEN utils.get_color_from_hex('#519D4A')
-#:set BTN_BG utils.get_color_from_hex('#CFFFC0')
-#:set TEXT_HINT utils.get_color_from_hex('#B7B7B7')
-#:set PROGRESS_BG utils.get_color_from_hex('#4D4D4D')
+#:set TEXT_RED utils.get_color_from_hex('#d9534f')
+
+<GoalAmountInput>:
+    orientation: 'horizontal'
+    spacing: 0
+    size_hint_y: None
+    height: dp(40)
+    text: ''
+    canvas.before:
+        Color:
+            rgba: utils.get_color_from_hex('#ffffff')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    canvas.after:
+        Color:
+            rgba: utils.get_color_from_hex('#6BB562')
+        Line:
+            width: 1.2
+            rectangle: (self.x, self.y, self.width, self.height)
+    Label:
+        text: '$'
+        color: utils.get_color_from_hex('#519D4A')
+        font_size: '18sp'
+        size_hint_x: None
+        width: dp(24)
+        halign: 'center'
+        valign: 'middle'
+        text_size: self.size
+    TextInput:
+        id: amount_text
+        text: root.text
+        multiline: False
+        hint_text: '0.00'
+        hint_text_color: utils.get_color_from_hex('#B7B7B7')
+        foreground_color: utils.get_color_from_hex('#656565')
+        background_normal: ''
+        background_active: ''
+        background_color: 1, 1, 1, 0
+        input_filter: 'float'
+        padding: [dp(2), (self.height - self.line_height) / 2, dp(6), 0]
+        on_text: root.sync_text(self)
 
 <GoalRow>:
     orientation: 'horizontal'
@@ -16,122 +51,113 @@
     spacing: 0
     canvas.before:
         Color:
-            rgba: BORDER
+            rgba: utils.get_color_from_hex('#6BB562')
         Line:
             width: 1.0
             points: [self.x, self.top, self.right, self.top]
 
+    # Name
     Label:
         text: root.goal_name
-        color: TEXT_GREEN
+        color: utils.get_color_from_hex('#519D4A')
         font_size: '19sp'
         halign: 'center'
         valign: 'middle'
         text_size: self.size
-        size_hint_x: 1.2
-        canvas.after:
-            Color:
-                rgba: BORDER
-            Line:
-                width: 1.2
-                points: [self.right, self.y, self.right, self.top]
+        size_hint_x: 1
 
+    # Target Amount
     Label:
         text: root.goal_amount
-        color: TEXT_GREEN
+        color: utils.get_color_from_hex('#519D4A')
         font_size: '19sp'
         halign: 'center'
         valign: 'middle'
         text_size: self.size
-        size_hint_x: 1.2
-        canvas.after:
-            Color:
-                rgba: BORDER
-            Line:
-                width: 1.2
-                points: [self.right, self.y, self.right, self.top]
+        size_hint_x: 1
 
+    # Saved
     Label:
         text: root.goal_saved
-        color: TEXT_GREEN
+        color: utils.get_color_from_hex('#519D4A')
         font_size: '19sp'
         halign: 'center'
         valign: 'middle'
         text_size: self.size
-        size_hint_x: 1.2
-        canvas.after:
-            Color:
-                rgba: BORDER
-            Line:
-                width: 1.2
-                points: [self.right, self.y, self.right, self.top]
+        size_hint_x: 1
 
+    # Target Date
     Label:
         text: root.goal_date
-        color: TEXT_GREEN
+        color: utils.get_color_from_hex('#519D4A')
         font_size: '19sp'
         halign: 'center'
         valign: 'middle'
         text_size: self.size
-        size_hint_x: 1.2
-        canvas.after:
-            Color:
-                rgba: BORDER
-            Line:
-                width: 1.2
-                points: [self.right, self.y, self.right, self.top]
+        size_hint_x: 1
 
+    # Progress bar
     BoxLayout:
-        size_hint_x: 1.4
+        size_hint_x: 1
         padding: [dp(10), dp(7), dp(10), dp(7)]
         spacing: dp(5)
         BoxLayout:
             size_hint_x: 1
             canvas.before:
                 Color:
-                    rgba: PROGRESS_BG
+                    rgba: utils.get_color_from_hex('#4D4D4D')
                 Rectangle:
                     pos: self.pos
                     size: self.size
                 Color:
-                    rgba: BTN_BG
+                    rgba: utils.get_color_from_hex('#DAFFC8')
                 Rectangle:
                     pos: self.pos
-                    size: [self.width * root.progress_ratio, self.height]
+                    size: [self.width * min(root.progress_ratio, 1.0), self.height]
                 Color:
-                    rgba: BORDER
+                    rgba: utils.get_color_from_hex('#6BB562')
                 Line:
                     width: 1.2
                     rectangle: (self.x, self.y, self.width, self.height)
         Label:
             text: root.progress_text
-            color: TEXT_GREEN
-            font_size: '15sp'
+            color: utils.get_color_from_hex('#519D4A')
+            font_size: '14sp'
             size_hint_x: None
-            width: dp(34)
-            halign: 'left'
+            width: dp(54)
+            halign: 'center'
             valign: 'middle'
             text_size: self.size
+
+    # Trash delete button
+    Button:
+        size_hint: None, None
+        size: dp(30), dp(30)
+        pos_hint: {'center_y': 0.5}
+        background_normal: 'resources/Images/trash_icon.png'
+        background_down: 'resources/Images/trash_icon.png'
+        background_color: (1, 1, 1, 1)
+        border: (0, 0, 0, 0)
+        on_release: root.on_delete()
 
 <GoalsScreen>:
     BoxLayout:
         orientation: 'vertical'
         size_hint: 1, 1
-        padding: [dp(24), dp(28), dp(24), dp(28)]
+        padding: [dp(30), dp(48), dp(30), dp(30)]
         spacing: 0
+        canvas.before:
+            Color:
+                rgba: utils.get_color_from_hex('#4D4D4D')
+            Rectangle:
+                pos: self.pos
+                size: self.size
 
-        Widget:
-            size_hint_y: 1
-
-        Widget:
-            size_hint_y: None
-            height: dp(26)
-
-        # Goals table area
+        # ── Goals table ────────────────────────────────────────
         AnchorLayout:
             size_hint_y: None
             height: dp(30)
-            anchor_x: 'center'
+            anchor_x: 'left'
             anchor_y: 'top'
 
             BoxLayout:
@@ -140,49 +166,65 @@
                 height: dp(30)
                 BoxLayout:
                     size_hint: None, None
-                    width: goals_table.width * (1.2 / 6.2)
+                    width: (goals_table.width - dp(44)) / 5
                     height: dp(30)
                     canvas.before:
                         Color:
-                            rgba: BG_LIGHT
+                            rgba: utils.get_color_from_hex('#D7D7D7')
                         Rectangle:
                             pos: self.pos
                             size: self.size
                         Color:
-                            rgba: BORDER
+                            rgba: utils.get_color_from_hex('#6BB562')
                         Line:
                             width: 1.2
                             rectangle: (self.x, self.y, self.width, self.height)
                     Label:
                         text: 'Goals'
-                        color: TEXT_DARK
+                        color: utils.get_color_from_hex('#656565')
                         font_size: '20sp'
                         halign: 'center'
                         valign: 'middle'
                         text_size: self.size
-
                 Widget:
 
+        # Fixed-height table with ScrollView for rows
         BoxLayout:
             id: goals_table
             orientation: 'vertical'
             size_hint_x: None
-            width: dp(980)
-            pos_hint: {'center_x': 0.5}
+            width: dp(1720)
             size_hint_y: None
-            height: dp(234)
+            # fixed height: header + 5 rows always
+            height: dp(39) + dp(39) * 5
             spacing: 0
             canvas.before:
                 Color:
-                    rgba: BG_LIGHT
+                    rgba: utils.get_color_from_hex('#D7D7D7')
                 Rectangle:
                     pos: self.pos
                     size: self.size
+            canvas.after:
                 Color:
-                    rgba: BORDER
+                    rgba: utils.get_color_from_hex('#6BB562')
                 Line:
                     width: 1.2
                     rectangle: (self.x, self.y, self.width, self.height)
+                Line:
+                    width: 1.2
+                    points: [self.x + (self.width - dp(44)) * (1 / 5), self.y, self.x + (self.width - dp(44)) * (1 / 5), self.top]
+                Line:
+                    width: 1.2
+                    points: [self.x + (self.width - dp(44)) * (2 / 5), self.y, self.x + (self.width - dp(44)) * (2 / 5), self.top]
+                Line:
+                    width: 1.2
+                    points: [self.x + (self.width - dp(44)) * (3 / 5), self.y, self.x + (self.width - dp(44)) * (3 / 5), self.top]
+                Line:
+                    width: 1.2
+                    points: [self.x + (self.width - dp(44)) * (4 / 5), self.y, self.x + (self.width - dp(44)) * (4 / 5), self.top]
+                Line:
+                    width: 1.2
+                    points: [self.x, self.top - dp(39), self.right, self.top - dp(39)]
 
             # Header row
             BoxLayout:
@@ -191,109 +233,125 @@
                 spacing: 0
                 canvas.before:
                     Color:
-                        rgba: BG_LIGHT
+                        rgba: utils.get_color_from_hex('#D7D7D7')
                     Rectangle:
                         pos: self.pos
                         size: self.size
 
                 Label:
                     text: 'Name'
-                    color: TEXT_DARK
+                    color: utils.get_color_from_hex('#656565')
                     font_size: '19sp'
                     halign: 'center'
                     valign: 'middle'
                     text_size: self.size
-                    size_hint_x: 1.2
+                    size_hint_x: 1
                     canvas.after:
                         Color:
-                            rgba: BORDER
+                            rgba: utils.get_color_from_hex('#6BB562')
                         Line:
                             width: 1.2
                             points: [self.right, self.y, self.right, self.top]
 
                 Label:
                     text: 'Target Amount'
-                    color: TEXT_DARK
+                    color: utils.get_color_from_hex('#656565')
                     font_size: '19sp'
                     halign: 'center'
                     valign: 'middle'
                     text_size: self.size
-                    size_hint_x: 1.2
+                    size_hint_x: 1
                     canvas.after:
                         Color:
-                            rgba: BORDER
+                            rgba: utils.get_color_from_hex('#6BB562')
                         Line:
                             width: 1.2
                             points: [self.right, self.y, self.right, self.top]
 
                 Label:
                     text: 'Saved'
-                    color: TEXT_DARK
+                    color: utils.get_color_from_hex('#656565')
                     font_size: '19sp'
                     halign: 'center'
                     valign: 'middle'
                     text_size: self.size
-                    size_hint_x: 1.2
+                    size_hint_x: 1
                     canvas.after:
                         Color:
-                            rgba: BORDER
+                            rgba: utils.get_color_from_hex('#6BB562')
                         Line:
                             width: 1.2
                             points: [self.right, self.y, self.right, self.top]
 
                 Label:
                     text: 'Target Date'
-                    color: TEXT_DARK
+                    color: utils.get_color_from_hex('#656565')
                     font_size: '19sp'
                     halign: 'center'
                     valign: 'middle'
                     text_size: self.size
-                    size_hint_x: 1.2
+                    size_hint_x: 1
                     canvas.after:
                         Color:
-                            rgba: BORDER
+                            rgba: utils.get_color_from_hex('#6BB562')
                         Line:
                             width: 1.2
                             points: [self.right, self.y, self.right, self.top]
 
                 Label:
                     text: 'Progress'
-                    color: TEXT_DARK
+                    color: utils.get_color_from_hex('#656565')
                     font_size: '19sp'
                     halign: 'center'
                     valign: 'middle'
                     text_size: self.size
-                    size_hint_x: 1.4
+                    size_hint_x: 1
 
-            GridLayout:
-                id: goals_rows_grid
-                cols: 1
+                # Delete column header
+                Label:
+                    text: ''
+                    size_hint_x: None
+                    width: dp(44)
+
+            # Scrollable rows — fixed 5-row visible height
+            ScrollView:
                 size_hint_y: None
-                height: dp(195)
-                spacing: 0
+                height: dp(39) * 5
+                do_scroll_x: False
+                do_scroll_y: True
+                bar_width: dp(4)
+                bar_color: utils.get_color_from_hex('#6BB562')
+                bar_inactive_color: utils.get_color_from_hex('#D7D7D7')
+
+                GridLayout:
+                    id: goals_rows_grid
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: 0
 
         Widget:
             size_hint_y: None
             height: dp(26)
 
-        # Forms row
+        # ── Forms row ──────────────────────────────────────────
         AnchorLayout:
             size_hint_y: None
-            height: dp(280)
+            height: dp(450)
             anchor_x: 'center'
-            anchor_y: 'center'
+            anchor_y: 'top'
 
             BoxLayout:
                 size_hint: None, None
-                width: dp(820)
-                height: dp(280)
-                spacing: dp(52)
+                width: dp(1500)
+                height: dp(450)
+                spacing: dp(160)
 
-                # Add Goal panel
+                # ── Add Goal panel ─────────────────────────────
                 BoxLayout:
                     orientation: 'vertical'
                     size_hint_x: None
-                    width: dp(384)
+                    width: dp(670)
                     spacing: 0
 
                     AnchorLayout:
@@ -301,25 +359,24 @@
                         height: dp(32)
                         anchor_x: 'center'
                         anchor_y: 'top'
-
                         BoxLayout:
                             size_hint: None, None
                             width: dp(182)
                             height: dp(32)
                             canvas.before:
                                 Color:
-                                    rgba: BG_LIGHT
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
                                 Rectangle:
                                     pos: self.pos
                                     size: self.size
                                 Color:
-                                    rgba: BORDER
+                                    rgba: utils.get_color_from_hex('#6BB562')
                                 Line:
                                     width: 1.2
                                     rectangle: (self.x, self.y, self.width, self.height)
                             Label:
                                 text: 'Add Goal'
-                                color: TEXT_DARK
+                                color: utils.get_color_from_hex('#656565')
                                 font_size: '19sp'
                                 halign: 'center'
                                 valign: 'middle'
@@ -327,29 +384,30 @@
 
                     BoxLayout:
                         orientation: 'vertical'
-                        padding: [dp(22), dp(10), dp(22), dp(14)]
-                        spacing: dp(12)
+                        padding: [dp(70), dp(58), dp(70), dp(24)]
+                        spacing: dp(24)
                         canvas.before:
                             Color:
-                                rgba: BG_LIGHT
+                                rgba: utils.get_color_from_hex('#D7D7D7')
                             Rectangle:
                                 pos: self.pos
                                 size: self.size
                             Color:
-                                rgba: BORDER
+                                rgba: utils.get_color_from_hex('#6BB562')
                             Line:
                                 width: 1.2
                                 rectangle: (self.x, self.y, self.width, self.height)
 
+                        # Goal Name
                         BoxLayout:
                             spacing: dp(10)
                             size_hint_y: None
-                            height: dp(32)
+                            height: dp(40)
                             Label:
                                 text: 'Goal Name'
-                                color: TEXT_GREEN
+                                color: utils.get_color_from_hex('#519D4A')
                                 font_size: '18sp'
-                                size_hint_x: 0.40
+                                size_hint_x: 0.42
                                 halign: 'right'
                                 valign: 'middle'
                                 text_size: self.size
@@ -357,45 +415,47 @@
                                 id: add_goal_name
                                 multiline: False
                                 hint_text: '...'
-                                hint_text_color: TEXT_HINT
-                                foreground_color: TEXT_DARK
+                                hint_text_color: utils.get_color_from_hex('#B7B7B7')
+                                foreground_color: utils.get_color_from_hex('#656565')
                                 background_normal: ''
                                 background_active: ''
-                                background_color: 1, 1, 1, 1
-                                size_hint_x: 0.60
-                                padding: [dp(6), dp(6), dp(6), dp(6)]
+                                background_color: utils.get_color_from_hex('#ffffff')
+                                size_hint_x: 0.58
+                                padding: [dp(6), (self.height - self.line_height) / 2, dp(6), 0]
                                 canvas.after:
                                     Color:
-                                        rgba: BORDER
+                                        rgba: utils.get_color_from_hex('#6BB562')
                                     Line:
                                         width: 1.2
                                         rectangle: (self.x, self.y, self.width, self.height)
 
+                        # Target Amount
                         BoxLayout:
                             spacing: dp(10)
                             size_hint_y: None
-                            height: dp(32)
+                            height: dp(40)
                             Label:
                                 text: 'Target Amount'
-                                color: TEXT_GREEN
+                                color: utils.get_color_from_hex('#519D4A')
                                 font_size: '18sp'
-                                size_hint_x: 0.40
+                                size_hint_x: 0.42
                                 halign: 'right'
                                 valign: 'middle'
                                 text_size: self.size
-                            AmountInput:
+                            GoalAmountInput:
                                 id: add_goal_amount
-                                size_hint_x: 0.60
+                                size_hint_x: 0.58
 
+                        # Completion Date
                         BoxLayout:
                             spacing: dp(10)
                             size_hint_y: None
-                            height: dp(32)
+                            height: dp(40)
                             Label:
                                 text: 'Completion Date'
-                                color: TEXT_GREEN
+                                color: utils.get_color_from_hex('#519D4A')
                                 font_size: '18sp'
-                                size_hint_x: 0.40
+                                size_hint_x: 0.42
                                 halign: 'right'
                                 valign: 'middle'
                                 text_size: self.size
@@ -405,16 +465,29 @@
                                 multiline: False
                                 background_normal: ''
                                 background_active: ''
-                                size_hint_x: 0.60
-                                padding_y: [self.height / 2.0 - (self.line_height / 2.0), 0]
+                                background_color: utils.get_color_from_hex('#ffffff')
+                                foreground_color: utils.get_color_from_hex('#656565')
+                                hint_text_color: utils.get_color_from_hex('#B7B7B7')
+                                size_hint_x: 0.58
+                                padding: [dp(6), (self.height - self.line_height) / 2, dp(6), 0]
                                 canvas.after:
                                     Color:
-                                        rgba: BORDER
+                                        rgba: utils.get_color_from_hex('#6BB562')
                                     Line:
                                         width: 1.2
                                         rectangle: (self.x, self.y, self.width, self.height)
 
-                        Widget:
+                        # Error label
+                        Label:
+                            id: add_error_label
+                            text: ''
+                            color: TEXT_RED
+                            font_size: '15sp'
+                            size_hint_y: None
+                            height: dp(20)
+                            halign: 'center'
+                            valign: 'middle'
+                            text_size: self.size
 
                         Button:
                             text: 'Add'
@@ -422,21 +495,21 @@
                             height: dp(30)
                             background_normal: ''
                             background_down: ''
-                            background_color: BTN_BG
-                            color: TEXT_GREEN
+                            background_color: utils.get_color_from_hex('#DAFFC8')
+                            color: utils.get_color_from_hex('#519D4A')
                             on_release: root.add_goal()
                             canvas.after:
                                 Color:
-                                    rgba: BORDER
+                                    rgba: utils.get_color_from_hex('#6BB562')
                                 Line:
                                     width: 1.2
                                     rectangle: (self.x, self.y, self.width, self.height)
 
-                # Update Goal panel
+                # ── Update Goal panel ──────────────────────────
                 BoxLayout:
                     orientation: 'vertical'
                     size_hint_x: None
-                    width: dp(384)
+                    width: dp(670)
                     spacing: 0
 
                     AnchorLayout:
@@ -444,25 +517,24 @@
                         height: dp(32)
                         anchor_x: 'center'
                         anchor_y: 'top'
-
                         BoxLayout:
                             size_hint: None, None
                             width: dp(182)
                             height: dp(32)
                             canvas.before:
                                 Color:
-                                    rgba: BG_LIGHT
+                                    rgba: utils.get_color_from_hex('#D7D7D7')
                                 Rectangle:
                                     pos: self.pos
                                     size: self.size
                                 Color:
-                                    rgba: BORDER
+                                    rgba: utils.get_color_from_hex('#6BB562')
                                 Line:
                                     width: 1.2
                                     rectangle: (self.x, self.y, self.width, self.height)
                             Label:
                                 text: 'Update Goal'
-                                color: TEXT_DARK
+                                color: utils.get_color_from_hex('#656565')
                                 font_size: '19sp'
                                 halign: 'center'
                                 valign: 'middle'
@@ -470,29 +542,30 @@
 
                     BoxLayout:
                         orientation: 'vertical'
-                        padding: [dp(22), dp(10), dp(22), dp(14)]
-                        spacing: dp(10)
+                        padding: [dp(70), dp(48), dp(70), dp(24)]
+                        spacing: dp(20)
                         canvas.before:
                             Color:
-                                rgba: BG_LIGHT
+                                rgba: utils.get_color_from_hex('#D7D7D7')
                             Rectangle:
                                 pos: self.pos
                                 size: self.size
                             Color:
-                                rgba: BORDER
+                                rgba: utils.get_color_from_hex('#6BB562')
                             Line:
                                 width: 1.2
                                 rectangle: (self.x, self.y, self.width, self.height)
 
+                        # Goal selector
                         BoxLayout:
                             spacing: dp(10)
                             size_hint_y: None
-                            height: dp(32)
+                            height: dp(40)
                             Label:
                                 text: 'Goal'
-                                color: TEXT_GREEN
+                                color: utils.get_color_from_hex('#519D4A')
                                 font_size: '18sp'
-                                size_hint_x: 0.40
+                                size_hint_x: 0.42
                                 halign: 'right'
                                 valign: 'middle'
                                 text_size: self.size
@@ -502,58 +575,61 @@
                                 values: []
                                 background_normal: ''
                                 background_down: ''
-                                background_color: 1, 1, 1, 1
-                                color: TEXT_HINT
-                                size_hint_x: 0.60
+                                background_color: utils.get_color_from_hex('#ffffff')
+                                color: utils.get_color_from_hex('#B7B7B7')
+                                size_hint_x: 0.58
                                 on_text: root.load_goal_into_update_form(self.text)
                                 canvas.after:
                                     Color:
-                                        rgba: BORDER
+                                        rgba: utils.get_color_from_hex('#6BB562')
                                     Line:
                                         width: 1.2
                                         rectangle: (self.x, self.y, self.width, self.height)
 
+                        # Target Amount
                         BoxLayout:
                             spacing: dp(10)
                             size_hint_y: None
-                            height: dp(32)
+                            height: dp(40)
                             Label:
                                 text: 'Target Amount'
-                                color: TEXT_GREEN
+                                color: utils.get_color_from_hex('#519D4A')
                                 font_size: '18sp'
-                                size_hint_x: 0.40
+                                size_hint_x: 0.42
                                 halign: 'right'
                                 valign: 'middle'
                                 text_size: self.size
-                            AmountInput:
+                            GoalAmountInput:
                                 id: update_goal_amount
-                                size_hint_x: 0.60
+                                size_hint_x: 0.58
 
+                        # Saved Amount
                         BoxLayout:
                             spacing: dp(10)
                             size_hint_y: None
-                            height: dp(32)
+                            height: dp(40)
                             Label:
                                 text: 'Saved Amount'
-                                color: TEXT_GREEN
+                                color: utils.get_color_from_hex('#519D4A')
                                 font_size: '18sp'
-                                size_hint_x: 0.40
+                                size_hint_x: 0.42
                                 halign: 'right'
                                 valign: 'middle'
                                 text_size: self.size
-                            AmountInput:
+                            GoalAmountInput:
                                 id: update_goal_saved
-                                size_hint_x: 0.60
+                                size_hint_x: 0.58
 
+                        # Completion Date
                         BoxLayout:
                             spacing: dp(10)
                             size_hint_y: None
-                            height: dp(32)
+                            height: dp(40)
                             Label:
                                 text: 'Completion Date'
-                                color: TEXT_GREEN
+                                color: utils.get_color_from_hex('#519D4A')
                                 font_size: '18sp'
-                                size_hint_x: 0.40
+                                size_hint_x: 0.42
                                 halign: 'right'
                                 valign: 'middle'
                                 text_size: self.size
@@ -563,16 +639,29 @@
                                 multiline: False
                                 background_normal: ''
                                 background_active: ''
-                                size_hint_x: 0.60
-                                padding_y: [self.height / 2.0 - (self.line_height / 2.0), 0]
+                                background_color: utils.get_color_from_hex('#ffffff')
+                                foreground_color: utils.get_color_from_hex('#656565')
+                                hint_text_color: utils.get_color_from_hex('#B7B7B7')
+                                size_hint_x: 0.58
+                                padding: [dp(6), (self.height - self.line_height) / 2, dp(6), 0]
                                 canvas.after:
                                     Color:
-                                        rgba: BORDER
+                                        rgba: utils.get_color_from_hex('#6BB562')
                                     Line:
                                         width: 1.2
                                         rectangle: (self.x, self.y, self.width, self.height)
 
-                        Widget:
+                        # Error label
+                        Label:
+                            id: update_error_label
+                            text: ''
+                            color: TEXT_RED
+                            font_size: '15sp'
+                            size_hint_y: None
+                            height: dp(20)
+                            halign: 'center'
+                            valign: 'middle'
+                            text_size: self.size
 
                         Button:
                             text: 'Save'
@@ -580,21 +669,16 @@
                             height: dp(30)
                             background_normal: ''
                             background_down: ''
-                            background_color: BTN_BG
-                            color: TEXT_GREEN
+                            background_color: utils.get_color_from_hex('#DAFFC8')
+                            color: utils.get_color_from_hex('#519D4A')
                             on_release: root.save_goal()
                             canvas.after:
                                 Color:
-                                    rgba: BORDER
+                                    rgba: utils.get_color_from_hex('#6BB562')
                                 Line:
                                     width: 1.2
                                     rectangle: (self.x, self.y, self.width, self.height)
 
         Widget:
-            size_hint_y: None
-            height: dp(26)
-
-        Widget:
             size_hint_y: 1
-
 
