@@ -7,7 +7,7 @@
     orientation: 'horizontal'
     spacing: 0
     size_hint_y: None
-    height: dp(40)
+    height: dp(30)
     text: ''
     canvas.before:
         Color:
@@ -24,7 +24,7 @@
     Label:
         text: '$'
         color: utils.get_color_from_hex('#519D4A')
-        font_size: '18sp'
+        font_size: '14sp'
         size_hint_x: None
         width: dp(24)
         halign: 'center'
@@ -192,8 +192,7 @@
         BoxLayout:
             id: goals_table
             orientation: 'vertical'
-            size_hint_x: None
-            width: dp(1720)
+            size_hint_x: 1
             size_hint_y: None
             # fixed height: header + 5 rows always
             height: dp(39) + dp(39) * 5
@@ -336,22 +335,20 @@
 
         # ── Forms row ──────────────────────────────────────────
         AnchorLayout:
-            size_hint_y: None
-            height: dp(450)
+            size_hint_y: 1
             anchor_x: 'center'
             anchor_y: 'top'
 
             BoxLayout:
-                size_hint: None, None
-                width: dp(1500)
-                height: dp(450)
+                size_hint: 0.807, None
+                height: self.minimum_height
                 spacing: dp(160)
 
                 # ── Add Goal panel ─────────────────────────────
                 BoxLayout:
                     orientation: 'vertical'
-                    size_hint_x: None
-                    width: dp(670)
+                    size_hint: 1, None
+                    height: self.minimum_height
                     spacing: 0
 
                     AnchorLayout:
@@ -384,8 +381,10 @@
 
                     BoxLayout:
                         orientation: 'vertical'
-                        padding: [dp(70), dp(58), dp(70), dp(24)]
-                        spacing: dp(24)
+                        size_hint_y: None
+                        height: self.minimum_height
+                        padding: [dp(70), dp(18), dp(70), dp(14)]
+                        spacing: dp(18)
                         canvas.before:
                             Color:
                                 rgba: utils.get_color_from_hex('#D7D7D7')
@@ -402,11 +401,11 @@
                         BoxLayout:
                             spacing: dp(10)
                             size_hint_y: None
-                            height: dp(40)
+                            height: dp(30)
                             Label:
                                 text: 'Goal Name'
                                 color: utils.get_color_from_hex('#519D4A')
-                                font_size: '18sp'
+                                font_size: '14sp'
                                 size_hint_x: 0.42
                                 halign: 'right'
                                 valign: 'middle'
@@ -433,11 +432,11 @@
                         BoxLayout:
                             spacing: dp(10)
                             size_hint_y: None
-                            height: dp(40)
+                            height: dp(30)
                             Label:
                                 text: 'Target Amount'
                                 color: utils.get_color_from_hex('#519D4A')
-                                font_size: '18sp'
+                                font_size: '14sp'
                                 size_hint_x: 0.42
                                 halign: 'right'
                                 valign: 'middle'
@@ -450,11 +449,11 @@
                         BoxLayout:
                             spacing: dp(10)
                             size_hint_y: None
-                            height: dp(40)
+                            height: dp(30)
                             Label:
                                 text: 'Completion Date'
                                 color: utils.get_color_from_hex('#519D4A')
-                                font_size: '18sp'
+                                font_size: '14sp'
                                 size_hint_x: 0.42
                                 halign: 'right'
                                 valign: 'middle'
@@ -482,9 +481,9 @@
                             id: add_error_label
                             text: ''
                             color: TEXT_RED
-                            font_size: '15sp'
+                            font_size: '13sp'
                             size_hint_y: None
-                            height: dp(20)
+                            height: dp(16)
                             halign: 'center'
                             valign: 'middle'
                             text_size: self.size
@@ -508,8 +507,8 @@
                 # ── Update Goal panel ──────────────────────────
                 BoxLayout:
                     orientation: 'vertical'
-                    size_hint_x: None
-                    width: dp(670)
+                    size_hint: 1, None
+                    height: self.minimum_height
                     spacing: 0
 
                     AnchorLayout:
@@ -542,8 +541,10 @@
 
                     BoxLayout:
                         orientation: 'vertical'
-                        padding: [dp(70), dp(48), dp(70), dp(24)]
-                        spacing: dp(20)
+                        size_hint_y: None
+                        height: self.minimum_height
+                        padding: [dp(70), dp(14), dp(70), dp(14)]
+                        spacing: dp(10)
                         canvas.before:
                             Color:
                                 rgba: utils.get_color_from_hex('#D7D7D7')
@@ -560,11 +561,11 @@
                         BoxLayout:
                             spacing: dp(10)
                             size_hint_y: None
-                            height: dp(40)
+                            height: dp(30)
                             Label:
                                 text: 'Goal'
                                 color: utils.get_color_from_hex('#519D4A')
-                                font_size: '18sp'
+                                font_size: '14sp'
                                 size_hint_x: 0.42
                                 halign: 'right'
                                 valign: 'middle'
@@ -590,11 +591,11 @@
                         BoxLayout:
                             spacing: dp(10)
                             size_hint_y: None
-                            height: dp(40)
+                            height: dp(30)
                             Label:
                                 text: 'Target Amount'
                                 color: utils.get_color_from_hex('#519D4A')
-                                font_size: '18sp'
+                                font_size: '14sp'
                                 size_hint_x: 0.42
                                 halign: 'right'
                                 valign: 'middle'
@@ -607,11 +608,11 @@
                         BoxLayout:
                             spacing: dp(10)
                             size_hint_y: None
-                            height: dp(40)
+                            height: dp(30)
                             Label:
                                 text: 'Saved Amount'
                                 color: utils.get_color_from_hex('#519D4A')
-                                font_size: '18sp'
+                                font_size: '14sp'
                                 size_hint_x: 0.42
                                 halign: 'right'
                                 valign: 'middle'
@@ -624,11 +625,11 @@
                         BoxLayout:
                             spacing: dp(10)
                             size_hint_y: None
-                            height: dp(40)
+                            height: dp(30)
                             Label:
                                 text: 'Completion Date'
                                 color: utils.get_color_from_hex('#519D4A')
-                                font_size: '18sp'
+                                font_size: '14sp'
                                 size_hint_x: 0.42
                                 halign: 'right'
                                 valign: 'middle'
@@ -656,9 +657,9 @@
                             id: update_error_label
                             text: ''
                             color: TEXT_RED
-                            font_size: '15sp'
+                            font_size: '13sp'
                             size_hint_y: None
-                            height: dp(20)
+                            height: dp(16)
                             halign: 'center'
                             valign: 'middle'
                             text_size: self.size
@@ -679,6 +680,4 @@
                                     width: 1.2
                                     rectangle: (self.x, self.y, self.width, self.height)
 
-        Widget:
-            size_hint_y: 1
 
