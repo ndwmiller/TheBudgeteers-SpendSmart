@@ -89,10 +89,9 @@
 
                 BoxLayout:
                     orientation: 'horizontal'
-                    size_hint: None, None
+                    size_hint_x: 1
+                    size_hint_y: None
                     height: dp(40)
-                    width: dp(240)
-                    pos_hint: {'center_x': 0.5}
                     spacing: dp(10)
 
                     CheckBox:
@@ -108,18 +107,19 @@
                         text: "Light Mode"
                         font_size: '20sp'
                         color: utils.get_color_from_hex('#6BB562')
-                        halign: 'left'
+                        halign: 'center'
                         valign: 'middle'
                         text_size: self.size
-                        shorten: True
-                        shorten_from: 'right'
+
+                    Widget:
+                        size_hint_x: None
+                        width: dp(36)
 
                 BoxLayout:
                     orientation: 'horizontal'
-                    size_hint: None, None
+                    size_hint_x: 1
+                    size_hint_y: None
                     height: dp(40)
-                    width: dp(240)
-                    pos_hint: {'center_x': 0.5}
                     spacing: dp(10)
 
                     CheckBox:
@@ -136,11 +136,13 @@
                         text: "Dark Mode"
                         font_size: '20sp'
                         color: utils.get_color_from_hex('#6BB562')
-                        halign: 'left'
+                        halign: 'center'
                         valign: 'middle'
                         text_size: self.size
-                        shorten: True
-                        shorten_from: 'right'
+
+                    Widget:
+                        size_hint_x: None
+                        width: dp(36)
 
                 BoxLayout:
                     orientation: 'horizontal'
@@ -168,7 +170,7 @@
                         size: dp(140), dp(42)
                         pos_hint: {'center_y': 0.5}
                         background_normal: ''
-                        background_color: (0.8, 0.8, 0.8, 1) if root.current_theme == 'light' else (0.302, 0.302, 0.302, 1)
+                        background_color: (0.9, 0.9, 0.9, 1) if root.current_theme == 'light' else (0.302, 0.302, 0.302, 1)
                         color: utils.get_color_from_hex('#656565') if root.current_theme == 'light' else utils.get_color_from_hex('#E6E6E6')
                         font_size: '18sp'
                         option_cls: 'SettingsSpinnerOption'
