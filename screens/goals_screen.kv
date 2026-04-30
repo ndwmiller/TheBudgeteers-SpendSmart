@@ -65,12 +65,6 @@
         valign: 'middle'
         text_size: self.size
         size_hint_x: 1
-        canvas.after:
-            Color:
-                rgba: utils.get_color_from_hex('#6BB562')
-            Line:
-                width: 1.2
-                points: [self.right, self.y, self.right, self.top]
 
     # Target Amount
     Label:
@@ -81,12 +75,6 @@
         valign: 'middle'
         text_size: self.size
         size_hint_x: 1
-        canvas.after:
-            Color:
-                rgba: utils.get_color_from_hex('#6BB562')
-            Line:
-                width: 1.2
-                points: [self.right, self.y, self.right, self.top]
 
     # Saved
     Label:
@@ -97,12 +85,6 @@
         valign: 'middle'
         text_size: self.size
         size_hint_x: 1
-        canvas.after:
-            Color:
-                rgba: utils.get_color_from_hex('#6BB562')
-            Line:
-                width: 1.2
-                points: [self.right, self.y, self.right, self.top]
 
     # Target Date
     Label:
@@ -113,12 +95,6 @@
         valign: 'middle'
         text_size: self.size
         size_hint_x: 1
-        canvas.after:
-            Color:
-                rgba: utils.get_color_from_hex('#6BB562')
-            Line:
-                width: 1.2
-                points: [self.right, self.y, self.right, self.top]
 
     # Progress bar
     BoxLayout:
@@ -160,7 +136,7 @@
         pos_hint: {'center_y': 0.5}
         background_normal: 'resources/Images/trash_icon.png'
         background_down: 'resources/Images/trash_icon.png'
-        background_color: (1, 1, 1, 0)
+        background_color: (1, 1, 1, 1)
         border: (0, 0, 0, 0)
         on_release: root.on_delete()
 
