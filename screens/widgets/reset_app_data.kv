@@ -93,7 +93,7 @@
                     pos_hint: {'center_x': .5, 'center_y': .5}
                     background_normal: ''
                     background_down: ''
-                    background_color: (0.24, 0.24, 0.24, 1) if self.state == 'down' else (0.302, 0.302, 0.302, 1)
+                    background_color: (1, 1, 1, 1) if app.theme == 'light' else (0.24, 0.24, 0.24, 1) if self.state == 'down' else (0.302, 0.302, 0.302, 1)
                     color: utils.get_color_from_hex('#6BB562')
                     font_size: '18sp'
                     size_hint_y: None

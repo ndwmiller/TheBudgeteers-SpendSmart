@@ -28,6 +28,40 @@
             width: 1.2
             rectangle: (self.x, self.y, self.width, self.height)
 
+<BudgetCategoryRow@BoxLayout>:
+    orientation: 'horizontal'
+    spacing: dp(20)
+    size_hint_y: None
+    height: dp(26)
+
+    Label:
+        text: '• ' + root.cat_name
+        color: utils.get_color_from_hex('#519D4A')
+        font_size: '16sp'
+        halign: 'left'
+        valign: 'middle'
+        text_size: self.size
+        size_hint_x: 0.33
+        padding: [dp(20), 0]
+
+    AnchorLayout:
+        size_hint_x: 0.33
+        anchor_x: 'center'
+        anchor_y: 'center'
+        BudgetChipLabel:
+            text: root.cat_percent + '%'
+            size_hint: None, 1
+            width: dp(105)
+
+    AnchorLayout:
+        size_hint_x: 0.34
+        anchor_x: 'center'
+        anchor_y: 'center'
+        BudgetChipLabel:
+            text: '$' + root.cat_remaining
+            size_hint: None, 1
+            width: dp(120)
+
 <BudgetScreen>:
     FloatLayout:
         canvas.before:
@@ -84,7 +118,7 @@
                         rectangle: (self.x, self.y, self.width, self.height)
 
             BudgetValueLabel:
-                text: root.current_budget
+                text: '$' + root.current_budget
                 size_hint: 0.5, 1
                 pos_hint: {'x': 0, 'y': 0}
 
@@ -113,7 +147,7 @@
                         rectangle: (self.x, self.y, self.width, self.height)
 
             BudgetValueLabel:
-                text: root.monthly_budget
+                text: '$' + root.monthly_budget
                 size_hint: 0.5, 1
                 pos_hint: {'x': 0.5, 'y': 0}
 
@@ -164,9 +198,23 @@
                         width: 1.2
                         rectangle: (self.x, self.y, self.width, self.height)
 
+            # Empty state label
+            Label:
+                text: "You have no categories yet. Add one!"
+                opacity: 0 if root.has_categories else 1
+                color: utils.get_color_from_hex('#519D4A')
+                font_size: '16sp'
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.size
+                pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+                size_hint: None, None
+                size: dp(400), dp(40)
+
             # Column Headers
             BoxLayout:
                 orientation: 'horizontal'
+                opacity: 1 if root.has_categories else 0
                 size_hint: None, None
                 size: dp(560), dp(26)
                 pos_hint: {'center_x': 0.5, 'top': 0.90}

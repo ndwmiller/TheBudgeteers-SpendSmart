@@ -6,6 +6,7 @@ class Database:
         self.connection = sql.connect(db_path)
         self.cursor = self.connection.cursor()
         self.create_tables()
+        self._migrate_remove_category_unique()
         self.fill_setstat()
     
     def create_tables(self):
@@ -31,11 +32,11 @@ class Database:
         # first entry is always None category, second is always Income. neither to be shown on budget page
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS categories (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT UNIQUE,
+            name TEXT,
             percent REAL
         )''')
-        self.cursor.execute("INSERT OR IGNORE INTO categories (name, percent) VALUES (?, ?)", ('None', 0.0))
-        self.cursor.execute("INSERT OR IGNORE INTO categories (name, percent) VALUES (?, ?)", ('Income', 0.0))
+        self.cursor.execute("INSERT OR IGNORE INTO categories (id, name, percent) VALUES (1, ?, ?)", ('None', 0.0))
+        self.cursor.execute("INSERT OR IGNORE INTO categories (id, name, percent) VALUES (2, ?, ?)", ('Income', 0.0))
         
         self.connection.commit()
 
@@ -71,6 +72,22 @@ class Database:
         self.cursor.executemany(query, default_settings)
         self.connection.commit()
     
+    def _migrate_remove_category_unique(self):
+        self.cursor.execute("SELECT sql FROM sqlite_master WHERE type='table' AND name='categories'")
+        row = self.cursor.fetchone()
+        if row and 'UNIQUE' in row[0]:
+            self.cursor.execute('''CREATE TABLE categories_new (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT,
+                percent REAL
+            )''')
+            self.cursor.execute("INSERT INTO categories_new SELECT * FROM categories")
+            self.cursor.execute("DROP TABLE categories")
+            self.cursor.execute("ALTER TABLE categories_new RENAME TO categories")
+            self.connection.commit()
+        self.cursor.execute("DELETE FROM categories WHERE name IN ('None', 'Income') AND id > 2")
+        self.connection.commit()
+
     '''**DATE CONVERTERS**'''
     # makes this safely callable from anywhere
     @staticmethod
@@ -148,7 +165,7 @@ class Database:
     # returns a list of row objects. access via loop: for row in result: print(row['name']). if table is empty, returns an empty list [].
     # row structure: {'id': int, 'name': str, 'percent': float}
     def get_all_cats(self):
-        self.cursor.execute("SELECT * FROM categories")
+        self.cursor.execute("SELECT * FROM categories ORDER BY id")
         return self.cursor.fetchall()
 
     # returns a list of row objects. access via loop: for row in result: print(row['name']). if table is empty, returns an empty list [].
@@ -274,12 +291,13 @@ class Database:
     '''**ADD AND EDIT FUNCTIONS**'''
     # --categories--
     # adds a new empty category
-    def add_category(self, name="New Category", percent=0):
+    def add_cat(self, name="New Category", percent=0):
         self.cursor.execute("INSERT INTO categories (name, percent) VALUES (?, ?)", (name, percent))
         self.connection.commit()
+        return self.cursor.lastrowid
     
     # only updates values that are provided, keeps currents otherwise
-    def edit_category(self, cat_id, name=None, percent=None):
+    def edit_cat(self, cat_id, name=None, percent=None):
         # get current
         self.cursor.execute("SELECT name, percent FROM categories WHERE id = ?", (cat_id,))
         current = self.cursor.fetchone()
