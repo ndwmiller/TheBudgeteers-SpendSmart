@@ -120,6 +120,7 @@ class SpendSmartApp(App):
     base_path = StringProperty(os.path.dirname(os.path.abspath(__file__)))
 
     def build(self):
+        
         # sets path for database
         data_dir = os.path.join(os.path.dirname(__file__), "resources", "data")
         if not os.path.exists(data_dir):
