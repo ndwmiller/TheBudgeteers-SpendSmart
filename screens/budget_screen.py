@@ -6,29 +6,30 @@ from kivy.factory import Factory
 
 
 class BudgetScreen(Screen):
-    monthly_budget = StringProperty('0.00')
-    current_budget = StringProperty('0.00')
-    has_categories = BooleanProperty(False)
+    monthly_budget   = StringProperty('0.00')
+    # remaining budget is monthly budget minus all expense transactions, income not included
+    remaining_budget = StringProperty('0.00')
+    has_categories   = BooleanProperty(False)
 
     class BudgetCategoryRow(BoxLayout):
-        cat_name = StringProperty('')
-        cat_percent = StringProperty('')
+        cat_name      = StringProperty('')
+        cat_percent   = StringProperty('')
         cat_remaining = StringProperty('')
 
     def on_enter(self):
         self.app = App.get_running_app()
         self.refresh_category_ui()
 
-    def get_current_budget(self):
-        return str(App.get_running_app().db.get_big_total() or '0.00')
+    def get_remaining_budget(self):
+        return f"{App.get_running_app().db.get_rem_budget():.2f}"
 
     def get_monthly_budget(self):
         return str(App.get_running_app().db.get_setting('budget') or '0.00')
 
-    # refresh ui after changes
     def refresh_category_ui(self):
-        self.monthly_budget = self.get_monthly_budget()
-        self.current_budget = self.get_current_budget()
+        self.monthly_budget   = self.get_monthly_budget()
+        self.remaining_budget = self.get_remaining_budget()
+        # skip the first two system categories (None and Income)
         categories = self.app.db.get_all_cats()[2:]
         grid = self.ids.categories_grid
 
@@ -37,9 +38,9 @@ class BudgetScreen(Screen):
         for cat in categories:
             _, name, percent = cat
             row = Factory.BudgetCategoryRow()
-            row.cat_name = str(name)
-            row.cat_percent = str(percent)
-            row.cat_remaining = str(self.app.db.get_cat_total(name) or '0.00')
+            row.cat_name      = str(name)
+            row.cat_percent   = str(percent)
+            row.cat_remaining = f"{self.app.db.get_cat_total(name):.2f}"
             grid.add_widget(row)
 
     def open_edit_budget(self):
