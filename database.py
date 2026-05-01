@@ -201,13 +201,15 @@ class Database:
         
         return raw_cat_value + trans_sum
     
-    # returns float of sum of cat totals
-    def get_curr_budget(self):
-        categories = self.get_all_cats()
-        total = 0
-        for cat in categories:
-            total += self.get_cat_total(cat['name'])
-        return total
+    # returns how much of the monthly budget is left after all expense transactions
+    # income transactions are excluded so they don't inflate the number
+    def get_rem_budget(self):
+        budget = float(self.get_setting('budget') or 0)
+        self.cursor.execute(
+            "SELECT COALESCE(SUM(amount), 0) FROM transactions WHERE amount < 0"
+        )
+        expenses = self.cursor.fetchone()[0]  # this is a negative number
+        return budget + expenses  # adding a negative subtracts it
     
     # returns float of sum of all transactions
     def get_big_total(self):
@@ -446,6 +448,79 @@ class Database:
         for value, key in reset_values:
             self.set_setting(key, value)
     
+    # populates the db with 4 categories and 3 weeks of sample transactions
+    # returns false without touching anything if transactions already exist
+    def seed_data(self):
+        from datetime import datetime, timedelta
+
+        # bail out early so we don't double-seed an existing account
+        self.cursor.execute("SELECT COUNT(*) FROM transactions")
+        if self.cursor.fetchone()[0] > 0:
+            return False
+
+        today = datetime.now().date()
+
+        # helper to turn a day offset into a yyyy-mm-dd string relative to today
+        def d(offset):
+            return (today + timedelta(days=offset)).strftime("%Y-%m-%d")
+
+        food_id     = self.add_cat("Food",      30.0)
+        trans_id    = self.add_cat("Transport",  15.0)
+        shop_id     = self.add_cat("Shopping",   25.0)
+        bills_id    = self.add_cat("Bills",      30.0)
+        income_id   = 2  # income is always id=2 as a system category
+
+        seed_transactions = [
+            # --- initial balance ---
+            (d(-21), "Starting Balance",   income_id,  30000.00),
+
+            # --- week 1 (days -21 to -15) ---
+            (d(-21), "Paycheck",           income_id,   1800.00),
+            (d(-21), "Internet Bill",      bills_id,     -79.99),
+            (d(-20), "Gas Station",        trans_id,     -52.00),
+            (d(-20), "Grocery Store",      food_id,      -87.45),
+            (d(-19), "Restaurant",         food_id,      -23.50),
+            (d(-18), "Clothing Store",     shop_id,      -89.99),
+            (d(-18), "Phone Bill",         bills_id,     -65.00),
+            (d(-17), "Coffee Shop",        food_id,       -8.75),
+            (d(-16), "Rideshare",          trans_id,     -18.75),
+            (d(-15), "Grocery Store",      food_id,      -62.30),
+
+            # --- week 2 (days -14 to -8) ---
+            (d(-14), "Paycheck",           income_id,   1800.00),
+            (d(-14), "Restaurant",         food_id,      -31.20),
+            (d(-14), "Online Shopping",    shop_id,     -134.50),
+            (d(-14), "Electricity",        bills_id,    -124.50),
+            (d(-13), "Parking",            trans_id,     -12.00),
+            (d(-12), "Grocery Store",      food_id,      -45.80),
+            (d(-11), "Fast Food",          food_id,      -14.25),
+            (d(-10), "Gas Station",        trans_id,     -48.50),
+            (d(-9),  "Restaurant",         food_id,      -28.90),
+            (d(-8),  "Grocery Store",      food_id,      -93.15),
+            (d(-8),  "Electronics",        shop_id,     -245.00),
+
+            # --- week 3 (days -7 to 0) ---
+            (d(-7),  "Paycheck",           income_id,   1800.00),
+            (d(-7),  "Streaming Service",  bills_id,     -15.99),
+            (d(-7),  "Rideshare",          trans_id,     -22.30),
+            (d(-6),  "Coffee Shop",        food_id,       -9.50),
+            (d(-5),  "Restaurant",         food_id,      -42.70),
+            (d(-4),  "Gas Station",        trans_id,     -55.00),
+            (d(-3),  "Grocery Store",      food_id,      -71.60),
+            (d(-3),  "Department Store",   shop_id,      -67.80),
+            (d(-3),  "Gym Membership",     bills_id,     -45.00),
+            (d(-2),  "Fast Food",          food_id,      -16.35),
+            (d(-1),  "Parking",            trans_id,      -8.00),
+            (d(0),   "Coffee Shop",        food_id,       -8.25),
+        ]
+
+        for date, name, cat_id, amount in seed_transactions:
+            self.add_transaction(date, name, cat_id, amount)
+
+        # commit once at the end rather than after every single insert
+        self.connection.commit()
+        return True
+
     # clear all data and restore defaults
     def clear_data(self):
         tables = ['transactions', 'bills', 'goals']

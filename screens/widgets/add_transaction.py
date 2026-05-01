@@ -1,5 +1,6 @@
 import os
 
+from kivy.app import App
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
@@ -16,9 +17,12 @@ class AddTransaction(Popup):
 
     def on_open(self):
         self.clear_error()
-
-        if "category_spinner" in self.ids and self.screen:
-            self.ids.category_spinner.values = self.screen.categories[1:]
+        if "category_spinner" in self.ids:
+            app = App.get_running_app()
+            cats = app.db.get_all_cats()
+            # exclude id=1 (None) since that's an internal fallback, not something users should pick
+            cat_names = [cat[1] for cat in cats if cat[0] > 1]
+            self.ids.category_spinner.values = cat_names
             self.ids.category_spinner.text = "Category"
 
     def validate_and_submit(self):

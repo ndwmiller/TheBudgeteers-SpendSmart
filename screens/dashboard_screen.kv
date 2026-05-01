@@ -46,7 +46,7 @@
         size_hint_x: None
         width: "130dp"
         Label:
-            text: root.bill_amount
+            text: root.bill_name
             color: utils.get_color_from_hex('#6BB562')
             font_size: '21sp'
             halign: 'left'
@@ -54,7 +54,7 @@
             text_size: self.size
 
         Label:
-            text: root.bill_name
+            text: root.bill_date
             color: utils.get_color_from_hex('#6BB562')
             font_size: '18sp'
             halign: 'left'
@@ -64,7 +64,7 @@
     # Bill Amount
     Label:
         pos_hint: { 'center_x': .5, 'center_y': .5 }
-        text: "$ " + root.bill_date
+        text: "$ " + root.bill_amount
         color: utils.get_color_from_hex('#6BB562')
         font_size: '18sp'
         halign: 'center'
@@ -180,7 +180,7 @@
 
                 # Remaining Balance Amount
                 Label:
-                    text: "$ " + root.big_total()
+                    text: "$ " + root.remaining_balance
                     bold: True
                     font_size: '34sp'
                     color: utils.get_color_from_hex('#6BB562')
@@ -235,7 +235,7 @@
 
                 # Monthly Income Amount
                 Label:
-                    text: "$ " + root.monthly_income()
+                    text: "$ " + root.stat_income
 
                     bold: True
                     font_size: '34sp'
@@ -291,7 +291,7 @@
 
                 # Monthly Expenses Amount
                 Label:
-                    text: "$ " + root.monthly_expenses()
+                    text: "$ " + root.stat_expenses
 
                     bold: True
                     font_size: '34sp'
@@ -457,7 +457,7 @@
                                     rectangle: (self.x, self.y, self.width, self.height)
 
                         Label:
-                            text: "$ " + root.monthly_budget()
+                            text: "$ " + root.stat_budget
 
                             bold: True
                             font_size: '28sp'
@@ -634,7 +634,7 @@
                                 # Avg Day Expenses Amount
                                 Label:
                                     pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                    text: "$ " + root.day_expenses_this_week()
+                                    text: "$ " + root.stat_day_this
                                     color: utils.get_color_from_hex('#6BB562') # CHANGE TO #6BB562 WHEN NOT EMPTY, #6BB562 WHEN EMPTY
                                     font_size: '18sp'
                                     halign: 'center'
@@ -679,7 +679,7 @@
                                 # Week Expenses Amount
                                 Label:
                                     pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                    text: "$ " + root.week_expenses_this_week()
+                                    text: "$ " + root.stat_week_this
 
                                     color: utils.get_color_from_hex('#6BB562') # CHANGE TO #6BB562 WHEN NOT EMPTY, #6BB562 WHEN EMPTY
                                     font_size: '18sp'
@@ -728,7 +728,7 @@
                             # Highest Spending Cat
                             Label:
                                 pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                text: root.high_cat_name_this_week()
+                                text: root.stat_high_name_this
 
                                 font_size: '18sp'
                                 color: utils.get_color_from_hex('#6BB562') # CHANGE TO #6BB562 WHEN NOT EMPTY, #6BB562 WHEN EMPTY
@@ -742,7 +742,7 @@
                             # Highest Spending Amount
                             Label:
                                 pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                text: "$ " + root.high_cat_amount_this_week()
+                                text: "$ " + root.stat_high_amt_this
 
                                 color: utils.get_color_from_hex('#6BB562') # CHANGE TO #6BB562 WHEN NOT EMPTY, #6BB562 WHEN EMPTY
                                 font_size: '18sp'
@@ -832,7 +832,7 @@
                                 # Avg Day Expenses Amount
                                 Label:
                                     pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                    text: "$ " + root.day_expenses_last_week()
+                                    text: "$ " + root.stat_day_last
 
                                     color: utils.get_color_from_hex('#6BB562') # CHANGE TO #6BB562 WHEN NOT EMPTY, #6BB562 WHEN EMPTY
                                     font_size: '18sp'
@@ -878,7 +878,7 @@
                                 # Week Expenses Amount
                                 Label:
                                     pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                    text: "$ " + root.week_expenses_last_week()
+                                    text: "$ " + root.stat_week_last
 
                                     color: utils.get_color_from_hex('#6BB562') # CHANGE TO #6BB562 WHEN NOT EMPTY, #6BB562 WHEN EMPTY
                                     font_size: '18sp'
@@ -927,7 +927,7 @@
                             # Highest Spending Cat
                             Label:
                                 pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                text: root.high_cat_name_last_week()
+                                text: root.stat_high_name_last
 
                                 font_size: '18sp'
                                 color: utils.get_color_from_hex('#6BB562') # CHANGE TO #6BB562 WHEN NOT EMPTY, #6BB562 WHEN EMPTY
@@ -941,7 +941,7 @@
                             # Highest Spending Amount
                             Label:
                                 pos_hint: { 'center_x': .5, 'center_y': .5 }
-                                text: "$ " + root.high_cat_amount_last_week()
+                                text: "$ " + root.stat_high_amt_last
 
                                 color: utils.get_color_from_hex('#6BB562') # CHANGE TO #6BB562 WHEN NOT EMPTY, #6BB562 WHEN EMPTY
                                 font_size: '18sp'

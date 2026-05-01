@@ -93,9 +93,9 @@
                     width: 1.2
                     points: (self.center_x, self.y, self.center_x, self.top)
 
-            # Current Budget
+            # Remaining Budget
             Label:
-                text: 'Current Budget'
+                text: 'Remaining Budget'
                 size_hint: None, None
                 size: dp(180), dp(30)
                 pos_hint: {'center_x': 0.25, 'top': 1.24}
@@ -118,7 +118,7 @@
                         rectangle: (self.x, self.y, self.width, self.height)
 
             BudgetValueLabel:
-                text: '$' + root.current_budget
+                text: '$' + root.remaining_budget
                 size_hint: 0.5, 1
                 pos_hint: {'x': 0, 'y': 0}
 
