@@ -1,3 +1,7 @@
+# Force dp() == 1px so GlobalScaler handles all visual scaling uniformly across DPIs
+from kivy.config import Config
+Config.set('graphics', 'density', '1')
+
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.properties import BooleanProperty, ListProperty, StringProperty
