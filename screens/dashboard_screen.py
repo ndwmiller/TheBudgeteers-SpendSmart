@@ -119,29 +119,34 @@ class DashboardScreen(Screen):
 
     def maybe_show_notifications(self):
         messages = []
+        today_str = datetime.now().strftime("%Y-%m-%d")
+        db = self.app.db
 
         if self.app.alerts_enabled:
-            budget   = float(self.app.db.get_setting('budget') or 0)
-            expenses = float(self.app.db.get_expenses() or 0)
-            if budget > 0 and expenses > budget:
-                messages.append(
-                    f"Budget alert: this month's expenses (${expenses:.2f}) are over budget (${budget:.2f})."
-                )
+            if db.get_setting('alerts_last_shown') != today_str:
+                budget   = float(db.get_setting('budget') or 0)
+                expenses = float(self.app.db.get_expenses() or 0)
+                if budget > 0 and expenses > budget:
+                    messages.append(
+                        f"Budget alert: this month's expenses (${expenses:.2f}) are over budget (${budget:.2f})."
+                    )
+                    db.set_setting('alerts_last_shown', today_str)
 
         if self.app.reminders_enabled:
-            today           = datetime.now().date()
-            upcoming_cutoff = today + timedelta(days=7)
-            due_bills = []
-            for bill in self.app.db.get_all_bills():
-                try:
-                    # bill[1] is the date column, bill[2] is the name column
-                    due_date = datetime.strptime(str(bill[1]), "%Y-%m-%d").date()
-                except ValueError:
-                    continue
-                if today <= due_date <= upcoming_cutoff:
-                    due_bills.append(f"{bill[2]} ({due_date.strftime('%m/%d/%Y')})")
-            if due_bills:
-                messages.append("Upcoming bills: " + ", ".join(due_bills[:3]))
+            if db.get_setting('reminders_last_shown') != today_str:
+                today           = datetime.now().date()
+                upcoming_cutoff = today + timedelta(days=7)
+                due_bills = []
+                for bill in db.get_all_bills():
+                    try:
+                        due_date = datetime.strptime(str(bill[1]), "%Y-%m-%d").date()
+                    except ValueError:
+                        continue
+                    if today <= due_date <= upcoming_cutoff:
+                        due_bills.append(f"{bill[2]} ({due_date.strftime('%m/%d/%Y')})")
+                if due_bills:
+                    messages.append("Upcoming bills: " + ", ".join(due_bills[:3]))
+                    db.set_setting('reminders_last_shown', today_str)
 
         if messages:
             Popup(

@@ -64,7 +64,9 @@ class Database:
         ('theme', 'light'),
         ('font', 'medium'),
         ('alerts', 'True'),
-        ('reminders', 'False')
+        ('reminders', 'False'),
+        ('alerts_last_shown', ''),
+        ('reminders_last_shown', ''),
         ]
 
         query = "INSERT OR IGNORE INTO setstat (key, value) VALUES (?, ?)"
