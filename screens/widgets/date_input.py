@@ -1,5 +1,6 @@
 # helper function for formatting date inputs
 from kivy.uix.textinput import TextInput
+from datetime import datetime
 import re
 
 class DateInput(TextInput):
@@ -25,15 +26,11 @@ class DateInput(TextInput):
         return super().do_backspace(from_undo, mode)
     
     def get_validation_error(self):
-        # returns error if invalid
         val = self.text.strip()
-        
-        # regex to only allow proper data format
-        date_pattern = r"^\d{2}/\d{2}/\d{4}$"
-        if not re.match(date_pattern, val):
+        if not re.match(r"^\d{2}/\d{2}/\d{4}$", val):
             return "Date must be MM/DD/YYYY."
-        month, day, year = map(int, val.split('/'))
-        if not (1 <= month <= 12 and 1 <= day <= 31):
+        try:
+            datetime.strptime(val, "%m/%d/%Y")
+        except ValueError:
             return "Please enter a valid date."
-
-        return None # valid date
+        return None

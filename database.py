@@ -186,27 +186,31 @@ class Database:
         budget = float(self.get_setting('budget') or 0)
         cat = self.get_cat(cat_name)
         if not cat: return 0
-        
+
         raw_cat_value = budget * (cat[2] / 100)
-        
-        # sum transactions for this category
+        first_of_month = datetime.now().replace(day=1).strftime("%Y-%m-%d")
+
+        # sum only this month's transactions for this category
         query = '''
-            SELECT COALESCE(SUM(t.amount), 0) 
+            SELECT COALESCE(SUM(t.amount), 0)
             FROM transactions t
             JOIN categories c ON t.category_id = c.id
             WHERE c.name = ?
+              AND t.date >= ?
         '''
-        self.cursor.execute(query, (cat_name,))
+        self.cursor.execute(query, (cat_name, first_of_month))
         trans_sum = self.cursor.fetchone()[0]
-        
+
         return raw_cat_value + trans_sum
     
-    # returns how much of the monthly budget is left after all expense transactions
+    # returns how much of the monthly budget is left after this month's expense transactions
     # income transactions are excluded so they don't inflate the number
     def get_rem_budget(self):
         budget = float(self.get_setting('budget') or 0)
+        first_of_month = datetime.now().replace(day=1).strftime("%Y-%m-%d")
         self.cursor.execute(
-            "SELECT COALESCE(SUM(amount), 0) FROM transactions WHERE amount < 0"
+            "SELECT COALESCE(SUM(amount), 0) FROM transactions WHERE amount < 0 AND date >= ?",
+            (first_of_month,)
         )
         expenses = self.cursor.fetchone()[0]  # this is a negative number
         return budget + expenses  # adding a negative subtracts it
@@ -217,26 +221,26 @@ class Database:
         return self.cursor.fetchone()[0]
 
     # helper function for month sums
-    # returns either sum of income or sum of not income (expenses) over last 30 days
+    # returns either sum of income or sum of expenses since the first of the current month
     def get_month_sum(self, income=True):
-        thirty_days_ago = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+        first_of_month = datetime.now().replace(day=1).strftime("%Y-%m-%d")
         if income:
             self.cursor.execute(
                 "SELECT COALESCE(SUM(amount), 0) FROM transactions WHERE amount > 0 AND date >= ?",
-                (thirty_days_ago,)
+                (first_of_month,)
             )
         else:
             self.cursor.execute(
                 "SELECT COALESCE(ABS(SUM(amount)), 0) FROM transactions WHERE amount < 0 AND date >= ?",
-                (thirty_days_ago,)
+                (first_of_month,)
             )
         return self.cursor.fetchone()[0]
 
-    # returns float of sum of income transactions for the last 30 days
+    # returns float of sum of income transactions since the first of the current month
     def get_income(self):
         return self.get_month_sum(income=True)
 
-    # returns float of sum of negative transactions for the last 30 days
+    # returns float of sum of expense transactions since the first of the current month
     def get_expenses(self):
         return self.get_month_sum(income=False)
 
