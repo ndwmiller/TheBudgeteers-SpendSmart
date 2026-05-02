@@ -148,7 +148,7 @@
 
         canvas.before:
             Color:
-                rgba: utils.get_color_from_hex('#4D4D4D')
+                rgba: (0.8, 0.8, 0.8, 1) if app.theme == 'light' else utils.get_color_from_hex('#4D4D4D')
             Rectangle:
                 pos: self.pos
                 size: self.size

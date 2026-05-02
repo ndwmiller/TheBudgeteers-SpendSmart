@@ -52,8 +52,9 @@ class BudgetEditScreen(Screen):
         self.has_categories = bool(grid.children)
 
     def add_category(self):
-        grid = self.ids.categories_grid
-        if len(grid.children) >= self.max_categories:
+        # check against DB count so that staging deletes and adding replacements in the
+        # same session can't push the total rows in the DB past the cap
+        if len(self.app.db.get_all_cats()[2:]) >= self.max_categories:
             self._show_error(f'Maximum of {self.max_categories} categories allowed.')
             return
         new_id = self.app.db.add_cat('New Category', 0.0)
@@ -104,7 +105,9 @@ class BudgetEditScreen(Screen):
     def cancel_edit(self):
         self.ids.error_label.text = ''
         current_ids = {cat[0] for cat in self.app.db.get_all_cats()[2:]}
-        for cat_id in current_ids - self._original_cat_ids - self._pending_deletions:
+        # delete everything added this session regardless of pending-deletion state,
+        # so add → stage-for-delete → cancel doesn't leave orphan rows in the DB
+        for cat_id in current_ids - self._original_cat_ids:
             self.app.db.delete_cat(cat_id)
         self.app.shell.ids.sm.current = 'budget'
 

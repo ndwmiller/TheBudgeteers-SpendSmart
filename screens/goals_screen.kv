@@ -105,7 +105,7 @@
             size_hint_x: 1
             canvas.before:
                 Color:
-                    rgba: utils.get_color_from_hex('#4D4D4D')
+                    rgba: utils.get_color_from_hex('#D7D7D7') if app.theme == 'light' else utils.get_color_from_hex('#4D4D4D')
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -134,8 +134,8 @@
         size_hint: None, None
         size: dp(30), dp(30)
         pos_hint: {'center_y': 0.5}
-        background_normal: 'resources/Images/trash_icon.png'
-        background_down: 'resources/Images/trash_icon.png'
+        background_normal: app.base_path + '/resources/Images/trash_icon.png'
+        background_down: app.base_path + '/resources/Images/trash_icon.png'
         background_color: (1, 1, 1, 1)
         border: (0, 0, 0, 0)
         on_release: root.on_delete()
@@ -148,7 +148,7 @@
         spacing: 0
         canvas.before:
             Color:
-                rgba: utils.get_color_from_hex('#4D4D4D')
+                rgba: (0.8, 0.8, 0.8, 1) if app.theme == 'light' else utils.get_color_from_hex('#4D4D4D')
             Rectangle:
                 pos: self.pos
                 size: self.size

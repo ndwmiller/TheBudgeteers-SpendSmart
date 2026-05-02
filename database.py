@@ -410,6 +410,7 @@ class Database:
     def delete_goal(self, id):
         try:
             self.cursor.execute("DELETE FROM goals WHERE id = ?", (id,))
+            self.connection.commit()
             return True
         except:
             self.connection.rollback() # undo changes if something failed

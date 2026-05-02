@@ -141,6 +141,10 @@ class GoalsScreen(Screen):
             return
 
         app = App.get_running_app()
+        existing_names = [str(g[1]) for g in app.db.get_all_goals()]
+        if name in existing_names:
+            self.ids.add_error_label.text = 'A goal with that name already exists.'
+            return
         app.db.add_goal(name, amount_value, Database.date_to_db(date_text))
 
         self.ids.add_goal_name.text   = ''
@@ -204,7 +208,6 @@ class GoalsScreen(Screen):
     def delete_goal(self, goal_id):
         app = App.get_running_app()
         if app.db.delete_goal(goal_id):
-            app.db.connection.commit()
             self.refresh_goals()
 
     @staticmethod

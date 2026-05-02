@@ -13,15 +13,19 @@ class SettingsBackend:
         self.current_theme = theme or 'light'
         app.apply_theme(self.current_theme, rebuild=False)
 
+        # guard prevents the checkbox/spinner callbacks from writing back to the
+        # DB or triggering rebuilds while we're just restoring saved state
+        self._loading = True
         if theme == 'light':
             self.ids.light_mode_cb.active = True
         else:
             self.ids.dark_mode_cb.active = True
-
         font_map = {'small': 'Small', 'medium': 'Medium', 'large': 'Large'}
         self.ids.font_spinner.text = font_map.get(font, 'Medium')
         self.ids.budget_toggle.active = (alerts == 'True')
         self.ids.bill_toggle.active = (reminders == 'True')
+        self._loading = False
+
         app.apply_font_size(font)
         app.apply_notification_settings(
             alerts=(alerts == 'True'),
@@ -29,12 +33,16 @@ class SettingsBackend:
         )
 
     def set_theme(self, theme):
+        if getattr(self, '_loading', False):
+            return
         self.current_theme = theme
         app = App.get_running_app()
         app.db.set_setting('theme', theme)
         app.apply_theme(theme)
 
     def set_font_size(self, size_name):
+        if getattr(self, '_loading', False):
+            return
         app = App.get_running_app()
         if app and getattr(app, 'db', None):
             size_name = size_name.lower()
@@ -42,12 +50,16 @@ class SettingsBackend:
             app.apply_font_size(size_name)
 
     def toggle_budget_alerts(self, active):
+        if getattr(self, '_loading', False):
+            return
         app = App.get_running_app()
         if app and getattr(app, 'db', None):
             app.db.set_setting('alerts', str(active))
             app.apply_notification_settings(alerts=active)
 
     def toggle_bill_reminders(self, active):
+        if getattr(self, '_loading', False):
+            return
         app = App.get_running_app()
         if app and getattr(app, 'db', None):
             app.db.set_setting('reminders', str(active))
@@ -60,11 +72,15 @@ class SettingsBackend:
         app = App.get_running_app()
         db = app.db
         db.restore_defaults()
+        # guard prevents each widget assignment from triggering a separate
+        # DB write or rebuild — apply_theme at the end does one rebuild if needed
+        self._loading = True
         self.ids.dark_mode_cb.active = False
         self.ids.light_mode_cb.active = True
         self.ids.font_spinner.text = 'Medium'
         self.ids.budget_toggle.active = True
         self.ids.bill_toggle.active = False
+        self._loading = False
         self.current_theme = 'light'
         app.apply_theme('light')
         app.apply_font_size('medium')
