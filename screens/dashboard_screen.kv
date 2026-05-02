@@ -327,6 +327,7 @@
             BoxLayout:
                 orientation: 'vertical'
                 size_hint_x: 0.335
+                size_hint_y: 1
 
                 Label:
                     text: "Upcoming Bills"
@@ -429,6 +430,7 @@
                     BoxLayout:
                         orientation: 'vertical'
                         size_hint_x: 0.3
+                        size_hint_y: 1
 
                         Label:
                             text: "Monthly Budget"
@@ -485,6 +487,7 @@
                     BoxLayout:
                         orientation: 'vertical'
                         size_hint_x: 0.7
+                        size_hint_y: 1
 
                         Label:
                             text: "Budget Categories"
@@ -516,8 +519,8 @@
                         BoxLayout:
                             orientation: 'vertical'
                             padding: [50, 3, 50, 3]
-                            size_hint_y: None
-                            height: dp(201.5)
+                            size_hint_y: 1
+                            #height: dp(201.5)
                             #spacing: dp(5)
 
                             canvas.before:
@@ -565,6 +568,39 @@
 
                             Widget:
                                 size_hint_y: 1
+
+                # Analytics label row
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    height: dp(30)
+
+                    Label:
+                        text: "Analytics"
+                        font_size: '20sp'
+                        color: utils.get_color_from_hex('#656565')
+                        halign: 'center'
+                        valign: 'middle'
+                        text_size: self.size
+                        size_hint: None, None
+                        width: dp(100)
+                        height: dp(30)
+
+                        canvas.before:
+                            Color:
+                                rgba: utils.get_color_from_hex('#D7D7D7')
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
+
+                        canvas.after:
+                            Color:
+                                rgba: utils.get_color_from_hex('#6BB562')
+                            Line:
+                                width: 1.2
+                                rectangle: (self.x, self.y, self.width, self.height)
+
+                    Widget:
 
                 # Analytics layout
                 BoxLayout:
@@ -970,37 +1006,9 @@
     FloatLayout:
         pos_hint: { 'center_x': .5, 'center_y': .5 }
 
-        # Analytics label        
-        Label:
-            pos_hint: { 'center_x': .394, 'center_y': .379 }
-            text: "Analytics"
-            font_size: '20sp'
-            color: utils.get_color_from_hex('#656565')
-            halign: 'center'
-            valign: 'middle'
-            text_size: self.size
-            size_hint: None, None
-            width: '100dp'
-            height: '30dp'
-
-            canvas.before:
-                Color:
-                    rgba: utils.get_color_from_hex('#D7D7D7')
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
-
-            # Green Outline
-            canvas.after:
-                Color: 
-                    rgba: utils.get_color_from_hex('#6BB562')
-                Line:
-                    width: 1.2
-                    rectangle: (self.x, self.y, self.width, self.height)
-
         # Highest Spending Label This Week
         Label:
-            pos_hint: { 'center_x': .41, 'center_y': .166 }
+            pos_hint: { 'center_x': .41, 'center_y': .158}
             text: "Highest Spending"
             font_size: '16sp'
             color: utils.get_color_from_hex('#656565')
@@ -1028,7 +1036,7 @@
 
         # Highest Spending Label Last Week
         Label:
-            pos_hint: { 'center_x': .702, 'center_y': .166 }
+            pos_hint: { 'center_x': .702, 'center_y': .158 }
             text: "Highest Spending"
             font_size: '16sp'
             color: utils.get_color_from_hex('#656565')
