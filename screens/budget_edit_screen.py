@@ -54,7 +54,7 @@ class BudgetEditScreen(Screen):
     def add_category(self):
         # check against DB count so that staging deletes and adding replacements in the
         # same session can't push the total rows in the DB past the cap
-        if len(self.app.db.get_all_cats()[2:]) >= self.max_categories:
+        if len(self.app.db.get_all_cats()[2:]) - len(self._pending_deletions) >= self.max_categories:
             self._show_error(f'Maximum of {self.max_categories} categories allowed.')
             return
         new_id = self.app.db.add_cat('New Category', 0.0)
