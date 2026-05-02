@@ -62,7 +62,7 @@ class BudgetEditScreen(Screen):
         row.cat_id = new_id
         row.cat_name = 'New Category'
         row.cat_percent = '0.0'
-        grid.add_widget(row)
+        self.ids.categories_grid.add_widget(row)
         self.has_categories = True
 
     def save_edit(self):
