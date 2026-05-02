@@ -87,6 +87,10 @@ class GoalsScreen(Screen):
             )
             rows_grid.add_widget(row)
 
+        _multipliers = {'small': 0.92, 'medium': 1.0, 'large': 1.12}
+        multiplier = _multipliers.get(getattr(app, 'font_setting', 'medium'), 1.0)
+        app.apply_font_size_to_widget(rows_grid, multiplier)
+
         self._refresh_update_spinner(goals)
 
     def _refresh_update_spinner(self, goals):

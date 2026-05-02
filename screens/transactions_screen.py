@@ -63,6 +63,10 @@ class TransactionsScreen(Screen):
                 row_widget.parent_screen = self
                 rows_container.add_widget(row_widget)
 
+        _multipliers = {'small': 0.92, 'medium': 1.0, 'large': 1.12}
+        multiplier = _multipliers.get(getattr(app, 'font_setting', 'medium'), 1.0)
+        app.apply_font_size_to_widget(rows_container, multiplier)
+
     def add_transaction(self, date, name, category, amount):
         app = App.get_running_app()
         cat = app.db.get_cat(category)
